@@ -1,4 +1,4 @@
-class GrailsArrestedPluginGrailsPlugin {
+class ArrestedGrailsPlugin {
     // the plugin version
     def version = "0.1"
     // the version or versions of Grails the plugin is designed for
@@ -9,7 +9,7 @@ class GrailsArrestedPluginGrailsPlugin {
     ]
 
     // TODO Fill in these fields
-    def title = "Grails Arrested Plugin Plugin" // Headline display name of the plugin
+    def title = "Arrested Plugin" // Headline display name of the plugin
     def author = "Your name"
     def authorEmail = ""
     def description = '''\
@@ -17,7 +17,7 @@ Brief summary/description of the plugin.
 '''
 
     // URL to the plugin's documentation
-    def documentation = "http://grails.org/plugin/grails-arrested-plugin"
+    def documentation = "http://grails.org/plugin/arrested"
 
     // Extra (optional) plugin metadata
 
