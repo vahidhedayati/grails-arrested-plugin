@@ -4,7 +4,9 @@ installTemplate = { String artefactName, String artefactPath, String templatePat
 installTemplateEx = { String artefactName, String artefactPath, String templatePath, String templateName, Closure c ->
     // Copy over the standard auth controller.
     def artefactFile = "${basedir}/${artefactPath}/${artefactName}"
+
     if (new File(artefactFile).exists()) {
+        println("no existe")
         ant.input(
                 addProperty: "${args}.${artefactName}.overwrite",
                 message: "${artefactName} already exists. Overwrite? [y/n]")
@@ -16,6 +18,7 @@ installTemplateEx = { String artefactName, String artefactPath, String templateP
 
     // Copy the template file to the 'grails-app/controllers' directory.
     templateFile = "${arrestedPluginDir}/src/templates/${templatePath}/${templateName}"
+    println(templateFile)
     if (!new File(templateFile).exists()) {
         ant.echo("[Arrested plugin] Error: src/templates/${templatePath}/${templateName} does not exist!")
         return
@@ -28,21 +31,24 @@ installTemplateEx = { String artefactName, String artefactPath, String templateP
         c.delegate = [ artefactFile: artefactFile ]
         c.call()
     }
-
+    println(artefactFile)
+    println(templateFile)
     event("CreatedFile", [artefactFile])
 }
 
 target(createController: "Creates a standard controller") {
     def (pkg, prefix) = parsePrefix()
-
     // Copy over the standard filters class.
     def className = "Arrested"+prefix
     installTemplateEx("${className}.groovy", "grails-app/controllers${packageToPath(pkg)}", "controllers", "Controller.groovy") {
         ant.replace(file: artefactFile) {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
             ant.replacefilter(token: '@controller.name@', value: className)
+            ant.replacefilter(token: '@class.name@', value: prefix.toUpperCase())
+            ant.replacefilter(token: '@class.instance@', value: prefix)
         }
     }
+
 }
 
 
