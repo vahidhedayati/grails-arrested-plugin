@@ -1,5 +1,7 @@
 import grails.util.GrailsNameUtils
 
+includeTargets << grailsScript("_GrailsCreateArtifacts")
+
 installTemplate = { String artefactName, String artefactPath, String templatePath ->
     installTemplateEx(artefactName, artefactPath, templatePath, artefactName, null)
 }
@@ -51,7 +53,6 @@ target(createController: "Creates a standard controller") {
         }
     }
 }
-}
 
 
 //**************************** Create a single Angular controller
@@ -67,6 +68,7 @@ target(createJSController: "Creates a standard angular controller") {
             ant.replacefilter(token: '@class.instance@', value: prefix)
         }
     }
+}
 target(createToken: "Create a token class") {
     def (pkg, prefix) = parsePrefix()
     installTemplateEx("ArrestedToken.groovy", "grails-app/domain${packageToPath(pkg)}", "classes", "ArrestedToken.groovy") {
