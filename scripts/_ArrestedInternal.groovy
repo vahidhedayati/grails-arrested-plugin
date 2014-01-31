@@ -49,12 +49,60 @@ target(createController: "Creates a standard controller") {
             ant.replacefilter(token: '@class.instance@', value: prefix)
         }
     }
-
 }
 
 target(createToken: "Create a token class") {
+    def (pkg, prefix) = parsePrefix()
+    installTemplateEx("ArrestedToken.groovy", "grails-app/domain${packageToPath(pkg)}", "classes", "ArrestedToken.groovy") {
+        ant.replace(file: artefactFile) {
+            ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
+        }
+    }
+}
 
+target(createUser: "Create a user class") {
+    def (pkg, prefix) = parsePrefix()
+    installTemplateEx("ArrestedUser.groovy", "grails-app/domain${packageToPath(pkg)}", "classes", "ArrestedUser.groovy") {
+        ant.replace(file: artefactFile) {
+            ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
+        }
+    }
+}
 
+target(createUserController: "Create a user class") {
+    def (pkg, prefix) = parsePrefix()
+    installTemplateEx("ArrestedUserController.groovy", "grails-app/controllers${packageToPath(pkg)}", "controllers", "ArrestedUserController.groovy") {
+        ant.replace(file: artefactFile) {
+            ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
+        }
+    }
+}
+
+target(createAuth: "Create a authentication controller") {
+    def (pkg, prefix) = parsePrefix()
+    installTemplateEx("AuthController.groovy", "grails-app/controllers${packageToPath(pkg)}", "controllers", "AuthController.groovy") {
+        ant.replace(file: artefactFile) {
+            ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
+        }
+    }
+}
+
+target(createFilter: "Create a security filter") {
+    def (pkg, prefix) = parsePrefix()
+    installTemplateEx("SecurityFilters.groovy", "grails-app/conf${packageToPath(pkg)}", "configuration", "SecurityFilters.groovy") {
+        ant.replace(file: artefactFile) {
+            ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
+        }
+    }
+}
+
+target(updateUrl: "Updating the Url Mappings") {
+    def (pkg, prefix) = parsePrefix()
+    installTemplateEx("UrlMappings.groovy", "grails-app/conf${packageToPath(pkg)}", "configuration", "UrlMappings.groovy") {
+        ant.replace(file: artefactFile) {
+            ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
+        }
+    }
 }
 
 private parsePrefix() {
@@ -65,7 +113,6 @@ private parsePrefix() {
         prefix = givenValue[-1]
         pkg = givenValue.size() > 1 ? givenValue[0..-2].join('.') : ""
     }
-
     return [ pkg, prefix ]
 }
 
