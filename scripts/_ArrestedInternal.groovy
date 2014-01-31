@@ -1,3 +1,5 @@
+import grails.util.GrailsNameUtils
+
 installTemplate = { String artefactName, String artefactPath, String templatePath ->
     installTemplateEx(artefactName, artefactPath, templatePath, artefactName, null)
 }
@@ -6,7 +8,6 @@ installTemplateEx = { String artefactName, String artefactPath, String templateP
     def artefactFile = "${basedir}/${artefactPath}/${artefactName}"
 
     if (new File(artefactFile).exists()) {
-        println("no existe")
         ant.input(
                 addProperty: "${args}.${artefactName}.overwrite",
                 message: "${artefactName} already exists. Overwrite? [y/n]")
@@ -31,15 +32,15 @@ installTemplateEx = { String artefactName, String artefactPath, String templateP
         c.delegate = [ artefactFile: artefactFile ]
         c.call()
     }
-    println(artefactFile)
-    println(templateFile)
     event("CreatedFile", [artefactFile])
 }
+
+//**************************** Create a single controller
 
 target(createController: "Creates a standard controller") {
     def (pkg, prefix) = parsePrefix()
     // Copy over the standard filters class.
-    def className = "Arrested"+prefix
+    def className = prefix+"Controller"
     installTemplateEx("${className}.groovy", "grails-app/controllers${packageToPath(pkg)}", "controllers", "Controller.groovy") {
         ant.replace(file: artefactFile) {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
@@ -48,10 +49,62 @@ target(createController: "Creates a standard controller") {
             ant.replacefilter(token: '@class.instance@', value: prefix)
         }
     }
-
 }
 
 
+//**************************** Create a single Angular controller
+
+target(createJSController: "Creates a standard angular controller") {
+    def (pkg, prefix) = parsePrefix()
+    // Copy over the standard filters class.
+    def className = prefix+"Ctrl"
+    installTemplateEx("${className}.js", "web-app/js/${packageToPath(pkg)}", "views/controllers", "Controller.js") {
+        ant.replace(file: artefactFile) {
+            ant.replacefilter(token: '@controller.name@', value: className)
+            ant.replacefilter(token: '@class.name@', value: prefix.toUpperCase())
+            ant.replacefilter(token: '@class.instance@', value: prefix)
+        }
+    }
+}
+
+
+//****************************  Creates view
+
+target(createViewController: "Creates view") {
+    depends(loadApp)
+    def (pkg, prefix) = parsePrefix()
+
+    String name = prefix
+    name = name.indexOf('.') > 0 ? name : GrailsNameUtils.getClassNameRepresentation(name)
+    def domainClass = grailsApp.getDomainClass(name)
+
+    println(domainClass)
+
+//    generateForDomainClass(domainClass)
+//    def domainFile = "${basedir}/grails-app/domain/${packageToPath(pkg)}"+prefix+".groovy"
+//    if (new File(domainFile).exists()) {
+//        Class clazz = Class.forName("${prefix}", true, Thread.currentThread().getContextClassLoader())
+//        def className = prefix
+//        installTemplateEx("list.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "list.gsp") {
+//            ant.replace(file: artefactFile) {
+//                ant.replacefilter(token: "@class.name@", value: prefix.toUpperCase())
+//                ant.replacefilter(token: '@class.instance@', value: prefix)
+//            }
+//        }
+//    }
+}
+
+//void generateForDomainClass(domainClass) {
+//    def DefaultGrailsTemplateGenerator = classLoader.loadClass('org.codehaus.groovy.grails.scaffolding.DefaultGrailsTemplateGenerator')
+//
+//    def templateGenerator = DefaultGrailsTemplateGenerator.newInstance(classLoader)
+//    templateGenerator.grailsApplication = grailsApp
+//    templateGenerator.pluginManager = pluginManager
+//        event("StatusUpdate", ["Generating views for domain class ${domainClass.fullName}"])
+//        templateGenerator.generateViews(domainClass, basedir)
+//        event("GenerateViewsEnd", [domainClass.fullName])
+//
+//}
 
 
 
