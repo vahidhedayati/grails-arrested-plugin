@@ -1,6 +1,7 @@
 installTemplate = { String artefactName, String artefactPath, String templatePath ->
     installTemplateEx(artefactName, artefactPath, templatePath, artefactName, null)
 }
+
 installTemplateEx = { String artefactName, String artefactPath, String templatePath, String templateName, Closure c ->
     // Copy over the standard auth controller.
     def artefactFile = "${basedir}/${artefactPath}/${artefactName}"
@@ -51,9 +52,10 @@ target(createController: "Creates a standard controller") {
 
 }
 
+target(createToken: "Create a token class") {
 
 
-
+}
 
 private parsePrefix() {
     def prefix = "Arrested"
@@ -66,6 +68,7 @@ private parsePrefix() {
 
     return [ pkg, prefix ]
 }
+
 private packageToPath(String pkg) {
     return pkg ? '/' + pkg.replace('.' as char, '/' as char) : ''
 }
