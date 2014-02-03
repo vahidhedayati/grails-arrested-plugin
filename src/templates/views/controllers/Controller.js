@@ -3,6 +3,7 @@ function @controller.name@(DAO,$scope,$rootScope){
     if(!$rootScope.appConfig){
         $rootScope.appConfig = {serverHost:'localhost', appName:'appName', token:''};
     }
+    $scope.filter=""
     $scope.@class.instance@s={}
     $scope.@class.instance@=[]
     $scope.flags.save  = false;

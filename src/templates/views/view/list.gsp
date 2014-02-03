@@ -1,5 +1,6 @@
-<div>
-        <h1>'@class.name@'</h1>
+<% import grails.persistence.Event %>
+<div data-ng-controller=${domainTitle}Ctrl>
+        <h1>${domainTitle} List</h1>
 </div>
 <div data-ng-show="errors.showErrors" class="center red">
     <p data-ng-show="errors.showServerError">"Can not connect to the server, try later"</p>
@@ -16,7 +17,7 @@
                 <form>
                     <div>
                         <label>Keywords</label>
-                        <input type="text">
+                        <input data-ng-model="filter" type="text">
                     </div>
                 </form>
             </div>
@@ -26,19 +27,25 @@
         <div>
             <div>
                 <p>
-                    <button data-ng-click="new@class.instance@()" type="button">Create New @class.name@</button>
+                    <button data-ng-click="new${domainTitle}()" type="button">Create New ${domainTitle}</button>
                 </p>
                 <br/>
             </div>
-            <div class="panel-body">
+            <div>
                 <div>
                     <div>
+                        <%  excludedProps = Event.allEvents.toList() << 'id' << 'version'
+                        allowedNames = domainClass.name << 'dateCreated' << 'lastUpdated'
+                        props = domainClass.findAll { allowedNames.contains(it.name) && !excludedProps.contains(it.name) && it.type != null && !Collection.isAssignableFrom(it.type) }
+                        %>
                         <ul>
-                            <li  data-ng-repeat="">
+                            <li data-ng-repeat="instance in ${domainTitle}s">
                                 <div>
-
-
-
+                                    <%  props.eachWithIndex { p, i ->
+                                    if (i < 6) {
+                                    %>
+                                    <strong>{{instance.${p.name}}}</strong>
+                                    <% } }%>
                                 </div>
                             </li>
                         </ul>
