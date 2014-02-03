@@ -1,7 +1,14 @@
 import grails.util.GrailsNameUtils
+import groovy.text.SimpleTemplateEngine
+import groovy.text.Template
+import org.codehaus.groovy.grails.plugins.GrailsPluginManager
+import org.springframework.core.io.ResourceLoader
 import grails.util.Metadata
 
+
+includeTargets << grailsScript("_GrailsBootstrap")
 includeTargets << grailsScript("_GrailsCreateArtifacts")
+
 
 installTemplate = { String artefactName, String artefactPath, String templatePath ->
     installTemplateEx(artefactName, artefactPath, templatePath, artefactName, null)
@@ -30,6 +37,66 @@ installTemplateEx = { String artefactName, String artefactPath, String templateP
     }
 
     ant.copy(file: templateFile, tofile: artefactFile, overwrite: true)
+
+    // Perform any custom processing that may be required.
+    if (c) {
+        c.delegate = [ artefactFile: artefactFile ]
+        c.call()
+    }
+    event("CreatedFile", [artefactFile])
+}
+
+installTemplateView = { domainClass, String artefactName, String artefactPath, String templatePath, String templateName, Closure c ->
+    // Copy over the standard auth controller.
+     Template renderEditorTemplate;
+     SimpleTemplateEngine engine = new SimpleTemplateEngine();
+     GrailsPluginManager pluginManager
+     ResourceLoader resourceLoader
+    def cp
+
+
+    def artefactFile = "${basedir}/${artefactPath}/${artefactName}"
+
+    if (new File(artefactFile).exists()) {
+        ant.input(
+                addProperty: "${args}.${artefactName}.overwrite",
+                message: "${artefactName} already exists. Overwrite? [y/n]")
+
+        if (ant.antProject.properties."${args}.${artefactName}.overwrite" == "n") {
+            return
+        }
+    }
+    // Copy the template file to the 'grails-app/controllers' directory.
+    templateFile = "${arrestedPluginDir}/src/templates/${templatePath}/${templateName}"
+    if (!new File(templateFile).exists()) {
+        ant.echo("[Arrested plugin] Error: src/templates/${templatePath}/${templateName} does not exist!")
+        return
+    }
+
+    renderEditorTemplate = engine.createTemplate(new File(templateFile))
+
+    boolean hasHibernate = pluginManager?.hasGrailsPlugin('hibernate') || pluginManager?.hasGrailsPlugin('hibernate4')
+    if (hasHibernate) {
+        cp = domainClass.constrainedProperties[artefactName]
+    }
+
+    def binding = [
+            domainTitle:domainClass.getFullName(),
+            domainInstance:domainClass.getPropertyName(),
+            domainClass:domainClass.getProperties(),
+            pluginManager:pluginManager,
+            cp:cp]
+
+
+    ant.copy(file: templateFile, tofile: artefactFile, overwrite: true)
+
+    File file = new File(artefactFile);
+    BufferedWriter output = new BufferedWriter(new FileWriter(file));
+    output.write(renderEditorTemplate.make(binding).toString());
+    output.close();
+
+
+
 
     // Perform any custom processing that may be required.
     if (c) {
@@ -96,37 +163,44 @@ target(createViewController: "Creates view") {
     depends(loadApp)
     def (pkg, prefix) = parsePrefix()
 
-    String name = prefix
-    name = name.indexOf('.') > 0 ? name : GrailsNameUtils.getClassNameRepresentation(name)
-    def domainClass = grailsApp.getDomainClass(name)
+    def domainFile = "${basedir}/grails-app/domain/${packageToPath(pkg)}"+prefix+".groovy"
+    if (new File(domainFile).exists()) {
 
-    println(domainClass)
 
-//    generateForDomainClass(domainClass)
-//    def domainFile = "${basedir}/grails-app/domain/${packageToPath(pkg)}"+prefix+".groovy"
-//    if (new File(domainFile).exists()) {
-//        Class clazz = Class.forName("${prefix}", true, Thread.currentThread().getContextClassLoader())
-//        def className = prefix
-//        installTemplateEx("list.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "list.gsp") {
-//            ant.replace(file: artefactFile) {
-//                ant.replacefilter(token: "@class.name@", value: prefix.toUpperCase())
-//                ant.replacefilter(token: '@class.instance@', value: prefix)
-//            }
-//        }
-//    }
+        def domainClasses = grailsApp.domainClasses
+        domainClasses.each {
+            domainClass ->
+                if(domainClass.getFullName()== prefix){
+//                  *********** LIST
+                    def className = domainClass.getPropertyName()
+                    installTemplateView(domainClass,"list.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "list.gsp") {}
+                    installTemplateView(domainClass,"edit.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "edit.gsp") {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                }
+        }
+    }
 }
 
-//void generateForDomainClass(domainClass) {
-//    def DefaultGrailsTemplateGenerator = classLoader.loadClass('org.codehaus.groovy.grails.scaffolding.DefaultGrailsTemplateGenerator')
-//
-//    def templateGenerator = DefaultGrailsTemplateGenerator.newInstance(classLoader)
-//    templateGenerator.grailsApplication = grailsApp
-//    templateGenerator.pluginManager = pluginManager
-//        event("StatusUpdate", ["Generating views for domain class ${domainClass.fullName}"])
-//        templateGenerator.generateViews(domainClass, basedir)
-//        event("GenerateViewsEnd", [domainClass.fullName])
-//
-//}
 target(createUserController: "Create a user class") {
     def (pkg, prefix) = parsePrefix()
     installTemplateEx("ArrestedUserController.groovy", "grails-app/controllers${packageToPath(pkg)}", "controllers", "ArrestedUserController.groovy") {
