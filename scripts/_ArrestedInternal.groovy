@@ -160,6 +160,11 @@ target(updateUrl: "Updating the Url Mappings") {
     }
 }
 
+target(createAngularService: "Create the angular service") {
+    def (pkg, prefix) = parsePrefix()
+    installTemplateEx("services.js", "web-app/js/${packageToPath(pkg)}", "views/controllers", "services.js") {}
+}
+
 private parsePrefix() {
     def prefix = "Arrested"
     def pkg = ""
