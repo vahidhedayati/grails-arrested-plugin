@@ -3,6 +3,7 @@ import groovy.text.SimpleTemplateEngine
 import groovy.text.Template
 import org.codehaus.groovy.grails.plugins.GrailsPluginManager
 import org.springframework.core.io.ResourceLoader
+import grails.util.Metadata
 
 
 includeTargets << grailsScript("_GrailsBootstrap")
@@ -137,6 +138,7 @@ target(createToken: "Create a token class") {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
         }
     }
+    println("ArrestedToken.groovy created")
 }
 target(createUser: "Create a user class") {
     def (pkg, prefix) = parsePrefix()
@@ -145,6 +147,7 @@ target(createUser: "Create a user class") {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
         }
     }
+    println("ArrestedUser.groovy created")
 }
 target(createViewController: "Creates view") {
     depends(loadApp)
@@ -172,6 +175,7 @@ target(createUserController: "Create a user class") {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
         }
     }
+    println("ArrestedUserController.groovy created")
 }
 target(createAuth: "Create a authentication controller") {
     def (pkg, prefix) = parsePrefix()
@@ -180,6 +184,7 @@ target(createAuth: "Create a authentication controller") {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
         }
     }
+    println("AuthController.groovy created")
 }
 target(createFilter: "Create a security filter") {
     def (pkg, prefix) = parsePrefix()
@@ -188,14 +193,44 @@ target(createFilter: "Create a security filter") {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
         }
     }
+    println("SecurityFilters.groovy created")
 }
 target(updateUrl: "Updating the Url Mappings") {
     def (pkg, prefix) = parsePrefix()
-    installTemplateEx("UrlMappings.groovy", "grails-app/conf${packageToPath(pkg)}", "configuration", "UrlMappings.groovy") {
-        ant.replace(file: artefactFile) {
-            ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
-        }
+    def configFile = new File("${basedir}/grails-app/conf/UrlMappings.groovy")
+    if (configFile.exists()) {
+        configFile.delete()
     }
+    configFile.createNewFile()
+    configFile.withWriterAppend { BufferedWriter writer ->
+        writer.writeLine "class UrlMappings {"
+        writer.writeLine ""
+        writer.writeLine "    static mappings = {"
+        writer.writeLine "        \"/\$controller/\$action\"(parseRequest: true)"
+        writer.writeLine "    }"
+        writer.writeLine "}"
+    }
+    println("UrlMappings.groovy updated")
+}
+
+target(createAngularService: "Create the angular service") {
+    def (pkg, prefix) = parsePrefix()
+    installTemplateEx("services.js", "web-app/js/${packageToPath(pkg)}", "views/controllers", "services.js") {}
+    println("services.js created")
+}
+
+target(createAngularApp: "Create the angular file configuration") {
+    def (pkg, prefix) = parsePrefix()
+    def configFile = new File("${basedir}/web-app/js/app.js")
+    if (configFile.exists()) {
+        configFile.delete()
+    }
+    configFile.createNewFile()
+    configFile.withWriterAppend { BufferedWriter writer ->
+        writer.writeLine "'use strict';"
+        writer.writeLine "var "+Metadata.current.'app.name'+" = angular.module('"+Metadata.current.'app.name'+"', ['services']);"
+    }
+    println("app.js created")
 }
 target(createAll: "Quick Start"){
     depends(loadApp)
