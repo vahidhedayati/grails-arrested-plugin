@@ -20,6 +20,7 @@ function @controller.name@(DAO,$scope,$rootScope){
     };
 
     $scope.new@class.instance@ =function(){
+        $scope.@class.instance@=[]
         window.location.href="@class.instance@New"
     }
 
@@ -61,6 +62,7 @@ function @controller.name@(DAO,$scope,$rootScope){
         DAO.get({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, id:@class.instance@.id, controller:'@class.instance@', action:'getById'},
             function(result){
                 $scope.@class.instance@=result;
+                window.location.href="@class.instance@New"
             },
             function(error){
                 $scope.errors.showErrors = true;
@@ -71,8 +73,8 @@ function @controller.name@(DAO,$scope,$rootScope){
     $scope.confirmDelete@class.name@ =function(){
         DAO.delete({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, id:$scope.@class.instance@.id, controller:'@class.instance@', action:'delete'},
             function(result){
-                if(result.response=="block_deleted"){
-
+                if(result.response=="@class.name@_deleted"){
+                    window.location.href="@class.instance@List"
                 }
             },
             function(error){

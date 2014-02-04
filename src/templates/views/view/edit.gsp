@@ -11,6 +11,7 @@
             <div>
                 <p>
                     <button data-ng-click="manualSave()" type="button">Save</button>
+                    <button data-ng-click="confirmDelete${domainTitle}()" type="button">Delete</button>
                 </p>
                 <br/>
             </div>
