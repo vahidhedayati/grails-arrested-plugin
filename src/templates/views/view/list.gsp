@@ -40,13 +40,15 @@
                         %>
                         <ul>
                             <li data-ng-repeat="instance in ${domainTitle}s">
-                                <div>
-                                    <%  props.eachWithIndex { p, i ->
-                                    if (i < 6) {
-                                    %>
-                                    <strong>{{instance.${p.name}}}</strong>
-                                    <% } }%>
-                                </div>
+                                <a data-ng-click="edit(instance)">
+                                    <div>
+                                        <%  props.eachWithIndex { p, i ->
+                                            if (i < 6) {
+                                        %>
+                                        <strong>{{instance.${p.name}}}</strong>
+                                        <% } }%>
+                                    </div>
+                                </a>
                             </li>
                         </ul>
 

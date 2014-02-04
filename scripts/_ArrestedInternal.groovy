@@ -106,8 +106,6 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
     event("CreatedFile", [artefactFile])
 }
 
-//**************************** Create a single controller
-
 target(createController: "Creates a standard controller") {
     def (pkg, prefix) = parsePrefix()
     // Copy over the standard filters class.
@@ -121,10 +119,6 @@ target(createController: "Creates a standard controller") {
         }
     }
 }
-
-
-//**************************** Create a single Angular controller
-
 target(createJSController: "Creates a standard angular controller") {
     def (pkg, prefix) = parsePrefix()
     // Copy over the standard filters class.
@@ -146,7 +140,6 @@ target(createToken: "Create a token class") {
     }
     println("ArrestedToken.groovy created")
 }
-
 target(createUser: "Create a user class") {
     def (pkg, prefix) = parsePrefix()
     installTemplateEx("ArrestedUser.groovy", "grails-app/domain${packageToPath(pkg)}", "classes", "ArrestedUser.groovy") {
@@ -156,16 +149,12 @@ target(createUser: "Create a user class") {
     }
     println("ArrestedUser.groovy created")
 }
-
-//****************************  Creates view
-
 target(createViewController: "Creates view") {
     depends(loadApp)
     def (pkg, prefix) = parsePrefix()
 
     def domainFile = "${basedir}/grails-app/domain/${packageToPath(pkg)}"+prefix+".groovy"
     if (new File(domainFile).exists()) {
-
 
         def domainClasses = grailsApp.domainClasses
         domainClasses.each {
@@ -175,32 +164,10 @@ target(createViewController: "Creates view") {
                     def className = domainClass.getPropertyName()
                     installTemplateView(domainClass,"list.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "list.gsp") {}
                     installTemplateView(domainClass,"edit.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "edit.gsp") {}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                }
+              }
         }
     }
 }
-
 target(createUserController: "Create a user class") {
     def (pkg, prefix) = parsePrefix()
     installTemplateEx("ArrestedUserController.groovy", "grails-app/controllers${packageToPath(pkg)}", "controllers", "ArrestedUserController.groovy") {
@@ -210,7 +177,6 @@ target(createUserController: "Create a user class") {
     }
     println("ArrestedUserController.groovy created")
 }
-
 target(createAuth: "Create a authentication controller") {
     def (pkg, prefix) = parsePrefix()
     installTemplateEx("AuthController.groovy", "grails-app/controllers${packageToPath(pkg)}", "controllers", "AuthController.groovy") {
@@ -220,7 +186,6 @@ target(createAuth: "Create a authentication controller") {
     }
     println("AuthController.groovy created")
 }
-
 target(createFilter: "Create a security filter") {
     def (pkg, prefix) = parsePrefix()
     installTemplateEx("SecurityFilters.groovy", "grails-app/conf${packageToPath(pkg)}", "configuration", "SecurityFilters.groovy") {
@@ -230,7 +195,6 @@ target(createFilter: "Create a security filter") {
     }
     println("SecurityFilters.groovy created")
 }
-
 target(updateUrl: "Updating the Url Mappings") {
     def (pkg, prefix) = parsePrefix()
     def configFile = new File("${basedir}/grails-app/conf/UrlMappings.groovy")
@@ -317,6 +281,36 @@ target(createIndexView: "Create the index.gsp") {
     }
     println("AuthController.groovy created")
 }
+target(createAll: "Quick Start"){
+    depends(loadApp)
+    def (pkg, prefix) = parsePrefix()
+
+        def domainClasses = grailsApp.domainClasses
+        domainClasses.each {
+            domainClass ->
+                def className = domainClass.getPropertyName()
+                installTemplateView(domainClass,"list.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "list.gsp") {}
+                installTemplateView(domainClass,"edit.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "edit.gsp") {}
+
+                className = className+"Controller"
+                installTemplateEx("${className}.groovy", "grails-app/controllers${packageToPath(pkg)}", "controllers", "Controller.groovy") {
+                    ant.replace(file: artefactFile) {
+                        ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
+                        ant.replacefilter(token: '@controller.name@', value: className)
+                        ant.replacefilter(token: '@class.name@', value: prefix.toUpperCase())
+                        ant.replacefilter(token: '@class.instance@', value: prefix)
+                    }
+                }
+                className = domainClass.getPropertyName()+"Ctrl"
+                installTemplateEx("${className}.js", "web-app/js/${packageToPath(pkg)}", "views/controllers", "Controller.js") {
+                    ant.replace(file: artefactFile) {
+                        ant.replacefilter(token: '@controller.name@', value: className)
+                        ant.replacefilter(token: '@class.name@', value: prefix.toUpperCase())
+                        ant.replacefilter(token: '@class.instance@', value: prefix)
+                    }
+                }
+        }
+}
 
 private parsePrefix() {
     def prefix = "Arrested"
@@ -328,7 +322,6 @@ private parsePrefix() {
     }
     return [ pkg, prefix ]
 }
-
 private packageToPath(String pkg) {
     return pkg ? '/' + pkg.replace('.' as char, '/' as char) : ''
 }
