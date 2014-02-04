@@ -27,9 +27,10 @@ Or you can use only what you need using the commands:
 > grails arrested-url | This change the Url Mappings to configure the http requests
 
 Cliente side, angularJS configurations
+These commands take a 'name' argument: using 'NAME' as the Domain class
 
-> arrested-createJS-controller --name=NAME | This command takes a 'name' argument: using 'NAME' as the Domain class, and create a angular controller for the client
+> arrested-createJS-controller --name=NAME | Create a angular controller for the client
 
-> arrested-create-controller --name=NAME | This command takes a 'name' argument: using 'NAME' as the Domain class, and create REST controller on the server
+> arrested-create-controller --name=NAME | Create REST controller on the server
 
-> 
+> arrested-create-view-controller --name=NAME | Create Views (List, edit) with angularJS tags
