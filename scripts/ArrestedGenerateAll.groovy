@@ -7,7 +7,7 @@ USAGE = """
 
 target(default: "quick start") {
     // Make sure any arguments have been parsed.
-    depends(parseArguments, createAll)
+    depends(parseArguments, createClient)
     depends(parseArguments, createToken)
     depends(parseArguments, createUser)
     depends(parseArguments, createUserController)

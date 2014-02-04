@@ -21,7 +21,7 @@ function @controller.name@(DAO,$scope,$rootScope){
 
     $scope.new@class.instance@ =function(){
         $scope.@class.instance@=[]
-        window.location.href="@class.instance@New"
+        window.location.href="/@class.instance@/create"
     }
 
     $scope.manualSave = function(){
@@ -34,7 +34,7 @@ function @controller.name@(DAO,$scope,$rootScope){
     }
 
     $scope.save = function(){
-        DAO.save({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, @class.instance@:$scope.@class.instance@, controller:'@class.instance@', action:'create'},
+        DAO.save({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, @class.instance@:$scope.@class.instance@, controller:'@class.instance@', action:'newItem'},
             function(result){
                 $scope.@class.instance@.id=result.id;
                 $scope.flags.save = true;
@@ -62,7 +62,7 @@ function @controller.name@(DAO,$scope,$rootScope){
         DAO.get({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, id:@class.instance@.id, controller:'@class.instance@', action:'getById'},
             function(result){
                 $scope.@class.instance@=result;
-                window.location.href="@class.instance@New"
+                window.location.href="/@class.instance@/edit"
             },
             function(error){
                 $scope.errors.showErrors = true;
@@ -74,7 +74,7 @@ function @controller.name@(DAO,$scope,$rootScope){
         DAO.delete({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, id:$scope.@class.instance@.id, controller:'@class.instance@', action:'delete'},
             function(result){
                 if(result.response=="@class.name@_deleted"){
-                    window.location.href="@class.instance@List"
+                    window.location.href="/@class.instance@/list"
                 }
             },
             function(error){
