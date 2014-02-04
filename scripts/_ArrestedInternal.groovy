@@ -242,7 +242,7 @@ target(updateUrl: "Updating the Url Mappings") {
         writer.writeLine "class UrlMappings {"
         writer.writeLine ""
         writer.writeLine "    static mappings = {"
-        writer.writeLine "        \"/\$controller/\$action\"(parseRequest: true)"
+        writer.writeLine "        \"/\$controller/\$action?\"(parseRequest: true)"
         writer.writeLine "    }"
         writer.writeLine "}"
     }
@@ -255,9 +255,9 @@ target(createAngularService: "Create the angular service") {
     println("services.js created")
 }
 
-target(createAngularApp: "Create the angular file configuration") {
+target(createAngularIndex: "Create the angular file configuration") {
     def (pkg, prefix) = parsePrefix()
-    def configFile = new File("${basedir}/web-app/js/app.js")
+    def configFile = new File("${basedir}/web-app/js/index.js")
     if (configFile.exists()) {
         configFile.delete()
     }
@@ -266,7 +266,56 @@ target(createAngularApp: "Create the angular file configuration") {
         writer.writeLine "'use strict';"
         writer.writeLine "var "+Metadata.current.'app.name'+" = angular.module('"+Metadata.current.'app.name'+"', ['services']);"
     }
-    println("app.js created")
+    println("index.js created")
+}
+
+target(updateResources: "Update the application resources") {
+    def (pkg, prefix) = parsePrefix()
+    def configFile = new File("${basedir}/grails-app/conf/ApplicationResources.groovy")
+    if (configFile.exists()) {
+        configFile.delete()
+    }
+    configFile.createNewFile()
+    configFile.withWriterAppend { BufferedWriter writer ->
+        writer.writeLine "modules = {"
+        writer.writeLine ""
+        writer.writeLine "    angular {"
+        writer.writeLine "        dependsOn 'angularResource', 'jquery'"
+        writer.writeLine "        resource url:'http://code.angularjs.org/snapshot/angular.min.js'"
+        writer.writeLine "        resource url: 'js/services.js'"
+        writer.writeLine "        resource url: 'js/index.js'"
+        writer.writeLine "    }"
+        writer.writeLine ""
+        writer.writeLine "    angularResource {"
+        writer.writeLine "        resource url:'http://code.angularjs.org/snapshot/angular-resource.min.js'"
+        writer.writeLine "    }"
+        writer.writeLine ""
+        writer.writeLine "    jquery {"
+        writer.writeLine "        resource url:'http://code.jquery.com/jquery.min.js'"
+        writer.writeLine "    }"
+        writer.writeLine "}"
+    }
+    println("ApplicationResources.groovy updated")
+}
+
+target(createIndexController: "Create the index.gsp") {
+    def (pkg, prefix) = parsePrefix()
+    installTemplateEx("index.gsp", "grails-app/views/index", "views/view", "index.gsp") {
+        ant.replace(file: artefactFile) {
+            ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
+        }
+    }
+    println("index.gsp created")
+}
+
+target(createIndexView: "Create the index.gsp") {
+    def (pkg, prefix) = parsePrefix()
+    installTemplateEx("AuthController.groovy", "grails-app/controllers${packageToPath(pkg)}", "controllers", "AuthController.groovy") {
+        ant.replace(file: artefactFile) {
+            ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
+        }
+    }
+    println("AuthController.groovy created")
 }
 
 private parsePrefix() {
