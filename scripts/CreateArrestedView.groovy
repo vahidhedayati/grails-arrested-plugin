@@ -2,14 +2,10 @@ includeTargets << grailsScript("_GrailsArgParsing")
 includeTargets << new File ("${arrestedPluginDir}/Scripts/_ArrestedInternal.groovy")
 
 USAGE = """
-    arrested-create-view-controller [--name=NAME]
-
-where
-    NAME = The prefix to add to the names of the controller .
+   create-arrested-view [NAME]
 """
 
-target(default: "test") {
-    // Make sure any arguments have been parsed.
+target(default: "This creates the GSP mapped at index (view is index.gsp) AND the javascript controller") {
     depends(parseArguments, createViewController)
+    depends(parseArguments, createJSController)
 }
-

@@ -5,6 +5,8 @@ import grails.converters.JSON
 class ArrestedUserController {
     static allowedMethods = [getCurrent: "GET", getAll: "GET", create: "POST", update: "PUT", changePassword: "PUT", delete: "DELETE"]
 
+
+
     def getCurrent(){
         render ArrestedUser.findByToken(ArrestedToken.findByToken(params.token as String).id)?.toObject() as JSON
     }

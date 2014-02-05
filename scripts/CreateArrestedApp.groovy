@@ -2,16 +2,17 @@ includeTargets << grailsScript("_GrailsArgParsing")
 includeTargets << new File ("${arrestedPluginDir}/Scripts/_ArrestedInternal.groovy")
 
 USAGE = """
-    arrested-generate-all
+   create-arrested-app
 """
 
-target(default: "quick start") {
-    // Make sure any arguments have been parsed.
-    depends(parseArguments, createClient)
+target(default: "Token, User, SecurityFilter, and the base JS files and mapping defaults for REST") {
     depends(parseArguments, createToken)
     depends(parseArguments, createUser)
     depends(parseArguments, createUserController)
     depends(parseArguments, createAuth)
     depends(parseArguments, createFilter)
     depends(parseArguments, updateUrl)
+    depends(parseArguments, updateResources)
+    depends(parseArguments, createAngularService)
+    depends(parseArguments, createAngularIndex)
 }

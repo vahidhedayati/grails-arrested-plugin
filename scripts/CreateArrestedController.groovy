@@ -2,15 +2,9 @@ includeTargets << grailsScript("_GrailsArgParsing")
 includeTargets << new File ("${arrestedPluginDir}/Scripts/_ArrestedInternal.groovy")
 
 USAGE = """
-    arrested-create-controller [--name=NAME]
-
-where
-    NAME = The prefix to add to the names of the controller .
+    create-arrested-controller [NAME]
 """
 
-target(default: "test") {
-    // Make sure any arguments have been parsed.
+target(default: "This creates the RESTful controller and maps it in the UrlMappings") {
     depends(parseArguments, createController)
 }
-
-
