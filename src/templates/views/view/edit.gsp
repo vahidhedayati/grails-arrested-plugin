@@ -1,4 +1,11 @@
 <% import grails.persistence.Event %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>${domainTitle}</title>
+</head>
+<body>
 <div data-ng-controller=${domainTitle}Ctrl>
         <h1>${domainTitle} Edit</h1>
 </div>
@@ -315,3 +322,5 @@
         </div>
     </div>
 </div>
+</body>
+</html>

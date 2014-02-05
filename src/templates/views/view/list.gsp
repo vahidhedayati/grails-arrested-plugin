@@ -1,6 +1,13 @@
 <% import grails.persistence.Event %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>${domainTitle}</title>
+</head>
+<body>
 <div data-ng-controller=${domainTitle}Ctrl>
-        <h1>${domainTitle} List</h1>
+    <h1>${domainTitle} List</h1>
 </div>
 <div data-ng-show="errors.showErrors" class="center red">
     <p data-ng-show="errors.showServerError">"Can not connect to the server, try later"</p>
@@ -10,7 +17,7 @@
         <div>
             <div>
                 <p>
-                   Search
+                    Search
                 </p>
             </div>
             <div>
@@ -58,3 +65,5 @@
         </div>
     </div>
 </div>
+</body>
+</html>

@@ -1,14 +1,11 @@
-import grails.util.GrailsNameUtils
 import groovy.text.SimpleTemplateEngine
 import groovy.text.Template
 import org.codehaus.groovy.grails.plugins.GrailsPluginManager
 import org.springframework.core.io.ResourceLoader
 import grails.util.Metadata
 
-
 includeTargets << grailsScript("_GrailsBootstrap")
 includeTargets << grailsScript("_GrailsCreateArtifacts")
-
 
 installTemplate = { String artefactName, String artefactPath, String templatePath ->
     installTemplateEx(artefactName, artefactPath, templatePath, artefactName, null)
@@ -48,10 +45,10 @@ installTemplateEx = { String artefactName, String artefactPath, String templateP
 
 installTemplateView = { domainClass, String artefactName, String artefactPath, String templatePath, String templateName, Closure c ->
     // Copy over the standard auth controller.
-     Template renderEditorTemplate;
-     SimpleTemplateEngine engine = new SimpleTemplateEngine();
-     GrailsPluginManager pluginManager
-     ResourceLoader resourceLoader
+    Template renderEditorTemplate;
+    SimpleTemplateEngine engine = new SimpleTemplateEngine();
+    GrailsPluginManager pluginManager
+    ResourceLoader resourceLoader
     def cp
 
 
@@ -87,16 +84,12 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
             pluginManager:pluginManager,
             cp:cp]
 
-
     ant.copy(file: templateFile, tofile: artefactFile, overwrite: true)
 
     File file = new File(artefactFile);
     BufferedWriter output = new BufferedWriter(new FileWriter(file));
     output.write(renderEditorTemplate.make(binding).toString());
     output.close();
-
-
-
 
     // Perform any custom processing that may be required.
     if (c) {
@@ -164,7 +157,7 @@ target(createViewController: "Creates view") {
                     def className = domainClass.getPropertyName()
                     installTemplateView(domainClass,"list.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "list.gsp") {}
                     installTemplateView(domainClass,"edit.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "edit.gsp") {}
-              }
+                }
         }
     }
 }
@@ -175,6 +168,11 @@ target(createUserController: "Create a user class") {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
         }
     }
+    installTemplateEx("login.gsp", "grails-app/views/${packageToPath(pkg)}user", "views/view", "login.gsp") {
+        ant.replace(file: artefactFile) {
+        }
+    }
+
     println("ArrestedUserController.groovy created")
 }
 target(createAuth: "Create a authentication controller") {
@@ -295,11 +293,12 @@ target(createAngularUser: "Create the angular user controller") {
 target(createAll: "Quick Start"){
     depends(loadApp)
     def (pkg, prefix) = parsePrefix()
-
-        def domainClasses = grailsApp.domainClasses
-        domainClasses.each {
-            domainClass ->
-                def className = domainClass.getPropertyName()
+    def domainClasses = grailsApp.domainClasses
+    domainClasses.each {
+        domainClass ->
+            def className = domainClass.getPropertyName()
+            println(domainClass)
+            if(className!="arrestedToken" && className!="arrestedUser" ) {
                 installTemplateView(domainClass,"list.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "list.gsp") {}
                 installTemplateView(domainClass,"edit.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "edit.gsp") {}
 
@@ -308,19 +307,20 @@ target(createAll: "Quick Start"){
                     ant.replace(file: artefactFile) {
                         ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
                         ant.replacefilter(token: '@controller.name@', value: className)
-                        ant.replacefilter(token: '@class.name@', value: prefix.toUpperCase())
-                        ant.replacefilter(token: '@class.instance@', value: prefix)
+                        ant.replacefilter(token: '@class.name@', value: domainClass.getFullName())
+                        ant.replacefilter(token: '@class.instance@', value: domainClass.getPropertyName())
                     }
                 }
                 className = domainClass.getPropertyName()+"Ctrl"
                 installTemplateEx("${className}.js", "web-app/js/${packageToPath(pkg)}", "views/controllers", "Controller.js") {
                     ant.replace(file: artefactFile) {
                         ant.replacefilter(token: '@controller.name@', value: className)
-                        ant.replacefilter(token: '@class.name@', value: prefix.toUpperCase())
-                        ant.replacefilter(token: '@class.instance@', value: prefix)
+                        ant.replacefilter(token: '@class.name@', value: domainClass.getFullName())
+                        ant.replacefilter(token: '@class.instance@', value: domainClass.getPropertyName())
                     }
                 }
-        }
+            }
+    }
 }
 
 private parsePrefix() {

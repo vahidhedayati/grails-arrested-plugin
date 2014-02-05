@@ -4,7 +4,19 @@ import grails.converters.JSON
 
 class @controller.name@ {
 
-    static allowedMethods = [getById: "GET", getAll: "GET", create: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [getById: "GET", getAll: "GET", newItem: "POST", update: "PUT", delete: "DELETE"]
+
+//    Redirect functions
+    def index() {
+        redirect(action: "list")
+    }
+    def list() {
+    }
+    def create() {
+        redirect(action: "edit")
+    }
+    def edit() {
+    }
 
     def getById(){
         render @class.name@.findById(params.id as Long).showInformation() as JSON
@@ -18,7 +30,7 @@ class @controller.name@ {
         render areas as JSON
     }
 
-    def create(){
+    def newItem(){
         def message = [response:"@class.name@_not_created", id:""]
         if(params.@class.instance@){
             @class.name@ item = new @class.name@(params.@class.instance@).save(flush: true)
