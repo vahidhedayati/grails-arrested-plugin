@@ -4,9 +4,10 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>${domainTitle}</title>
+    <g:javascript src="${domainTitle}Ctrl.js" />
 </head>
 <body>
-<div data-ng-controller=${domainTitle}Ctrl>
+<div data-ng-controller="${domainTitle}Ctrl">
     <h1>${domainTitle} List</h1>
 </div>
 <div data-ng-show="errors.showErrors" class="center red">

@@ -9,6 +9,7 @@ target(default: "Token, User, SecurityFilter, and the base JS files and mapping 
     depends(parseArguments, createToken)
     depends(parseArguments, createUser)
     depends(parseArguments, createUserController)
+    depends(parseArguments,createAngularUser)
     depends(parseArguments, createAuth)
     depends(parseArguments, createFilter)
     depends(parseArguments, updateUrl)

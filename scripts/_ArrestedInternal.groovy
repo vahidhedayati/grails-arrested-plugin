@@ -42,7 +42,6 @@ installTemplateEx = { String artefactName, String artefactPath, String templateP
     }
     event("CreatedFile", [artefactFile])
 }
-
 installTemplateView = { domainClass, String artefactName, String artefactPath, String templatePath, String templateName, Closure c ->
     // Copy over the standard auth controller.
     Template renderEditorTemplate;
@@ -256,13 +255,6 @@ target(createViewController: "Creates view") {
         }
     }
 }
-
-
-
-
-
-
-
 target(createAngularUser: "Create the angular user controller") {
     def (pkg, prefix) = parsePrefix()
     installTemplateEx("userCtrl.js", "web-app/js/", "views/controllers", "userController.js") {
@@ -270,7 +262,8 @@ target(createAngularUser: "Create the angular user controller") {
             ant.replacefilter(token: '@app.name@', value: Metadata.current.'app.name')
         }
     }
-    println("userController.js created")
+    installTemplateEx("login.gsp", "grails-app/views/${packageToPath(pkg)}user", "views/view", "login.gsp") {}
+    println("userController.js and login.gsp created")
 }
 
 

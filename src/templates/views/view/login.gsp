@@ -2,8 +2,9 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Login</title>
+    <g:javascript src="UserCtrl.js" />
 </head>
-<body>
+<body data-ng-controller="UserCtrl">
 <form>
     <table>
         <tbody>
