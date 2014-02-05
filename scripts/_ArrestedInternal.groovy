@@ -322,8 +322,8 @@ target(createAll: "Quick Start"){
 private parsePrefix() {
     def prefix = "Arrested"
     def pkg = ""
-    if (argsMap["name"] != null) {
-        def givenValue = argsMap["name"].split(/\./, -1)
+    if (argsMap['params'][0] != null) {
+        def givenValue = argsMap['params'][0].split(/\./, -1)
         prefix = givenValue[-1]
         pkg = givenValue.size() > 1 ? givenValue[0..-2].join('.') : ""
     }
