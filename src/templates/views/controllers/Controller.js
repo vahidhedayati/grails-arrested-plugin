@@ -1,7 +1,7 @@
 'use strict';
 function @controller.name@(DAO,$scope,$rootScope){
     if(!$rootScope.appConfig){
-        $rootScope.appConfig = {serverHost:'localhost', appName:'appName', token:''};
+        window.location.href="/auth/"
     }
     $scope.filter=""
     $scope.@class.instance@s={}
