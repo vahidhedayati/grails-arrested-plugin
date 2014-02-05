@@ -1,7 +1,7 @@
 'use strict';
 function @controller.name@(DAO,$scope,$rootScope){
     if(!$rootScope.appConfig){
-        window.location.href="/auth/"
+        window.location.href="/@app.name@/auth/"
     }
     $scope.filter=""
     $scope.@class.instance@s={}
@@ -21,7 +21,7 @@ function @controller.name@(DAO,$scope,$rootScope){
 
     $scope.new@class.instance@ =function(){
         $scope.@class.instance@=[]
-        window.location.href="/@class.instance@/create"
+        window.location.href="/@app.name@/@class.instance@/create"
     }
 
     $scope.manualSave = function(){
@@ -62,7 +62,7 @@ function @controller.name@(DAO,$scope,$rootScope){
         DAO.get({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, id:@class.instance@.id, controller:'@class.instance@', action:'getById'},
             function(result){
                 $scope.@class.instance@=result;
-                window.location.href="/@class.instance@/edit"
+                window.location.href="/@app.name@/@class.instance@/edit"
             },
             function(error){
                 $scope.errors.showErrors = true;
@@ -74,7 +74,7 @@ function @controller.name@(DAO,$scope,$rootScope){
         DAO.delete({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, id:$scope.@class.instance@.id, controller:'@class.instance@', action:'delete'},
             function(result){
                 if(result.response=="@class.name@_deleted"){
-                    window.location.href="/@class.instance@/list"
+                    window.location.href="/@app.name@/@class.instance@/list"
                 }
             },
             function(error){

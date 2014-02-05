@@ -19,6 +19,7 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
+        runtime ":cors:1.1.4"
         build(":tomcat:$grailsVersion",
               ":release:2.2.1",
               ":rest-client-builder:1.0.3"){

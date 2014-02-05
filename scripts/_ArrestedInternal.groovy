@@ -1,3 +1,4 @@
+import grails.util.GrailsNameUtils
 import groovy.text.SimpleTemplateEngine
 import groovy.text.Template
 import org.codehaus.groovy.grails.plugins.GrailsPluginManager
@@ -219,7 +220,7 @@ target(createController: "Creates a standard controller") {
         ant.replace(file: artefactFile) {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
             ant.replacefilter(token: '@controller.name@', value: className)
-            ant.replacefilter(token: '@class.name@', value: prefix.toUpperCase())
+            ant.replacefilter(token: '@class.name@', value: prefix)
             ant.replacefilter(token: '@class.instance@', value: prefix)
         }
     }
@@ -231,8 +232,9 @@ target(createJSController: "Creates a standard angular controller") {
     installTemplateEx("${className}.js", "web-app/js/${packageToPath(pkg)}", "views/controllers", "Controller.js") {
         ant.replace(file: artefactFile) {
             ant.replacefilter(token: '@controller.name@', value: className)
-            ant.replacefilter(token: '@class.name@', value: prefix.toUpperCase())
+            ant.replacefilter(token: '@class.name@', value: prefix)
             ant.replacefilter(token: '@class.instance@', value: prefix)
+            ant.replacefilter(token: '@app.name@', value: Metadata.current.'app.name')
         }
     }
 }
@@ -241,6 +243,7 @@ target(createViewController: "Creates view") {
     def (pkg, prefix) = parsePrefix()
 
     def domainFile = "${basedir}/grails-app/domain/${packageToPath(pkg)}"+prefix+".groovy"
+    println(domainFile)
     if (new File(domainFile).exists()) {
 
         def domainClasses = grailsApp.domainClasses
@@ -262,9 +265,43 @@ target(createAngularUser: "Create the angular user controller") {
             ant.replacefilter(token: '@app.name@', value: Metadata.current.'app.name')
         }
     }
-    installTemplateEx("login.gsp", "grails-app/views/${packageToPath(pkg)}auth", "views/view", "login.gsp") {
-    }
+    installTemplateEx("login.gsp", "grails-app/views/${packageToPath(pkg)}auth", "views/view", "login.gsp") {}
     println("userController.js and login.gsp created")
+}
+target(updateLayout: "Update the layout view") {
+    def (pkg, prefix) = parsePrefix()
+    def configFile = new File("${basedir}/grails-app/views/layouts/main.gsp")
+    if (configFile.exists()) {
+        configFile.delete()
+    }
+    configFile.createNewFile()
+    configFile.withWriterAppend { BufferedWriter writer ->
+        writer.writeLine "<!DOCTYPE html>\n" +
+                "<html lang=\"en\" data-ng-app=\"pluginTest\">\n" +
+                "\t<head>\n" +
+                "\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
+                "\t\t<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n" +
+                "\t\t<title><g:layoutTitle default=\"Arrested\"/></title>\n" +
+                "\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "\t\t<link rel=\"shortcut icon\" href=\"\${resource(dir: 'images', file: 'favicon.ico')}\" type=\"image/x-icon\">\n" +
+                "\t\t<link rel=\"apple-touch-icon\" href=\"\${resource(dir: 'images', file: 'apple-touch-icon.png')}\">\n" +
+                "\t\t<link rel=\"apple-touch-icon\" sizes=\"114x114\" href=\"\${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}\">\n" +
+                "\t\t<link rel=\"stylesheet\" href=\"\${resource(dir: 'css', file: 'main.css')}\" type=\"text/css\">\n" +
+                "\t\t<link rel=\"stylesheet\" href=\"\${resource(dir: 'css', file: 'mobile.css')}\" type=\"text/css\">\n" +
+                "\t\t<g:layoutHead/>\n" +
+                "\t\t<r:layoutResources />\n" +
+                "\t</head>\n" +
+                "\t<body>\n" +
+                "\t\t<div id=\"grailsLogo\" role=\"banner\"><a href=\"http://grails.org\"><img src=\"\${resource(dir: 'images', file: 'grails_logo.png')}\" alt=\"Grails\"/></a></div>\n" +
+                "\t\t<g:layoutBody/>\n" +
+                "\t\t<div class=\"footer\" role=\"contentinfo\"></div>\n" +
+                "\t\t<div id=\"spinner\" class=\"spinner\" style=\"display:none;\"><g:message code=\"spinner.alt\" default=\"Loading&hellip;\"/></div>\n" +
+                "\t\t<g:javascript library=\"application\"/>\n" +
+                "\t\t<r:layoutResources />\n" +
+                "\t</body>\n" +
+                "</html>"
+    }
+    println("main.gsp updated")
 }
 
 
@@ -303,8 +340,8 @@ target(createAll: "Quick Start"){
 private parsePrefix() {
     def prefix = "Arrested"
     def pkg = ""
-    if (argsMap["name"] != null) {
-        def givenValue = argsMap["name"].split(/\./, -1)
+    if (argsMap['params'][0] != null) {
+        def givenValue = argsMap['params'][0].split(/\./, -1)
         prefix = givenValue[-1]
         pkg = givenValue.size() > 1 ? givenValue[0..-2].join('.') : ""
     }

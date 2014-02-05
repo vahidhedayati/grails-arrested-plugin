@@ -1,5 +1,3 @@
-@package.line@
-
 import grails.converters.JSON
 
 class @controller.name@ {

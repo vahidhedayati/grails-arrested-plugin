@@ -32,6 +32,7 @@ function UserCtrl($scope, $rootScope, DAO){
                     $rootScope.user = result;
                     $rootScope.appConfig.token = result.token;
                     delete $rootScope.user.token;
+                    window.location.href="/@app.name@/"
                 }
             },
             function(error){
@@ -44,6 +45,7 @@ function UserCtrl($scope, $rootScope, DAO){
         DAO.get({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'auth', action:'logout'},
             function(result){
                 initializeVariables();
+                window.location.href="/@app.name@/"
             },
             function(error){
                 $rootScope.errors.showErrors = true;
@@ -56,6 +58,7 @@ function UserCtrl($scope, $rootScope, DAO){
             function(result){
                 if(result.response == "user_created"){
                     $rootScope.errors.showMessage = true;
+                    window.location.href="/@app.name@/"
                 }
                 else if(result.response == "email_used"){
                     $rootScope.errors.showErrors = true;

@@ -5,7 +5,7 @@ class AuthController {
     static allowedMethods = [login: "POST", logout: "GET"]
 
     def index(){
-        redirect(action: "login")
+        render(view:'login')
     }
 
     def login(){

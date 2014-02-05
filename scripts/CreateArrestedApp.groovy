@@ -16,4 +16,5 @@ target(default: "Token, User, SecurityFilter, and the base JS files and mapping 
     depends(parseArguments, updateResources)
     depends(parseArguments, createAngularService)
     depends(parseArguments, createAngularIndex)
+    depends(parseArguments, updateLayout)
 }
