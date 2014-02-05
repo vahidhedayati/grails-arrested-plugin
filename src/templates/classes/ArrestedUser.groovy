@@ -1,5 +1,3 @@
-@package.line@
-
 class ArrestedUser {
     String username
     String passwordHash

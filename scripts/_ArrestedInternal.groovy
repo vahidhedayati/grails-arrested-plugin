@@ -10,7 +10,6 @@ includeTargets << grailsScript("_GrailsCreateArtifacts")
 installTemplate = { String artefactName, String artefactPath, String templatePath ->
     installTemplateEx(artefactName, artefactPath, templatePath, artefactName, null)
 }
-
 installTemplateEx = { String artefactName, String artefactPath, String templatePath, String templateName, Closure c ->
     // Copy over the standard auth controller.
     def artefactFile = "${basedir}/${artefactPath}/${artefactName}"
@@ -97,7 +96,6 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
     }
     event("CreatedFile", [artefactFile])
 }
-
 target(createToken: "Create a token class") {
     def (pkg, prefix) = parsePrefix()
     installTemplateEx("ArrestedToken.groovy", "grails-app/domain${packageToPath(pkg)}", "classes", "ArrestedToken.groovy") {
@@ -105,7 +103,6 @@ target(createToken: "Create a token class") {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
         }
     }
-    println("ArrestedToken.groovy created")
 }
 target(createUser: "Create a user class") {
     def (pkg, prefix) = parsePrefix()
@@ -114,7 +111,6 @@ target(createUser: "Create a user class") {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
         }
     }
-    println("ArrestedUser.groovy created")
 }
 target(createUserController: "Create a user class") {
     def (pkg, prefix) = parsePrefix()
@@ -123,12 +119,7 @@ target(createUserController: "Create a user class") {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
         }
     }
-    installTemplateEx("login.gsp", "grails-app/views/${packageToPath(pkg)}user", "views/view", "login.gsp") {
-        ant.replace(file: artefactFile) {
-        }
-    }
-
-    println("ArrestedUserController.groovy created")
+    installTemplateEx("login.gsp", "grails-app/views/${packageToPath(pkg)}user", "views/view", "login.gsp") {}
 }
 target(createAuth: "Create a authentication controller") {
     def (pkg, prefix) = parsePrefix()
@@ -137,7 +128,6 @@ target(createAuth: "Create a authentication controller") {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
         }
     }
-    println("AuthController.groovy created")
 }
 target(createFilter: "Create a security filter") {
     def (pkg, prefix) = parsePrefix()
@@ -146,7 +136,6 @@ target(createFilter: "Create a security filter") {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
         }
     }
-    println("SecurityFilters.groovy created")
 }
 target(updateUrl: "Updating the Url Mappings") {
     def (pkg, prefix) = parsePrefix()
@@ -157,8 +146,8 @@ target(updateUrl: "Updating the Url Mappings") {
     configFile.createNewFile()
     configFile.withWriterAppend { BufferedWriter writer ->
         writer.writeLine "class UrlMappings {"
-        writer.writeLine ""
         writer.writeLine "    static mappings = {"
+        writer.writeLine "        \"/\"(view:\"/index\")"
         writer.writeLine "        \"/\$controller/\$action?\"(parseRequest: true)"
         writer.writeLine "    }"
         writer.writeLine "}"
@@ -174,19 +163,32 @@ target(updateResources: "Update the application resources") {
     configFile.createNewFile()
     configFile.withWriterAppend { BufferedWriter writer ->
         writer.writeLine "modules = {"
+        writer.writeLine "    application {"
+        writer.writeLine "        dependsOn 'angularConfiguration'"
+        writer.writeLine "        resource url:'js/application.js'"
+        writer.writeLine "    }"
         writer.writeLine ""
-        writer.writeLine "    angular {"
-        writer.writeLine "        dependsOn 'angularResource', 'jquery'"
-        writer.writeLine "        resource url:'http://code.angularjs.org/snapshot/angular.min.js'"
-        writer.writeLine "        resource url: 'js/services.js'"
+        writer.writeLine "    angularConfiguration {"
+        writer.writeLine "        dependsOn 'angularService'"
         writer.writeLine "        resource url: 'js/index.js'"
         writer.writeLine "    }"
         writer.writeLine ""
+        writer.writeLine "    angularService {"
+        writer.writeLine "        dependsOn 'angularResource'"
+        writer.writeLine "        resource url: 'js/services.js'"
+        writer.writeLine "    }"
+        writer.writeLine ""
         writer.writeLine "    angularResource {"
+        writer.writeLine "        dependsOn 'angular'"
         writer.writeLine "        resource url:'http://code.angularjs.org/snapshot/angular-resource.min.js'"
         writer.writeLine "    }"
         writer.writeLine ""
-        writer.writeLine "    jquery {"
+        writer.writeLine "    angular {"
+        writer.writeLine "        dependsOn 'jQuery'"
+        writer.writeLine "        resource url:'http://code.angularjs.org/snapshot/angular.min.js'"
+        writer.writeLine "    }"
+        writer.writeLine ""
+        writer.writeLine "    jQuery {"
         writer.writeLine "        resource url:'http://code.jquery.com/jquery.min.js'"
         writer.writeLine "    }"
         writer.writeLine "}"
@@ -196,7 +198,6 @@ target(updateResources: "Update the application resources") {
 target(createAngularService: "Create the angular service") {
     def (pkg, prefix) = parsePrefix()
     installTemplateEx("services.js", "web-app/js/${packageToPath(pkg)}", "views/controllers", "services.js") {}
-    println("services.js created")
 }
 target(createAngularIndex: "Create the angular file configuration") {
     def (pkg, prefix) = parsePrefix()
@@ -263,31 +264,6 @@ target(createAngularUser: "Create the angular user controller") {
         }
     }
     installTemplateEx("login.gsp", "grails-app/views/${packageToPath(pkg)}user", "views/view", "login.gsp") {}
-    println("userController.js and login.gsp created")
-}
-
-
-
-
-
-target(createIndexView: "Create the index.gsp") {
-    def (pkg, prefix) = parsePrefix()
-    installTemplateEx("index.gsp", "grails-app/views/index", "views/view", "index.gsp") {
-        ant.replace(file: artefactFile) {
-            ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
-        }
-    }
-    println("index.gsp created")
-}
-
-target(createIndexController: "Create the index.gsp") {
-    def (pkg, prefix) = parsePrefix()
-    installTemplateEx("AuthController.groovy", "grails-app/controllers${packageToPath(pkg)}", "controllers", "AuthController.groovy") {
-        ant.replace(file: artefactFile) {
-            ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
-        }
-    }
-    println("AuthController.groovy created")
 }
 
 
@@ -324,7 +300,6 @@ target(createAll: "Quick Start"){
             }
     }
 }
-
 private parsePrefix() {
     def prefix = "Arrested"
     def pkg = ""
