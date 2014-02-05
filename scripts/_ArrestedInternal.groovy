@@ -277,7 +277,7 @@ target(updateLayout: "Update the layout view") {
     configFile.createNewFile()
     configFile.withWriterAppend { BufferedWriter writer ->
         writer.writeLine "<!DOCTYPE html>\n" +
-                "<html lang=\"en\" data-ng-app=\"pluginTest\">\n" +
+                "<html lang=\"en\" data-ng-app=\"${Metadata.current.'app.name'}\">\n" +
                 "\t<head>\n" +
                 "\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
                 "\t\t<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n" +
