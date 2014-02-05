@@ -214,8 +214,6 @@ target(createAngularService: "Create the angular service") {
     installTemplateEx("services.js", "web-app/js/${packageToPath(pkg)}", "views/controllers", "services.js") {}
     println("services.js created")
 }
-target(createAngularApp: "Create the angular file configuration") {
-
 target(createAngularIndex: "Create the angular file configuration") {
     def (pkg, prefix) = parsePrefix()
     def configFile = new File("${basedir}/web-app/js/index.js")
@@ -258,7 +256,6 @@ target(updateResources: "Update the application resources") {
     }
     println("ApplicationResources.groovy updated")
 }
-
 target(createIndexController: "Create the index.gsp") {
     def (pkg, prefix) = parsePrefix()
     installTemplateEx("index.gsp", "grails-app/views/index", "views/view", "index.gsp") {
@@ -268,7 +265,6 @@ target(createIndexController: "Create the index.gsp") {
     }
     println("index.gsp created")
 }
-
 target(createIndexView: "Create the index.gsp") {
     def (pkg, prefix) = parsePrefix()
     installTemplateEx("AuthController.groovy", "grails-app/controllers${packageToPath(pkg)}", "controllers", "AuthController.groovy") {
