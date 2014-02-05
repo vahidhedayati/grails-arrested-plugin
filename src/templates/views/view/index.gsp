@@ -9,8 +9,5 @@
     <g:javascript src="index.js" />
 </head>
 <body>
-<div>
-    <data-ng-view></data-ng-view>
-</div>
 </body>
 </html>

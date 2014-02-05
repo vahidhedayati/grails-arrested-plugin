@@ -4,7 +4,7 @@ class SecurityFilters {
     def filters = {
         all(uri: "/**") {
             before = {
-                if(controllerName.equals('auth') || controllerName.equals('index') || (controllerName.equals('arrestedUser') && actionName.equals('create'))){
+                if(controllerName.equals('auth') || controllerName.equals('index') || actionName.equals('index') || actionName.equals('list') || actionName.equals('create') || actionName.equals('edit') || (controllerName.equals('arrestedUser') && actionName.equals('newItem'))){
                     return true
                 }
                 else{

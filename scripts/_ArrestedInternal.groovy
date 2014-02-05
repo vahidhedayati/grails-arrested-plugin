@@ -281,6 +281,17 @@ target(createIndexView: "Create the index.gsp") {
     }
     println("AuthController.groovy created")
 }
+
+target(createAngularUser: "Create the angular user controller") {
+    def (pkg, prefix) = parsePrefix()
+    installTemplateEx("userController.js", "web-app/js/", "views/controllers", "userController.js") {
+        ant.replace(file: artefactFile) {
+            ant.replacefilter(token: '@app.name@', value: Metadata.current.'app.name')
+        }
+    }
+    println("userController.js created")
+}
+
 target(createAll: "Quick Start"){
     depends(loadApp)
     def (pkg, prefix) = parsePrefix()
