@@ -26,7 +26,6 @@ installTemplateEx = { String artefactName, String artefactPath, String templateP
 
     // Copy the template file to the 'grails-app/controllers' directory.
     templateFile = "${arrestedPluginDir}/src/templates/${templatePath}/${templateName}"
-    println(templateFile)
     if (!new File(templateFile).exists()) {
         ant.echo("[Arrested plugin] Error: src/templates/${templatePath}/${templateName} does not exist!")
         return
@@ -119,7 +118,7 @@ target(createUserController: "Create a user class") {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
         }
     }
-    installTemplateEx("login.gsp", "grails-app/views/${packageToPath(pkg)}user", "views/view", "login.gsp") {}
+    println("ArrestedUserController.groovy created")
 }
 target(createAuth: "Create a authentication controller") {
     def (pkg, prefix) = parsePrefix()
@@ -263,7 +262,9 @@ target(createAngularUser: "Create the angular user controller") {
             ant.replacefilter(token: '@app.name@', value: Metadata.current.'app.name')
         }
     }
-    installTemplateEx("login.gsp", "grails-app/views/${packageToPath(pkg)}user", "views/view", "login.gsp") {}
+    installTemplateEx("login.gsp", "grails-app/views/${packageToPath(pkg)}auth", "views/view", "login.gsp") {
+    }
+    println("userController.js and login.gsp created")
 }
 
 
@@ -275,7 +276,6 @@ target(createAll: "Quick Start"){
     domainClasses.each {
         domainClass ->
             def className = domainClass.getPropertyName()
-            println(domainClass)
             if(className!="arrestedToken" && className!="arrestedUser" ) {
                 installTemplateView(domainClass,"list.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "list.gsp") {}
                 installTemplateView(domainClass,"edit.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "edit.gsp") {}

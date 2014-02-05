@@ -4,6 +4,10 @@ class AuthController {
 
     static allowedMethods = [login: "POST", logout: "GET"]
 
+    def index(){
+        redirect(action: "login")
+    }
+
     def login(){
         def message = [response:"bad_login"]
         if(params.passwordHash && params.username){
