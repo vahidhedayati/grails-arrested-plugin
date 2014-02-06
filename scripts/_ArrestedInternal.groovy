@@ -241,6 +241,8 @@ target(createController: "Creates a standard controller") {
     depends(loadApp)
     def (pkg, prefix) = parsePrefix()
     // Copy over the standard filters class.
+    println(prefix)
+    println(grailsApp.domainClasses)
     def domainClass = grailsApp.getDomainClass(prefix)
     if(domainClass){
         pkg = domainClass.getPackageName()
