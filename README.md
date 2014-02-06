@@ -1,36 +1,32 @@
 grails-arrested-plugin
 ======================
 
-The Arrested plugin adds AngularJS and REST support to your GORM models.  It provides scripts to generate RESTful controllers to your models and views too!
+The Arrested plugin is a framework that generates RESTful controllers for your GORM objects and maps them in your UrlMappings, generates AngularJS based views in the form a single page per domain entity, and finally it provides a simple token based security model.
 
-Installing the plugin is only the first step to make your application a REST application.
-You need have your domain classes ready to start the process.
+AngularJs + RESTful = Arrested
 
-Server REST API
 
-On the server side you only need use this command to make the basic configuration.
+Getting Started
+
+We need to set up a couple things before we get started generating your REST controllers and Angular views.  Namely we need our User and Token Entities, a Security Filter that validates a token header field, and some base Angular js files that act as a DAO to your rest services.
+
+To get started with arrested run:
 
 > grails arrested-server
 
-With this you would have your domain classes for security model, and the url mapping configuration.
 
-Or you can use only what you need using the commands:
+To generate a REST controller run: 
+(This will generate a Controller and put the appropriate configurations in UrlMapping to be RESTful)
 
-> grails arrested-token | This create a token class to use in your security layer
+> grails generate-arrested-controller DomainClassName
 
-> grails arrested-user | This create a user class which implements the token in the security layer
+To generate views for your newly created REST controller run: 
+(This will generate a index.gsp file in your views directory ie. /views/domainclassname/index.gsp; and the javascript files to interact with your REST controller.  It's configured to use the security token and will pass a token on each request for data.)
 
-> grails arrested-auth | This create the authentication controller (login and logout functions)
+> grails generate-arrested-view DomainClassName
 
-> grails arrested-filter | This create the security filter to handle calls to the server
 
-> grails arrested-url | This change the Url Mappings to configure the http requests
+Security
 
-Cliente side, angularJS configurations
-These commands take a 'name' argument: using 'NAME' as the Domain class
 
-> arrested-createJS-controller --name=NAME | Create a angular controller for the client
-
-> arrested-create-controller --name=NAME | Create REST controller on the server
-
-> arrested-create-view-controller --name=NAME | Create Views (List, edit) with angularJS tags
+How to Integrate
