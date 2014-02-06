@@ -102,20 +102,14 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
 }
 
 target(createViewController: "Creates view") {
+    depends(compile)
     depends(loadApp)
     def (pkg, prefix) = parsePrefix()
-
-    def domainFile = "${basedir}/grails-app/domain/${packageToPath(pkg)}"+prefix+".groovy"
-    if (new File(domainFile).exists()) {
-        def domainClasses = grailsApp.domainClasses
-        domainClasses.each {
-            domainClass ->
-                if(domainClass.getFullName()== prefix){
-                    def className = domainClass.getPropertyName()
-                    installTemplateView(domainClass,"list.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "list.gsp") {}
-                    installTemplateView(domainClass,"edit.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "edit.gsp") {}
-                }
-        }
+    def domainClass = grailsApp.getDomainClass(prefix)
+    if(domainClass){
+        def className = domainClass.getPropertyName()
+        installTemplateView(domainClass,"list.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "list.gsp") {}
+        installTemplateView(domainClass,"edit.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "edit.gsp") {}
     }
     depends(compile)
 }
@@ -245,29 +239,40 @@ target(createAngularIndex: "Create the angular file configuration") {
     println("index.js created")
 }
 target(createController: "Creates a standard controller") {
+    depends(compile)
+    depends(loadApp)
     def (pkg, prefix) = parsePrefix()
     // Copy over the standard filters class.
-    def className = prefix+"Controller"
-    installTemplateEx("${className}.groovy", "grails-app/controllers${packageToPath(pkg)}", "controllers", "Controller.groovy") {
-        ant.replace(file: artefactFile) {
-            ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
-            ant.replacefilter(token: '@controller.name@', value: className)
-            ant.replacefilter(token: '@class.name@', value: prefix)
-            ant.replacefilter(token: '@class.instance@', value: prefix)
+    def domainClass = grailsApp.getDomainClass(prefix)
+    if(domainClass){
+        pkg = domainClass.getPackageName()
+        def className = prefix+"Controller"
+        installTemplateEx("${className}.groovy", "grails-app/controllers${packageToPath(pkg)}", "controllers", "Controller.groovy") {
+            ant.replace(file: artefactFile) {
+                ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
+                ant.replacefilter(token: '@controller.name@', value: className)
+                ant.replacefilter(token: '@class.name@', value: prefix)
+                ant.replacefilter(token: '@class.instance@', value: prefix)
+            }
         }
     }
     depends(compile)
 }
 target(createJSController: "Creates a standard angular controller") {
+    depends(compile)
+    depends(loadApp)
     def (pkg, prefix) = parsePrefix()
     // Copy over the standard filters class.
-    def className = prefix+"Ctrl"
-    installTemplateEx("${className}.js", "web-app/js/${packageToPath(pkg)}", "views/controllers", "Controller.js") {
-        ant.replace(file: artefactFile) {
-            ant.replacefilter(token: '@controller.name@', value: className)
-            ant.replacefilter(token: '@class.name@', value: prefix)
-            ant.replacefilter(token: '@class.instance@', value: prefix)
-            ant.replacefilter(token: '@app.name@', value: Metadata.current.'app.name')
+    def domainClass = grailsApp.getDomainClass(prefix)
+    if(domainClass){
+        def className = prefix+"Ctrl"
+        installTemplateEx("${className}.js", "web-app/js/${packageToPath(pkg)}", "views/controllers", "Controller.js") {
+            ant.replace(file: artefactFile) {
+                ant.replacefilter(token: '@controller.name@', value: className)
+                ant.replacefilter(token: '@class.name@', value: prefix)
+                ant.replacefilter(token: '@class.instance@', value: prefix)
+                ant.replacefilter(token: '@app.name@', value: Metadata.current.'app.name')
+            }
         }
     }
     depends(compile)
