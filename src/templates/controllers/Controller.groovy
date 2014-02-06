@@ -19,13 +19,13 @@ class @controller.name@ {
     }
 
     def getById(){
-        render @class.name@.findById(params.id as Long).showInformation() as JSON
+        render @class.name@.findById(params.id as Long) as JSON
     }
 
     def getAll(){
         def areas = []
         @class.name@.list().each {
-            areas.add(it.toObject())
+            areas.add(it)
         }
         render areas as JSON
     }
