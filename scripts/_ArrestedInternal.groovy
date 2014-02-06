@@ -76,8 +76,6 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
     if (hasHibernate) {
         cp = domainClass.constrainedProperties[artefactName]
     }
-    println(hasHibernate)
-    println(cp)
 
     def binding = [
             domainTitle:domainClass.getFullName(),
@@ -102,6 +100,7 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
 }
 
 target(createViewController: "Creates view") {
+    depends(compile)
     depends(loadApp)
     def (pkg, prefix) = parsePrefix()
 
