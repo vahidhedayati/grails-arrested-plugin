@@ -4,13 +4,13 @@ function UserCtrl($scope, $rootScope, DAO){
     $scope.changePassword = {currentPassword:'', newPassword:'', passwordConfirm:''};
 
     if(!$rootScope.appConfig){
-        $rootScope.appConfig = {serverHost:'localhost', appName:'@app.name@', token:''};
+        $rootScope.appConfig = {serverHost:'localhost:8080', appName:'@app.name@', token:''};
         $rootScope.user = {username:'', passwordHash:''};
         $rootScope.errors = {forgotPassword:false, showErrors:false, showMessage:false, showFunctionError:false, showServerError:false, showPasswordError:false};
     }
 
     function initializeVariables(){
-        $rootScope.appConfig = {serverHost:'localhost', appName:'@app.name@', token:''};
+        $rootScope.appConfig = {serverHost:'localhost:8080', appName:'@app.name@', token:''};
         $rootScope.user = {username:'', passwordHash:''};
         $rootScope.errors = {forgotPassword:false, showErrors:false, showMessage:false, showFunctionError:false, showServerError:false, showPasswordError:false};
         $scope.changePassword = {currentPassword:'', newPassword:'', passwordConfirm:''};

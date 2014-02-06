@@ -96,6 +96,26 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
     }
     event("CreatedFile", [artefactFile])
 }
+
+target(createViewController: "Creates view") {
+    depends(loadApp)
+    def (pkg, prefix) = parsePrefix()
+
+    def domainFile = "${basedir}/grails-app/domain/${packageToPath(pkg)}"+prefix+".groovy"
+    if (new File(domainFile).exists()) {
+
+        def domainClasses = grailsApp.domainClasses
+        domainClasses.each {
+            domainClass ->
+                if(domainClass.getFullName()== prefix){
+                    def className = domainClass.getPropertyName()
+                    installTemplateView(domainClass,"list.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "list.gsp") {}
+                    installTemplateView(domainClass,"edit.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "edit.gsp") {}
+                }
+        }
+    }
+}
+
 target(createToken: "Create a token class") {
     def (pkg, prefix) = parsePrefix()
     installTemplateEx("ArrestedToken.groovy", "grails-app/domain${packageToPath(pkg)}", "classes", "ArrestedToken.groovy") {
@@ -238,26 +258,6 @@ target(createJSController: "Creates a standard angular controller") {
         }
     }
 }
-target(createViewController: "Creates view") {
-    depends(loadApp)
-    def (pkg, prefix) = parsePrefix()
-
-    def domainFile = "${basedir}/grails-app/domain/${packageToPath(pkg)}"+prefix+".groovy"
-    println(domainFile)
-    if (new File(domainFile).exists()) {
-
-        def domainClasses = grailsApp.domainClasses
-        domainClasses.each {
-            domainClass ->
-                if(domainClass.getFullName()== prefix){
-//                  *********** LIST
-                    def className = domainClass.getPropertyName()
-                    installTemplateView(domainClass,"list.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "list.gsp") {}
-                    installTemplateView(domainClass,"edit.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "edit.gsp") {}
-                }
-        }
-    }
-}
 target(createAngularUser: "Create the angular user controller") {
     def (pkg, prefix) = parsePrefix()
     installTemplateEx("userCtrl.js", "web-app/js/", "views/controllers", "userController.js") {
@@ -304,39 +304,6 @@ target(updateLayout: "Update the layout view") {
     println("main.gsp updated")
 }
 
-
-
-target(createAll: "Quick Start"){
-    depends(loadApp)
-    def (pkg, prefix) = parsePrefix()
-    def domainClasses = grailsApp.domainClasses
-    domainClasses.each {
-        domainClass ->
-            def className = domainClass.getPropertyName()
-            if(className!="arrestedToken" && className!="arrestedUser" ) {
-                installTemplateView(domainClass,"list.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "list.gsp") {}
-                installTemplateView(domainClass,"edit.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "edit.gsp") {}
-
-                className = className+"Controller"
-                installTemplateEx("${className}.groovy", "grails-app/controllers${packageToPath(pkg)}", "controllers", "Controller.groovy") {
-                    ant.replace(file: artefactFile) {
-                        ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
-                        ant.replacefilter(token: '@controller.name@', value: className)
-                        ant.replacefilter(token: '@class.name@', value: domainClass.getFullName())
-                        ant.replacefilter(token: '@class.instance@', value: domainClass.getPropertyName())
-                    }
-                }
-                className = domainClass.getPropertyName()+"Ctrl"
-                installTemplateEx("${className}.js", "web-app/js/${packageToPath(pkg)}", "views/controllers", "Controller.js") {
-                    ant.replace(file: artefactFile) {
-                        ant.replacefilter(token: '@controller.name@', value: className)
-                        ant.replacefilter(token: '@class.name@', value: domainClass.getFullName())
-                        ant.replacefilter(token: '@class.instance@', value: domainClass.getPropertyName())
-                    }
-                }
-            }
-    }
-}
 private parsePrefix() {
     def prefix = "Arrested"
     def pkg = ""
