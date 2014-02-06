@@ -76,8 +76,6 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
     if (hasHibernate) {
         cp = domainClass.constrainedProperties[artefactName]
     }
-    println(hasHibernate)
-    println(cp)
 
     def binding = [
             domainTitle:domainClass.getShortName(),
