@@ -1,7 +1,7 @@
 'use strict';
-function UserCtrl($scope, $rootScope, DAO){
+function UserCtrl($rootScope, DAO){
 
-    $scope.changePassword = {currentPassword:'', newPassword:'', passwordConfirm:''};
+    $rootScope.changePassword = {currentPassword:'', newPassword:'', passwordConfirm:''};
 
     if(!$rootScope.appConfig){
         $rootScope.appConfig = {serverHost:'localhost:8080', appName:'@app.name@', token:''};
@@ -13,15 +13,15 @@ function UserCtrl($scope, $rootScope, DAO){
         $rootScope.appConfig = {serverHost:'localhost:8080', appName:'@app.name@', token:''};
         $rootScope.user = {username:'', passwordHash:''};
         $rootScope.errors = {forgotPassword:false, showErrors:false, showMessage:false, showFunctionError:false, showServerError:false, showPasswordError:false};
-        $scope.changePassword = {currentPassword:'', newPassword:'', passwordConfirm:''};
+        $rootScope.changePassword = {currentPassword:'', newPassword:'', passwordConfirm:''};
     }
 
     $rootScope.errorValidation = function(){
         $rootScope.errors = {forgotPassword:false, showErrors:false, showMessage:false, showFunctionError:false, showServerError:false, showPasswordError:false};
-        $scope.changePassword = {currentPassword:'', newPassword:'', passwordConfirm:''};
+        $rootScope.changePassword = {currentPassword:'', newPassword:'', passwordConfirm:''};
     };
 
-    $scope.login = function(){
+    $rootScope.login = function(){
         DAO.save({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, controller:'auth', action:'login', username:$rootScope.user.username, passwordHash:$rootScope.user.passwordHash},
             function(result){
                 if(result.response == "bad_login"){
@@ -53,7 +53,7 @@ function UserCtrl($scope, $rootScope, DAO){
             });
     };
 
-    $scope.register = function(){
+    $rootScope.register = function(){
         DAO.save({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'user', action:'newItem', user:$rootScope.user},
             function(result){
                 if(result.response == "user_created"){
@@ -71,9 +71,9 @@ function UserCtrl($scope, $rootScope, DAO){
             });
     };
 
-    $scope.changePassword = function(){
-        if($scope.changePassword.newPassword == $scope.changePassword.passwordConfirm){
-            DAO.update({serverHost:$rootScope.appConfig.serverHost, appName:$rootScope.appConfig.appName, token:$rootScope.appConfig.token, controller:'user', action:'changePassword', currentPassword:$scope.changePassword.currentPassword, newPassword:$scope.changePassword.newPassword},
+    $rootScope.changePassword = function(){
+        if($rootScope.changePassword.newPassword == $rootScope.changePassword.passwordConfirm){
+            DAO.update({serverHost:$rootScope.appConfig.serverHost, appName:$rootScope.appConfig.appName, token:$rootScope.appConfig.token, controller:'user', action:'changePassword', currentPassword:$rootScope.changePassword.currentPassword, newPassword:$rootScope.changePassword.newPassword},
                 function(result){
                     if(result.response == "user_updated"){
                         $rootScope.errors.showMessage = true;
@@ -94,7 +94,7 @@ function UserCtrl($scope, $rootScope, DAO){
         }
     };
 
-    $scope.loadProfile = function(){
+    $rootScope.loadProfile = function(){
         DAO.get({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'user', action:'getCurrent'},
             function(result){
                 $rootScope.user = result;
@@ -106,7 +106,7 @@ function UserCtrl($scope, $rootScope, DAO){
             });
     };
 
-    $scope.updateProfile= function(){
+    $rootScope.updateProfile= function(){
         DAO.update({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'user', action:'update',user:$rootScope.user},
             function(result){
                 if(result.response == "user_not_updated"){

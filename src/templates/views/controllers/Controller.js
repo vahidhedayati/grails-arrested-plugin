@@ -1,77 +1,77 @@
 'use strict';
-function @controller.name@(DAO,$scope,$rootScope){
+function @controller.name@(DAO,$rootScope){
     if(!$rootScope.appConfig){
         window.location.href="/@app.name@/auth/"
     }
-    $scope.filter=""
-    $scope.@class.instance@s={}
-    $scope.@class.instance@=[]
-    $scope.flags.save  = false;
-    $scope.errors={showErrors: false, showServerError:false}
+    $rootScope.filter=""
+    $rootScope.@class.instance@s={};
+    $rootScope.@class.instance@=[];
+    $rootScope.flags = {save:false};
+    $rootScope.errors={showErrors: false, showServerError:false};
 
-    $scope.getAll = function(){
+    $rootScope.getAll = function(){
         //get all
         DAO.query({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'@class.instance@', action:'getAll'},
             function(result){
-                $scope.@class.instance@s=result;
+                $rootScope.@class.instance@s=result;
             },
             function(error){
             });
     };
 
-    $scope.new@class.instance@ =function(){
-        $scope.@class.instance@=[]
+    $rootScope.new@class.instance@ =function(){
+        $rootScope.@class.instance@=[];
         window.location.href="/@app.name@/@class.instance@/create"
     }
 
-    $scope.manualSave = function(){
-        $scope.flags.save  = false;
-        if($scope.@class.instance@.id==''){
-            $scope.save();
+    $rootScope.manualSave = function(){
+        $rootScope.flags.save  = false;
+        if($rootScope.@class.instance@.id==''){
+            $rootScope.save();
         }else{
-            $scope.update();
+            $rootScope.update();
         }
     }
 
-    $scope.save = function(){
-        DAO.save({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, @class.instance@:$scope.@class.instance@, controller:'@class.instance@', action:'newItem'},
+    $rootScope.save = function(){
+        DAO.save({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, @class.instance@:$rootScope.@class.instance@, controller:'@class.instance@', action:'newItem'},
             function(result){
-                $scope.@class.instance@.id=result.id;
-                $scope.flags.save = true;
+                $rootScope.@class.instance@.id=result.id;
+                $rootScope.flags.save = true;
             },
             function(error){
-                $scope.flags.save = false;
-                $scope.errors.showErrors = true;
-                $scope.errors.showServerError = true;
+                $rootScope.flags.save = false;
+                $rootScope.errors.showErrors = true;
+                $rootScope.errors.showServerError = true;
             });
     }
 
-    $scope.update=function(){
-        DAO.update({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, @class.instance@:$scope.@class.instance@, controller:'@class.instance@', action:'update'},
+    $rootScope.update=function(){
+        DAO.update({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, @class.instance@:$rootScope.@class.instance@, controller:'@class.instance@', action:'update'},
             function(result){
-                $scope.flags.save = true;
+                $rootScope.flags.save = true;
             },
             function(error){
-                $scope.flags.save = false;
-                $scope.errors.showErrors = true;
-                $scope.errors.showServerError = true;
+                $rootScope.flags.save = false;
+                $rootScope.errors.showErrors = true;
+                $rootScope.errors.showServerError = true;
             });
     }
 
-    $scope.edit=function(@class.instance@){
+    $rootScope.edit=function(@class.instance@){
         DAO.get({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, id:@class.instance@.id, controller:'@class.instance@', action:'getById'},
             function(result){
-                $scope.@class.instance@=result;
+                $rootScope.@class.instance@=result;
                 window.location.href="/@app.name@/@class.instance@/edit"
             },
             function(error){
-                $scope.errors.showErrors = true;
-                $scope.errors.showServerError = true;
+                $rootScope.errors.showErrors = true;
+                $rootScope.errors.showServerError = true;
             });
     }
 
-    $scope.confirmDelete@class.name@ =function(){
-        DAO.delete({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, id:$scope.@class.instance@.id, controller:'@class.instance@', action:'delete'},
+    $rootScope.confirmDelete@class.name@ =function(){
+        DAO.delete({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, id:$rootScope.@class.instance@.id, controller:'@class.instance@', action:'delete'},
             function(result){
                 if(result.response=="@class.name@_deleted"){
                     window.location.href="/@app.name@/@class.instance@/list"
