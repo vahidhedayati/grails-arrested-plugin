@@ -7,6 +7,8 @@ import grails.util.Metadata
 
 includeTargets << grailsScript("_GrailsBootstrap")
 includeTargets << grailsScript("_GrailsCreateArtifacts")
+includeTargets << grailsScript("_GrailsCompile")
+
 
 installTemplate = { String artefactName, String artefactPath, String templatePath ->
     installTemplateEx(artefactName, artefactPath, templatePath, artefactName, null)
@@ -74,6 +76,8 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
     if (hasHibernate) {
         cp = domainClass.constrainedProperties[artefactName]
     }
+    println(hasHibernate)
+    println(cp)
 
     def binding = [
             domainTitle:domainClass.getFullName(),
@@ -103,7 +107,6 @@ target(createViewController: "Creates view") {
 
     def domainFile = "${basedir}/grails-app/domain/${packageToPath(pkg)}"+prefix+".groovy"
     if (new File(domainFile).exists()) {
-
         def domainClasses = grailsApp.domainClasses
         domainClasses.each {
             domainClass ->
@@ -114,8 +117,8 @@ target(createViewController: "Creates view") {
                 }
         }
     }
+    depends(compile)
 }
-
 target(createToken: "Create a token class") {
     def (pkg, prefix) = parsePrefix()
     installTemplateEx("ArrestedToken.groovy", "grails-app/domain${packageToPath(pkg)}", "classes", "ArrestedToken.groovy") {
@@ -123,6 +126,7 @@ target(createToken: "Create a token class") {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
         }
     }
+    depends(compile)
 }
 target(createUser: "Create a user class") {
     def (pkg, prefix) = parsePrefix()
@@ -131,6 +135,7 @@ target(createUser: "Create a user class") {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
         }
     }
+    depends(compile)
 }
 target(createUserController: "Create a user class") {
     def (pkg, prefix) = parsePrefix()
@@ -139,6 +144,7 @@ target(createUserController: "Create a user class") {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
         }
     }
+    depends(compile)
     println("ArrestedUserController.groovy created")
 }
 target(createAuth: "Create a authentication controller") {
@@ -148,6 +154,7 @@ target(createAuth: "Create a authentication controller") {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
         }
     }
+    depends(compile)
 }
 target(createFilter: "Create a security filter") {
     def (pkg, prefix) = parsePrefix()
@@ -156,6 +163,7 @@ target(createFilter: "Create a security filter") {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
         }
     }
+    depends(compile)
 }
 target(updateUrl: "Updating the Url Mappings") {
     def (pkg, prefix) = parsePrefix()
@@ -172,6 +180,7 @@ target(updateUrl: "Updating the Url Mappings") {
         writer.writeLine "    }"
         writer.writeLine "}"
     }
+    depends(compile)
     println("UrlMappings.groovy updated")
 }
 target(updateResources: "Update the application resources") {
@@ -213,11 +222,13 @@ target(updateResources: "Update the application resources") {
         writer.writeLine "    }"
         writer.writeLine "}"
     }
+    depends(compile)
     println("ApplicationResources.groovy updated")
 }
 target(createAngularService: "Create the angular service") {
     def (pkg, prefix) = parsePrefix()
     installTemplateEx("services.js", "web-app/js/${packageToPath(pkg)}", "views/controllers", "services.js") {}
+    depends(compile)
 }
 target(createAngularIndex: "Create the angular file configuration") {
     def (pkg, prefix) = parsePrefix()
@@ -230,6 +241,7 @@ target(createAngularIndex: "Create the angular file configuration") {
         writer.writeLine "'use strict';"
         writer.writeLine "var "+Metadata.current.'app.name'+" = angular.module('"+Metadata.current.'app.name'+"', ['services']);"
     }
+    depends(compile)
     println("index.js created")
 }
 target(createController: "Creates a standard controller") {
@@ -244,6 +256,7 @@ target(createController: "Creates a standard controller") {
             ant.replacefilter(token: '@class.instance@', value: prefix)
         }
     }
+    depends(compile)
 }
 target(createJSController: "Creates a standard angular controller") {
     def (pkg, prefix) = parsePrefix()
@@ -257,6 +270,7 @@ target(createJSController: "Creates a standard angular controller") {
             ant.replacefilter(token: '@app.name@', value: Metadata.current.'app.name')
         }
     }
+    depends(compile)
 }
 target(createAngularUser: "Create the angular user controller") {
     def (pkg, prefix) = parsePrefix()
@@ -267,6 +281,7 @@ target(createAngularUser: "Create the angular user controller") {
     }
     installTemplateEx("login.gsp", "grails-app/views/${packageToPath(pkg)}auth", "views/view", "login.gsp") {}
     println("userController.js and login.gsp created")
+    depends(compile)
 }
 target(updateLayout: "Update the layout view") {
     def (pkg, prefix) = parsePrefix()
@@ -301,6 +316,7 @@ target(updateLayout: "Update the layout view") {
                 "\t</body>\n" +
                 "</html>"
     }
+    depends(compile)
     println("main.gsp updated")
 }
 
