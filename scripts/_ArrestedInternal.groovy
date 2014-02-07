@@ -303,31 +303,199 @@ target(updateLayout: "Update the layout view") {
     configFile.withWriterAppend { BufferedWriter writer ->
         writer.writeLine "<!DOCTYPE html>\n" +
                 "<html lang=\"en\" data-ng-app=\"${Metadata.current.'app.name'}\">\n" +
+                "<head>\n" +
+                "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
+                "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n" +
+                "    <title><g:layoutTitle default=\"Arrested\"/></title>\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "    <link rel=\"shortcut icon\" href=\"\${resource(dir: 'images', file: 'favicon.ico')}\" type=\"image/x-icon\">\n" +
+                "    <link rel=\"apple-touch-icon\" href=\"\${resource(dir: 'images', file: 'apple-touch-icon.png')}\">\n" +
+                "    <link rel=\"apple-touch-icon\" sizes=\"114x114\" href=\"\${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}\">\n" +
+                "    <link rel=\"stylesheet\" href=\"\${resource(dir: 'css', file: 'main.css')}\" type=\"text/css\">\n" +
+                "    <link rel=\"stylesheet\" href=\"\${resource(dir: 'css', file: 'arrested.css')}\" type=\"text/css\">\n" +
+                "    <link rel=\"stylesheet\" href=\"\${resource(dir: 'css', file: 'mobile.css')}\" type=\"text/css\">\n" +
+                "    <r:require module='application'/>\n" +
+                "    <g:layoutHead/>\n" +
+                "    <r:layoutResources />\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "<div id=\"arrestedHeader\" role=\"banner\"><h1 id=\"h1Header\">Arrested Plugin</h1></div>\n" +
+                "<g:render template=\"/layouts/navbar\"/>\n" +
+                "<g:layoutBody/>\n" +
+                "<div class=\"footer\" role=\"contentinfo\"></div>\n" +
+                "<div id=\"spinner\" class=\"spinner\" style=\"display:none;\"><g:message code=\"spinner.alt\" default=\"Loading&hellip;\"/></div>\n" +
+                "<r:layoutResources />\n" +
+                "</body>\n" +
+                "</html>"
+    }
+
+    configFile = new File("${basedir}/grails-app/views/index.gsp")
+    if (configFile.exists()) {
+        configFile.delete()
+    }
+    configFile.createNewFile()
+    configFile.withWriterAppend { BufferedWriter writer ->
+        writer.writeLine "<!DOCTYPE html>\n" +
+                "<html>\n" +
                 "\t<head>\n" +
-                "\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
-                "\t\t<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n" +
-                "\t\t<title><g:layoutTitle default=\"Arrested\"/></title>\n" +
-                "\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
-                "\t\t<link rel=\"shortcut icon\" href=\"\${resource(dir: 'images', file: 'favicon.ico')}\" type=\"image/x-icon\">\n" +
-                "\t\t<link rel=\"apple-touch-icon\" href=\"\${resource(dir: 'images', file: 'apple-touch-icon.png')}\">\n" +
-                "\t\t<link rel=\"apple-touch-icon\" sizes=\"114x114\" href=\"\${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}\">\n" +
-                "\t\t<link rel=\"stylesheet\" href=\"\${resource(dir: 'css', file: 'main.css')}\" type=\"text/css\">\n" +
-                "\t\t<link rel=\"stylesheet\" href=\"\${resource(dir: 'css', file: 'mobile.css')}\" type=\"text/css\">\n" +
-                "\t\t<g:layoutHead/>\n" +
-                "\t\t<r:layoutResources />\n" +
+                "\t\t<meta name=\"layout\" content=\"main\"/>\n" +
+                "\t\t<title>Welcome to Arrested</title>\n" +
+                "\t\t<style type=\"text/css\" media=\"screen\">\n" +
+                "\t\t\t#status {\n" +
+                "\t\t\t\tbackground-color: #eee;\n" +
+                "\t\t\t\tborder: .2em solid #fff;\n" +
+                "\t\t\t\tmargin: 2em 2em 1em;\n" +
+                "\t\t\t\tpadding: 1em;\n" +
+                "\t\t\t\twidth: 12em;\n" +
+                "\t\t\t\tfloat: left;\n" +
+                "\t\t\t\t-moz-box-shadow: 0px 0px 1.25em #ccc;\n" +
+                "\t\t\t\t-webkit-box-shadow: 0px 0px 1.25em #ccc;\n" +
+                "\t\t\t\tbox-shadow: 0px 0px 1.25em #ccc;\n" +
+                "\t\t\t\t-moz-border-radius: 0.6em;\n" +
+                "\t\t\t\t-webkit-border-radius: 0.6em;\n" +
+                "\t\t\t\tborder-radius: 0.6em;\n" +
+                "\t\t\t}\n" +
+                "\n" +
+                "\t\t\t.ie6 #status {\n" +
+                "\t\t\t\tdisplay: inline; /* float double margin fix http://www.positioniseverything.net/explorer/doubled-margin.html */\n" +
+                "\t\t\t}\n" +
+                "\n" +
+                "\t\t\t#status ul {\n" +
+                "\t\t\t\tfont-size: 0.9em;\n" +
+                "\t\t\t\tlist-style-type: none;\n" +
+                "\t\t\t\tmargin-bottom: 0.6em;\n" +
+                "\t\t\t\tpadding: 0;\n" +
+                "\t\t\t}\n" +
+                "\n" +
+                "\t\t\t#status li {\n" +
+                "\t\t\t\tline-height: 1.3;\n" +
+                "\t\t\t}\n" +
+                "\n" +
+                "\t\t\t#status h1 {\n" +
+                "\t\t\t\ttext-transform: uppercase;\n" +
+                "\t\t\t\tfont-size: 1.1em;\n" +
+                "\t\t\t\tmargin: 0 0 0.3em;\n" +
+                "\t\t\t}\n" +
+                "\n" +
+                "\t\t\t#page-body {\n" +
+                "\t\t\t\tmargin: 2em 1em 1.25em 18em;\n" +
+                "\t\t\t}\n" +
+                "\n" +
+                "\t\t\th2 {\n" +
+                "\t\t\t\tmargin-top: 1em;\n" +
+                "\t\t\t\tmargin-bottom: 0.3em;\n" +
+                "\t\t\t\tfont-size: 1em;\n" +
+                "\t\t\t}\n" +
+                "\n" +
+                "\t\t\tp {\n" +
+                "\t\t\t\tline-height: 1.5;\n" +
+                "\t\t\t\tmargin: 0.25em 0;\n" +
+                "\t\t\t}\n" +
+                "\n" +
+                "\t\t\t#controller-list ul {\n" +
+                "\t\t\t\tlist-style-position: inside;\n" +
+                "\t\t\t}\n" +
+                "\n" +
+                "\t\t\t#controller-list li {\n" +
+                "\t\t\t\tline-height: 1.3;\n" +
+                "\t\t\t\tlist-style-position: inside;\n" +
+                "\t\t\t\tmargin: 0.25em 0;\n" +
+                "\t\t\t}\n" +
+                "\n" +
+                "\t\t\t@media screen and (max-width: 480px) {\n" +
+                "\t\t\t\t#status {\n" +
+                "\t\t\t\t\tdisplay: none;\n" +
+                "\t\t\t\t}\n" +
+                "\n" +
+                "\t\t\t\t#page-body {\n" +
+                "\t\t\t\t\tmargin: 0 1em 1em;\n" +
+                "\t\t\t\t}\n" +
+                "\n" +
+                "\t\t\t\t#page-body h1 {\n" +
+                "\t\t\t\t\tmargin-top: 0;\n" +
+                "\t\t\t\t}\n" +
+                "\t\t\t}\n" +
+                "\t\t</style>\n" +
                 "\t</head>\n" +
                 "\t<body>\n" +
-                "\t\t<div id=\"grailsLogo\" role=\"banner\"><a href=\"http://grails.org\"><img src=\"\${resource(dir: 'images', file: 'grails_logo.png')}\" alt=\"Grails\"/></a></div>\n" +
-                "\t\t<g:layoutBody/>\n" +
-                "\t\t<div class=\"footer\" role=\"contentinfo\"></div>\n" +
-                "\t\t<div id=\"spinner\" class=\"spinner\" style=\"display:none;\"><g:message code=\"spinner.alt\" default=\"Loading&hellip;\"/></div>\n" +
-                "\t\t<g:javascript library=\"application\"/>\n" +
-                "\t\t<r:layoutResources />\n" +
+                "\t\t<div id=\"status\" role=\"complementary\">\n" +
+                "\t\t\t<h1>Controllers</h1>\n" +
+                "\t\t\t<ul>\n" +
+                "                <g:each var=\"c\" in=\"\${grailsApplication.controllerClasses.sort { it.fullName } }\">\n" +
+                "                    <g:if test=\"\${!(c.fullName.contains('DbdocController')||c.fullName.contains('ArrestedUser'))}\">\n" +
+                "                        <li class=\"controller\">\n" +
+                "                            <g:link controller=\"\${c.logicalPropertyName}\">\n" +
+                "                                \${c.name}\n" +
+                "                            </g:link>\n" +
+                "                        </li>\n" +
+                "                    </g:if>\n" +
+                "                </g:each>\n" +
+                "\t\t\t</ul>\n" +
+                "\t\t</div>\n" +
+                "\t\t<div id=\"page-body\" role=\"main\">\n" +
+                "\t\t\t<h1>Welcome to Arrested</h1>\n" +
+                "\t\t\t<p>Congratulations, you have successfully started your first Arrested application!\n" +
+                "            The Arrested plugin is a framework that generates RESTful controllers for your GORM objects and maps them in your UrlMappings, generates AngularJS based views in the form a single page per domain entity, and finally it provides a simple token based security model.\n" +
+                "           <br/>\n" +
+                "                <br/>\n" +
+                "                <strong>AngularJs + RESTful = Arrested</strong>\n" +
+                "            </p>\n" +
+                "\t\t</div>\n" +
                 "\t</body>\n" +
                 "</html>"
     }
+
+    configFile = new File("${basedir}/web-app/css/arrested.css")
+    if (configFile.exists()) {
+        configFile.delete()
+    }
+    configFile.createNewFile()
+    configFile.withWriterAppend { BufferedWriter writer ->
+        writer.writeLine "\n" +
+                "#h1Header {\n" +
+                "    font-size: 2.25em !important;\n" +
+                "    text-align: center !important;\n" +
+                "    padding: 10px !important;\n" +
+                "}\n" +
+                ".nav {\n" +
+                "    min-height: 30px !important;\n" +
+                "}\n" +
+                "#arrestedHeader{\n" +
+                "    background-color: #abbf78;\n" +
+                "}\n" +
+                ".h1Title{\n " +
+                "    padding-left: 2% !important;\n" +
+                "}"
+    }
+
+    configFile = new File("${basedir}/grails-app/views/layouts/_navbar.gsp")
+    if (configFile.exists()) {
+        configFile.delete()
+    }
+    configFile.createNewFile()
+    configFile.withWriterAppend { BufferedWriter writer ->
+        writer.writeLine "<div class=\"container\">\n" +
+                "    <div>\n" +
+                "        <p></p>\n" +
+                "        <ul class=\"nav navbar-nav\" style=\"min-height: 30px;\">\n" +
+                "            <g:each var=\"c\" in=\"\${grailsApplication.controllerClasses.sort { it.fullName } }\">\n" +
+                "                <g:if test=\"\${!(c.fullName.contains('DbdocController')||c.fullName.contains('ArrestedUser'))}\">\n" +
+                "                    <li class=\"controller\">\n" +
+                "                        <g:link controller=\"\${c.logicalPropertyName}\">\n" +
+                "                            \${c.name}\n" +
+                "                        </g:link>\n" +
+                "                    </li>\n" +
+                "                </g:if>\n" +
+                "            </g:each>\n" +
+                "        </ul>\n" +
+                "\n" +
+                "    </div>\n" +
+                "</div>\n"
+    }
+
+
     depends(compile)
-    println("main.gsp updated")
+    println("main.gsp, index.gsp, arrested.css, _navbar.gsp updated")
 }
 
 private parsePrefix() {

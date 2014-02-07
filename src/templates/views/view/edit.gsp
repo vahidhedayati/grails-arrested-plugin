@@ -9,7 +9,7 @@
 </head>
 <body>
 <div data-ng-controller="${domainTitle}Ctrl">
-        <h1>${domainTitle} Edit</h1>
+        <h1 class="h1Title">${domainTitle} ${ params.action }</h1>
 </div>
 <div data-ng-show="errors.showErrors" class="center red">
     <p data-ng-show="errors.showServerError">"Can not connect to the server, try later"</p>
@@ -18,10 +18,24 @@
     <div>
         <div>
             <div>
-                <p>
-                    <button data-ng-click="manualSave()" type="button">Save</button>
-                    <button data-ng-click="confirmDelete${domainTitle}()" type="button">Delete</button>
-                </p>
+                <ul id="Menu" class="nav nav-pills margin-top-small">
+                    <li class="${ params.action == "list" ? 'active' : '' }">
+                        <g:link action="list">List</g:link>
+                    </li>
+                    <g:if test="${ params.action == 'edit' }">
+                        <!-- the item is an object (not a list) -->
+                        <li data-ng-hide="${domainTitle}.id" class="">
+                            <a  data-ng-click="manualSave()">Save</a>
+                        </li>
+                        <li data-ng-show="${domainTitle}.id" class="">
+                            <a  data-ng-click="manualSave()">Update</a>
+                        </li>
+                        <li data-ng-show="${domainTitle}.id" class="">
+                            <a data-ng-click="confirmDelete${domainTitle}()" >Delete</a>
+                        </li>
+                    </g:if>
+
+                </ul>
                 <br/>
             </div>
             <div>
