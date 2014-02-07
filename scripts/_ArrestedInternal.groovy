@@ -254,7 +254,7 @@ target(createAngularIndex: "Create the angular file configuration") {
                          "    '\$routeProvider',\n" +
                          "    function(\$routeProvider) {\n" +
                          "        \$routeProvider."
-        writer.writeLine "            when('/login', {templateUrl: baseUrl + '/auth/login.html', controller: UserCtrl})."
+        writer.writeLine "            when('/login', {templateUrl:'auth/login.html', controller: 'UserCtrl'})."
         names.each {
             writer.writeLine "            when('/"+it.propertyName+"/create', {templateUrl:'"+it.propertyName+"/edit.html', controller: '"+it.className+"Ctrl'})."
             writer.writeLine "            when('/"+it.propertyName+"/edit', {templateUrl:'"+it.propertyName+"/edit.html', controller: '"+it.className+"Ctrl'})."

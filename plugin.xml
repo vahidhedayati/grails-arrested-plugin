@@ -1,4 +1,4 @@
-<plugin name='arrested' version='0.12345' grailsVersion='2.2 &gt; *'>
+<plugin name='arrested' version='0.1112' grailsVersion='2.2 &gt; *'>
   <author>Your name</author>
   <title>Arrested Plugin</title>
   <description>Brief summary/description of the plugin.
