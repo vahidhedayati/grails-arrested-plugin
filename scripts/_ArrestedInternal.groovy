@@ -179,7 +179,17 @@ target(updateUrl: "Updating the Url Mappings") {
     println("UrlMappings.groovy updated")
 }
 target(updateResources: "Update the application resources") {
+    depends(compile)
+    depends(loadApp)
     def (pkg, prefix) = parsePrefix()
+    def domainClasses = grailsApp.domainClasses
+    def names = []
+    domainClasses.each {
+        domainClass ->
+            if (domainClass.getShortName() != "ArrestedUser" && domainClass.getShortName() != "ArrestedToken") {
+                names.add([propertyName: domainClass.getPropertyName(), className: domainClass.getShortName()])
+            }
+    }
     def configFile = new File("${basedir}/grails-app/conf/ApplicationResources.groovy")
     if (configFile.exists()) {
         configFile.delete()
@@ -188,8 +198,16 @@ target(updateResources: "Update the application resources") {
     configFile.withWriterAppend { BufferedWriter writer ->
         writer.writeLine "modules = {"
         writer.writeLine "    application {"
-        writer.writeLine "        dependsOn 'ngRoute'"
+        writer.writeLine "        dependsOn 'angularControllers'"
         writer.writeLine "        resource url:'js/application.js'"
+        writer.writeLine "    }"
+        writer.writeLine ""
+        writer.writeLine "    angularControllers {"
+        writer.writeLine "        dependsOn 'ngRoute'"
+        writer.writeLine "        resource url:'js/userCtrl.js'"
+        names.each {
+            writer.writeLine "        resource url:'js/"+it.className+"Ctrl.js'"
+        }
         writer.writeLine "    }"
         writer.writeLine ""
         writer.writeLine "    ngRoute {"
@@ -254,12 +272,12 @@ target(createAngularIndex: "Create the angular file configuration") {
                 "    '\$routeProvider',\n" +
                 "    function(\$routeProvider) {\n" +
                 "        \$routeProvider."
-        writer.writeLine "            when('/login', {templateUrl: baseUrl + 'static/auth/login.html', controller: UserCtrl})."
+        writer.writeLine "            when('/login', {templateUrl: 'static/Views/auth/login.html', controller: 'UserCtrl'})."
         names.each {
-            writer.writeLine "            when('/" + it.propertyName + "/create', {templateUrl: 'static/" + it.propertyName + "/edit.html', controller: '" + it.className + "Ctrl'})."
-            writer.writeLine "            when('/" + it.propertyName + "/edit', {templateUrl: 'static/" + it.propertyName + "/edit.html', controller: '" + it.className + "Ctrl'})."
-            writer.writeLine "            when('/" + it.propertyName + "/list', {templateUrl: 'static/" + it.propertyName + "/list.html', controller: '" + it.className + "Ctrl'})."
-            writer.writeLine "            when('/" + it.propertyName + "', {templateUrl: 'static/" + it.propertyName + "/list.html', controller: '" + it.className + "Ctrl'})."
+            writer.writeLine "            when('/" + it.propertyName + "/create', {templateUrl: 'static/Views/" + it.propertyName + "/edit.html', controller: '" + it.className + "Ctrl'})."
+            writer.writeLine "            when('/" + it.propertyName + "/edit', {templateUrl: 'static/Views/" + it.propertyName + "/edit.html', controller: '" + it.className + "Ctrl'})."
+            writer.writeLine "            when('/" + it.propertyName + "/list', {templateUrl: 'static/Views/" + it.propertyName + "/list.html', controller: '" + it.className + "Ctrl'})."
+            writer.writeLine "            when('/" + it.propertyName + "', {templateUrl: 'static/Views/" + it.propertyName + "/list.html', controller: '" + it.className + "Ctrl'})."
         }
         writer.writeLine "            otherwise({redirectTo: '/login'});"
         writer.writeLine "    }"

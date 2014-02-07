@@ -1,46 +1,46 @@
 <% import grails.persistence.Event %>
 <div data-ng-controller="${domainTitle}Ctrl">
     <h1 class="h1Title">${domainTitle} List</h1>
-</div>
-<div data-ng-show="errors.showErrors" class="center red">
-    <p data-ng-show="errors.showServerError">"Can not connect to the server, try later"</p>
-</div>
-<div>
-    <div>
-        <ul id="Menu" class="nav nav-pills margin-top-small">
-            <li>
-                <a data-ng-click="new${domainTitle}()">New ${domainTitle}</a>
-            </li>
-        </ul>
-        <br/>
+    <div data-ng-show="errors.showErrors" class="center red">
+        <p data-ng-show="errors.showServerError">"Can not connect to the server, try later"</p>
     </div>
     <div>
         <div>
+            <ul id="Menu" class="nav nav-pills margin-top-small">
+                <li>
+                    <a data-ng-click="new${domainTitle}()">New ${domainTitle}</a>
+                </li>
+            </ul>
+            <br/>
+        </div>
+        <div>
             <div>
-                <%  excludedProps = Event.allEvents.toList() << 'id' << 'version'
-                allowedNames = domainClass.name << 'dateCreated' << 'lastUpdated'
-                props = domainClass.findAll { allowedNames.contains(it.name) && !excludedProps.contains(it.name) && it.type != null && !Collection.isAssignableFrom(it.type) }
-                %>
+                <div>
+                    <%  excludedProps = Event.allEvents.toList() << 'id' << 'version'
+                    allowedNames = domainClass.name << 'dateCreated' << 'lastUpdated'
+                    props = domainClass.findAll { allowedNames.contains(it.name) && !excludedProps.contains(it.name) && it.type != null && !Collection.isAssignableFrom(it.type) }
+                    %>
 
-                <table class="table table-bordered table-striped">
-                    <thead>
-                    <tr>
-                        <%for (p in props) {
-                        if (p.isAssociation()) { %>
-                        <th>${p.naturalName}</th>
-                        <%  } else { %>
-                        <th data-sortable="${p.name}">${p.naturalName}</th>
-                        <%  } } %>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr data-ng-repeat="instance in ${domainTitle}s" data-ng-click="edit(instance)">
-                        <%  for (p in props) { %>
-                        <td>{{instance.${p.name}}}</td>
-                        <%  } %>
-                    </tr>
-                    </tbody>
-                </table>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <%for (p in props) {
+                            if (p.isAssociation()) { %>
+                            <th>${p.naturalName}</th>
+                            <%  } else { %>
+                            <th data-sortable="${p.name}">${p.naturalName}</th>
+                            <%  } } %>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="instance in ${domainTitle}s" data-ng-click="edit(instance)">
+                            <%  for (p in props) { %>
+                            <td>{{instance.${p.name}}}</td>
+                            <%  } %>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

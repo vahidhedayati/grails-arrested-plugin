@@ -9,4 +9,5 @@ target(default: "This creates the GSP mapped at index (view is index.gsp) AND th
     depends(parseArguments, createViewController)
     depends(parseArguments, createJSController)
     depends(parseArguments, createAngularIndex)
+    depends(parseArguments, updateResources)
 }
