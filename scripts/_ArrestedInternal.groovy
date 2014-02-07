@@ -226,7 +226,17 @@ target(createAngularService: "Create the angular service") {
     depends(compile)
 }
 target(createAngularIndex: "Create the angular file configuration") {
+    depends(compile)
+    depends(loadApp)
     def (pkg, prefix) = parsePrefix()
+    def domainClasses = grailsApp.domainClasses
+    def names = []
+    domainClasses.each {
+        domainClass ->
+            if(domainClass.getShortName() != "ArrestedUser" && domainClass.getShortName() != "ArrestedToken"){
+                names.add([propertyName:domainClass.getPropertyName(), className:domainClass.getShortName()])
+            }
+    }
     def configFile = new File("${basedir}/web-app/js/index.js")
     if (configFile.exists()) {
         configFile.delete()
@@ -235,6 +245,21 @@ target(createAngularIndex: "Create the angular file configuration") {
     configFile.withWriterAppend { BufferedWriter writer ->
         writer.writeLine "'use strict';"
         writer.writeLine "var "+Metadata.current.'app.name'+" = angular.module('"+Metadata.current.'app.name'+"', ['services']);"
+        writer.writeLine Metadata.current.'app.name'+".config([\n" +
+                         "    '\$routeProvider',\n" +
+                         "    function(\$routeProvider) {\n" +
+                         "        var baseUrl = \$('body').data('template-url');\n" +
+                         "        \$routeProvider."
+        writer.writeLine "            when('/login', {templateUrl: baseUrl + '/auth/login.html', controller: UserCtrl})."
+        names.each {
+            writer.writeLine "            when('/"+it.propertyName+"/create', {templateUrl: baseUrl + '/"+it.propertyName+"/edit.html', controller: "+it.className+"Ctrl})."
+            writer.writeLine "            when('/"+it.propertyName+"/edit', {templateUrl: baseUrl + '/"+it.propertyName+"/edit.html', controller: "+it.className+"Ctrl})."
+            writer.writeLine "            when('/"+it.propertyName+"/list', {templateUrl: baseUrl + '/"+it.propertyName+"/list.html', controller: "+it.className+"Ctrl})."
+            writer.writeLine "            when('/"+it.propertyName+"', {templateUrl: baseUrl + '/"+it.propertyName+"/list.html', controller: "+it.className+"Ctrl})."
+        }
+        writer.writeLine "            otherwise({redirectTo: '/login'});"
+        writer.writeLine "    }"
+        writer.writeLine "]);"
     }
     depends(compile)
     println("index.js created")
