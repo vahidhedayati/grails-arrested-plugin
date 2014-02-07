@@ -188,8 +188,13 @@ target(updateResources: "Update the application resources") {
     configFile.withWriterAppend { BufferedWriter writer ->
         writer.writeLine "modules = {"
         writer.writeLine "    application {"
-        writer.writeLine "        dependsOn 'angularConfiguration'"
+        writer.writeLine "        dependsOn 'ngRoute'"
         writer.writeLine "        resource url:'js/application.js'"
+        writer.writeLine "    }"
+        writer.writeLine ""
+        writer.writeLine "    ngRoute {"
+        writer.writeLine "        dependsOn 'angularConfiguration'"
+        writer.writeLine "        resource url:'http://code.angularjs.org/snapshot/angular-route.min.js'"
         writer.writeLine "    }"
         writer.writeLine ""
         writer.writeLine "    angularConfiguration {"
@@ -244,7 +249,7 @@ target(createAngularIndex: "Create the angular file configuration") {
     configFile.createNewFile()
     configFile.withWriterAppend { BufferedWriter writer ->
         writer.writeLine "'use strict';"
-        writer.writeLine "var "+Metadata.current.'app.name'+" = angular.module('"+Metadata.current.'app.name'+"', ['services']);"
+        writer.writeLine "var "+Metadata.current.'app.name'+" = angular.module('"+Metadata.current.'app.name'+"', ['services','ngRoute']);"
         writer.writeLine Metadata.current.'app.name'+".config([\n" +
                          "    '\$routeProvider',\n" +
                          "    function(\$routeProvider) {\n" +
