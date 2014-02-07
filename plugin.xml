@@ -1,22 +1,21 @@
-<plugin name='arrested' version='0.123' grailsVersion='2.2 &gt; *'>
-<plugin name='arrested' version='0.94' grailsVersion='2.2 &gt; *'>
-  <author>Your name</author>
-  <title>Arrested Plugin</title>
-  <description>Brief summary/description of the plugin.
-</description>
-  <documentation>http://grails.org/plugin/arrested</documentation>
-  <type>ArrestedGrailsPlugin</type>
-  <resources />
-  <repositories>
-    <repository name='grailsCentral' url='http://grails.org/plugins' />
-    <repository name='mavenCentral' url='http://repo1.maven.org/maven2/' />
-  </repositories>
-  <dependencies />
-  <plugins>
-    <runtime>
-      <plugin group='org.grails.plugins' name='cors' version='1.1.4' />
-    </runtime>
-  </plugins>
-  <runtimePluginRequirements />
-  <behavior />
+<plugin name='arrested' version='0.127' grailsVersion='2.2 &gt; *'>
+    <author>Your name</author>
+    <title>Arrested Plugin</title>
+    <description>Brief summary/description of the plugin.
+    </description>
+    <documentation>http://grails.org/plugin/arrested</documentation>
+    <type>ArrestedGrailsPlugin</type>
+    <resources/>
+    <repositories>
+        <repository name='grailsCentral' url='http://grails.org/plugins'/>
+        <repository name='mavenCentral' url='http://repo1.maven.org/maven2/'/>
+    </repositories>
+    <dependencies/>
+    <plugins>
+        <runtime>
+            <plugin group='org.grails.plugins' name='cors' version='1.1.4'/>
+        </runtime>
+    </plugins>
+    <runtimePluginRequirements/>
+    <behavior/>
 </plugin>

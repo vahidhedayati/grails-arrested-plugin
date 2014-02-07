@@ -254,12 +254,12 @@ target(createAngularIndex: "Create the angular file configuration") {
                 "    '\$routeProvider',\n" +
                 "    function(\$routeProvider) {\n" +
                 "        \$routeProvider."
-        writer.writeLine "            when('/login', {templateUrl: baseUrl + 'static/auth/login.html', controller: UserCtrl})."
+        writer.writeLine "            when('/login', {templateUrl: 'static/Views/auth/login.html', controller: 'UserCtrl'})."
         names.each {
-            writer.writeLine "            when('/" + it.propertyName + "/create', {templateUrl: 'static/" + it.propertyName + "/edit.html', controller: '" + it.className + "Ctrl'})."
-            writer.writeLine "            when('/" + it.propertyName + "/edit', {templateUrl: 'static/" + it.propertyName + "/edit.html', controller: '" + it.className + "Ctrl'})."
-            writer.writeLine "            when('/" + it.propertyName + "/list', {templateUrl: 'static/" + it.propertyName + "/list.html', controller: '" + it.className + "Ctrl'})."
-            writer.writeLine "            when('/" + it.propertyName + "', {templateUrl: 'static/" + it.propertyName + "/list.html', controller: '" + it.className + "Ctrl'})."
+            writer.writeLine "            when('/" + it.propertyName + "/create', {templateUrl: 'static/Views/" + it.propertyName + "/edit.html', controller: '" + it.className + "Ctrl'})."
+            writer.writeLine "            when('/" + it.propertyName + "/edit', {templateUrl: 'static/Views/" + it.propertyName + "/edit.html', controller: '" + it.className + "Ctrl'})."
+            writer.writeLine "            when('/" + it.propertyName + "/list', {templateUrl: 'static/Views/" + it.propertyName + "/list.html', controller: '" + it.className + "Ctrl'})."
+            writer.writeLine "            when('/" + it.propertyName + "', {templateUrl: 'static/Views/" + it.propertyName + "/list.html', controller: '" + it.className + "Ctrl'})."
         }
         writer.writeLine "            otherwise({redirectTo: '/login'});"
         writer.writeLine "    }"

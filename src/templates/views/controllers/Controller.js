@@ -27,7 +27,7 @@ function @controller.name
     $rootScope.new
     @
 class.
-    instance
+    name
     @ = function () {
         $rootScope.@class.instance
         @ = [];
