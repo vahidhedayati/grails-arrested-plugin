@@ -253,14 +253,13 @@ target(createAngularIndex: "Create the angular file configuration") {
         writer.writeLine Metadata.current.'app.name'+".config([\n" +
                          "    '\$routeProvider',\n" +
                          "    function(\$routeProvider) {\n" +
-                         "        var baseUrl = \$('body').data('template-url');\n" +
                          "        \$routeProvider."
         writer.writeLine "            when('/login', {templateUrl: baseUrl + '/auth/login.html', controller: UserCtrl})."
         names.each {
-            writer.writeLine "            when('/"+it.propertyName+"/create', {templateUrl: baseUrl + '/"+it.propertyName+"/edit.html', controller: '"+it.className+"Ctrl'})."
-            writer.writeLine "            when('/"+it.propertyName+"/edit', {templateUrl: baseUrl + '/"+it.propertyName+"/edit.html', controller: '"+it.className+"Ctrl'})."
-            writer.writeLine "            when('/"+it.propertyName+"/list', {templateUrl: baseUrl + '/"+it.propertyName+"/list.html', controller: '"+it.className+"Ctrl'})."
-            writer.writeLine "            when('/"+it.propertyName+"', {templateUrl: baseUrl + '/"+it.propertyName+"/list.html', controller: '"+it.className+"Ctrl'})."
+            writer.writeLine "            when('/"+it.propertyName+"/create', {templateUrl:'"+it.propertyName+"/edit.html', controller: '"+it.className+"Ctrl'})."
+            writer.writeLine "            when('/"+it.propertyName+"/edit', {templateUrl:'"+it.propertyName+"/edit.html', controller: '"+it.className+"Ctrl'})."
+            writer.writeLine "            when('/"+it.propertyName+"/list', {templateUrl:'"+it.propertyName+"/list.html', controller: '"+it.className+"Ctrl'})."
+            writer.writeLine "            when('/"+it.propertyName+"', {templateUrl:'"+it.propertyName+"/list.html', controller: '"+it.className+"Ctrl'})."
         }
         writer.writeLine "            otherwise({redirectTo: '/login'});"
         writer.writeLine "    }"
