@@ -38,7 +38,7 @@ installTemplateEx = { String artefactName, String artefactPath, String templateP
 
     // Perform any custom processing that may be required.
     if (c) {
-        c.delegate = [ artefactFile: artefactFile ]
+        c.delegate = [artefactFile: artefactFile]
         c.call()
     }
     event("CreatedFile", [artefactFile])
@@ -78,11 +78,11 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
     }
 
     def binding = [
-            domainTitle:domainClass.getShortName(),
-            domainInstance:domainClass.getPropertyName(),
-            domainClass:domainClass.getProperties(),
-            pluginManager:pluginManager,
-            cp:cp]
+            domainTitle: domainClass.getShortName(),
+            domainInstance: domainClass.getPropertyName(),
+            domainClass: domainClass.getProperties(),
+            pluginManager: pluginManager,
+            cp: cp]
 
     ant.copy(file: templateFile, tofile: artefactFile, overwrite: true)
 
@@ -93,7 +93,7 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
 
     // Perform any custom processing that may be required.
     if (c) {
-        c.delegate = [ artefactFile: artefactFile ]
+        c.delegate = [artefactFile: artefactFile]
         c.call()
     }
     event("CreatedFile", [artefactFile])
@@ -106,10 +106,10 @@ target(createViewController: "Creates view") {
     def domainClasses = grailsApp.domainClasses
     domainClasses.each {
         domainClass ->
-            if(domainClass.getShortName()== prefix){
+            if (domainClass.getShortName() == prefix) {
                 def className = domainClass.getPropertyName()
-                installTemplateView(domainClass,"list.html", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "list.html") {}
-                installTemplateView(domainClass,"edit.html", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "edit.html") {}
+                installTemplateView(domainClass, "list.html", "web-app/Views/${packageToPath(pkg)}${className}", "views/view", "list.html") {}
+                installTemplateView(domainClass, "edit.html", "web-app/Views/${packageToPath(pkg)}${className}", "views/view", "edit.html") {}
             }
     }
     depends(compile)
@@ -238,8 +238,8 @@ target(createAngularIndex: "Create the angular file configuration") {
     def names = []
     domainClasses.each {
         domainClass ->
-            if(domainClass.getShortName() != "ArrestedUser" && domainClass.getShortName() != "ArrestedToken"){
-                names.add([propertyName:domainClass.getPropertyName(), className:domainClass.getShortName()])
+            if (domainClass.getShortName() != "ArrestedUser" && domainClass.getShortName() != "ArrestedToken") {
+                names.add([propertyName: domainClass.getPropertyName(), className: domainClass.getShortName()])
             }
     }
     def configFile = new File("${basedir}/web-app/js/index.js")
@@ -249,17 +249,17 @@ target(createAngularIndex: "Create the angular file configuration") {
     configFile.createNewFile()
     configFile.withWriterAppend { BufferedWriter writer ->
         writer.writeLine "'use strict';"
-        writer.writeLine "var "+Metadata.current.'app.name'+" = angular.module('"+Metadata.current.'app.name'+"', ['services','ngRoute']);"
-        writer.writeLine Metadata.current.'app.name'+".config([\n" +
-                         "    '\$routeProvider',\n" +
-                         "    function(\$routeProvider) {\n" +
-                         "        \$routeProvider."
-        writer.writeLine "            when('/login', {templateUrl:'auth/login.html', controller: 'UserCtrl'})."
+        writer.writeLine "var " + Metadata.current.'app.name' + " = angular.module('" + Metadata.current.'app.name' + "', ['services','ngRoute']);"
+        writer.writeLine Metadata.current.'app.name' + ".config([\n" +
+                "    '\$routeProvider',\n" +
+                "    function(\$routeProvider) {\n" +
+                "        \$routeProvider."
+        writer.writeLine "            when('/login', {templateUrl: baseUrl + 'static/auth/login.html', controller: UserCtrl})."
         names.each {
-            writer.writeLine "            when('/"+it.propertyName+"/create', {templateUrl:'"+it.propertyName+"/edit.html', controller: '"+it.className+"Ctrl'})."
-            writer.writeLine "            when('/"+it.propertyName+"/edit', {templateUrl:'"+it.propertyName+"/edit.html', controller: '"+it.className+"Ctrl'})."
-            writer.writeLine "            when('/"+it.propertyName+"/list', {templateUrl:'"+it.propertyName+"/list.html', controller: '"+it.className+"Ctrl'})."
-            writer.writeLine "            when('/"+it.propertyName+"', {templateUrl:'"+it.propertyName+"/list.html', controller: '"+it.className+"Ctrl'})."
+            writer.writeLine "            when('/" + it.propertyName + "/create', {templateUrl: 'static/" + it.propertyName + "/edit.html', controller: '" + it.className + "Ctrl'})."
+            writer.writeLine "            when('/" + it.propertyName + "/edit', {templateUrl: 'static/" + it.propertyName + "/edit.html', controller: '" + it.className + "Ctrl'})."
+            writer.writeLine "            when('/" + it.propertyName + "/list', {templateUrl: 'static/" + it.propertyName + "/list.html', controller: '" + it.className + "Ctrl'})."
+            writer.writeLine "            when('/" + it.propertyName + "', {templateUrl: 'static/" + it.propertyName + "/list.html', controller: '" + it.className + "Ctrl'})."
         }
         writer.writeLine "            otherwise({redirectTo: '/login'});"
         writer.writeLine "    }"
@@ -272,11 +272,11 @@ target(createController: "Creates a standard controller") {
     depends(compile)
     depends(loadApp)
     def (pkg, prefix) = parsePrefix()
-    def className = prefix+"Controller"
+    def className = prefix + "Controller"
     def domainClasses = grailsApp.domainClasses
     domainClasses.each {
         domainClass ->
-            if(domainClass.getShortName()== prefix){
+            if (domainClass.getShortName() == prefix) {
                 pkg = domainClass.getPackageName()
                 installTemplateEx("${className}.groovy", "grails-app/controllers${packageToPath(pkg)}", "controllers", "Controller.groovy") {
                     ant.replace(file: artefactFile) {
@@ -294,16 +294,16 @@ target(createJSController: "Creates a standard angular controller") {
     depends(compile)
     depends(loadApp)
     def (pkg, prefix) = parsePrefix()
-    def className = prefix+"Ctrl"
+    def className = prefix + "Ctrl"
     def domainClasses = grailsApp.domainClasses
     domainClasses.each {
         domainClass ->
-            if(domainClass.getShortName()== prefix){
+            if (domainClass.getShortName() == prefix) {
                 installTemplateEx("${className}.js", "web-app/js/${packageToPath(pkg)}", "views/controllers", "Controller.js") {
                     ant.replace(file: artefactFile) {
                         ant.replacefilter(token: '@controller.name@', value: className)
                         ant.replacefilter(token: '@class.name@', value: prefix)
-                        ant.replacefilter(token: '@class.instance@', value: prefix)
+                        ant.replacefilter(token: '@class.instance@', value: domainClass.getPropertyName())
                         ant.replacefilter(token: '@app.name@', value: Metadata.current.'app.name')
                     }
                 }
@@ -318,7 +318,7 @@ target(createAngularUser: "Create the angular user controller") {
             ant.replacefilter(token: '@app.name@', value: Metadata.current.'app.name')
         }
     }
-    installTemplateEx("login.html", "grails-app/views/${packageToPath(pkg)}auth", "views/view", "login.html") {}
+    installTemplateEx("login.html", "web-app/Views/${packageToPath(pkg)}auth", "views/view", "login.html") {}
     println("userController.js and login.html created")
     depends(compile)
 }
@@ -446,16 +446,16 @@ target(updateLayout: "Update the layout view") {
                 "\t\t\t}\n" +
                 "\t\t</style>\n" +
                 "\t</head>\n" +
-                "\t<body data-ng-controller=\"UserCtrl\">\n" +
+                "\t<body>\n" +
                 "\t\t<div id=\"status\" role=\"complementary\">\n" +
                 "\t\t\t<h1>Controllers</h1>\n" +
-                "\t\t\t<ul>\n" +
+                "\t\t\t<ul >\n" +
                 "                <g:each var=\"c\" in=\"\${grailsApplication.controllerClasses.sort { it.fullName } }\">\n" +
                 "                    <g:if test=\"\${!(c.fullName.contains('DbdocController')||c.fullName.contains('ArrestedUser'))}\">\n" +
                 "                        <li class=\"controller\">\n" +
-                "                            <g:link controller=\"\${c.logicalPropertyName}\">\n" +
-                "                                \${c.name}\n" +
-                "                            </g:link>\n" +
+                "                            <a onclick='window.location.href=\"#/\${c.logicalPropertyName}/list\"'>\n" +
+                "                            \${c.name}\n" +
+                "                            </a>\n" +
                 "                        </li>\n" +
                 "                    </g:if>\n" +
                 "                </g:each>\n" +
@@ -505,16 +505,16 @@ target(updateLayout: "Update the layout view") {
                 "            <g:each var=\"c\" in=\"\${grailsApplication.controllerClasses.sort { it.fullName } }\">\n" +
                 "                <g:if test=\"\${!(c.fullName.contains('DbdocController')||c.fullName.contains('ArrestedUser'))}\">\n" +
                 "                    <li class=\"controller\">\n" +
-                "                        <g:link controller=\"\${c.logicalPropertyName}\">\n" +
+                "                        <a onclick='window.location.href=\"#/\${c.logicalPropertyName}/list\"'>\n" +
                 "                            \${c.name}\n" +
-                "                        </g:link>\n" +
+                "                        </a>\n" +
                 "                    </li>\n" +
                 "                </g:if>\n" +
                 "            </g:each>\n" +
                 "        </ul>\n" +
                 "\n" +
                 "    </div>\n" +
-                "</div>\n"
+                "</div>"
     }
 
 
@@ -530,8 +530,9 @@ private parsePrefix() {
         prefix = givenValue[-1]
         pkg = givenValue.size() > 1 ? givenValue[0..-2].join('.') : ""
     }
-    return [ pkg, prefix ]
+    return [pkg, prefix]
 }
+
 private packageToPath(String pkg) {
     return pkg ? '/' + pkg.replace('.' as char, '/' as char) : ''
 }

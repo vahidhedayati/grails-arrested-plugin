@@ -3,27 +3,26 @@ import grails.converters.JSON
 class ArrestedUserController {
     static allowedMethods = [getCurrent: "GET", getAll: "GET", create: "POST", update: "PUT", changePassword: "PUT", delete: "DELETE"]
 
+    def index() {}
 
-
-    def getCurrent(){
+    def getCurrent() {
         render ArrestedUser.findByToken(ArrestedToken.findByToken(params.token as String).id)?.toObject() as JSON
     }
 
-    def getAll(){
+    def getAll() {
         def users = []
-        ArrestedUser.list().each{
+        ArrestedUser.list().each {
             users.add(it.showInformation())
         }
         render users as JSON
     }
 
-    def create(){
-        def message = [response:"user_not_created"]
-        if(params.user){
-            if(ArrestedUser.findByUsername(params.user.username as String)){
+    def create() {
+        def message = [response: "user_not_created"]
+        if (params.user) {
+            if (ArrestedUser.findByUsername(params.user.username as String)) {
                 message.response = "username_used"
-            }
-            else{
+            } else {
                 ArrestedUser user = new ArrestedUser(params.user)
                 user.save(flush: true)
                 message.response = "user_created"
@@ -32,14 +31,13 @@ class ArrestedUserController {
         render message as JSON
     }
 
-    def update(){
-        def message = [response:"user_not_updated"]
+    def update() {
+        def message = [response: "user_not_updated"]
         ArrestedUser user = ArrestedUser.findByToken(ArrestedToken.findByToken(params.token as String).id)
-        if(user && params.user){
-            if(user.username != params.user.username && ArrestedUser.findByUsername(params.user.username as String)){
+        if (user && params.user) {
+            if (user.username != params.user.username && ArrestedUser.findByUsername(params.user.username as String)) {
                 message.response = "username_used"
-            }
-            else{
+            } else {
                 user.properties = params.user
                 user.save(flush: true)
                 message.response = "user_updated"
@@ -48,28 +46,27 @@ class ArrestedUserController {
         render message as JSON
     }
 
-    def changePassword(){
-        def message = [response:"user_not_updated"]
+    def changePassword() {
+        def message = [response: "user_not_updated"]
         ArrestedUser user = ArrestedUser.findByToken(ArrestedToken.findByToken(params.token as String).id)
-        if(user && params.currentPassword && params.newPassword){
-            if(user.passwordHash == params.currentPassword){
+        if (user && params.currentPassword && params.newPassword) {
+            if (user.passwordHash == params.currentPassword) {
                 user.setPasswordHash(params.newPassword)
                 user.save(flush: true)
                 message.response = "user_updated"
-            }
-            else{
+            } else {
                 message.response = "password_incorrect"
             }
         }
         render message as JSON
     }
 
-    def delete(){
-        def message = [response:"user_not_deleted"]
+    def delete() {
+        def message = [response: "user_not_deleted"]
         ArrestedToken token = ArrestedToken.findByToken(params.token as String)
-        if(token){
+        if (token) {
             ArrestedUser user = ArrestedUser.findByToken(token.id)
-            if(user){
+            if (user) {
                 token.delete(flush: true)
                 user.delete(flush: true)
                 message.response = "user_deleted"
