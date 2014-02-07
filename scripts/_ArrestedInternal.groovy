@@ -108,8 +108,8 @@ target(createViewController: "Creates view") {
         domainClass ->
             if(domainClass.getShortName()== prefix){
                 def className = domainClass.getPropertyName()
-                installTemplateView(domainClass,"list.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "list.gsp") {}
-                installTemplateView(domainClass,"edit.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "edit.gsp") {}
+                installTemplateView(domainClass,"list.html", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "list.html") {}
+                installTemplateView(domainClass,"edit.html", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "edit.html") {}
             }
     }
     depends(compile)
@@ -289,8 +289,8 @@ target(createAngularUser: "Create the angular user controller") {
             ant.replacefilter(token: '@app.name@', value: Metadata.current.'app.name')
         }
     }
-    installTemplateEx("login.gsp", "grails-app/views/${packageToPath(pkg)}auth", "views/view", "login.gsp") {}
-    println("userController.js and login.gsp created")
+    installTemplateEx("login.html", "grails-app/views/${packageToPath(pkg)}auth", "views/view", "login.html") {}
+    println("userController.js and login.html created")
     depends(compile)
 }
 target(updateLayout: "Update the layout view") {
@@ -417,7 +417,7 @@ target(updateLayout: "Update the layout view") {
                 "\t\t\t}\n" +
                 "\t\t</style>\n" +
                 "\t</head>\n" +
-                "\t<body>\n" +
+                "\t<body data-ng-controller=\"UserCtrl\">\n" +
                 "\t\t<div id=\"status\" role=\"complementary\">\n" +
                 "\t\t\t<h1>Controllers</h1>\n" +
                 "\t\t\t<ul>\n" +
@@ -433,13 +433,8 @@ target(updateLayout: "Update the layout view") {
                 "\t\t\t</ul>\n" +
                 "\t\t</div>\n" +
                 "\t\t<div id=\"page-body\" role=\"main\">\n" +
-                "\t\t\t<h1>Welcome to Arrested</h1>\n" +
-                "\t\t\t<p>Congratulations, you have successfully started your first Arrested application!\n" +
-                "            The Arrested plugin is a framework that generates RESTful controllers for your GORM objects and maps them in your UrlMappings, generates AngularJS based views in the form a single page per domain entity, and finally it provides a simple token based security model.\n" +
-                "           <br/>\n" +
-                "                <br/>\n" +
-                "                <strong>AngularJs + RESTful = Arrested</strong>\n" +
-                "            </p>\n" +
+                "            <div class=\"content\" role=\"main\" data-ng-view>\n" +
+                "            </div>\n" +
                 "\t\t</div>\n" +
                 "\t</body>\n" +
                 "</html>"

@@ -6,18 +6,6 @@ class @controller.name@ {
 
     static allowedMethods = [getById: "GET", getAll: "GET", newItem: "POST", update: "PUT", delete: "DELETE"]
 
-//    Redirect functions
-    def index() {
-        redirect(action: "list")
-    }
-    def list() {
-    }
-    def create() {
-        redirect(action: "edit")
-    }
-    def edit() {
-    }
-
     def getById(){
         render @class.name@.findById(params.id as Long) as JSON
     }
