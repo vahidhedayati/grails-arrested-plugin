@@ -1,12 +1,15 @@
 'use strict';
 function @controller.name@(DAO, $rootScope)
 {
-    if (!$rootScope.appConfig) {
-        window.location.href = "#/login"
+    if ($rootScope.appConfig) {
+        if (!$rootScope.appConfig.token!='') {
+            window.location.href = "#/login"
+        }
     }
+
     $rootScope.filter = ""
-    $rootScope.@class.instance@s = {};
-    $rootScope.@class.instance@ = [];
+    $rootScope.@class.instance@s = [];
+    $rootScope.@class.instance@ = {};
     $rootScope.flags = {save: false};
     $rootScope.errors = {showErrors: false, showServerError: false};
 
@@ -27,8 +30,7 @@ function @controller.name@(DAO, $rootScope)
 
     $rootScope.manualSave = function () {
         $rootScope.flags.save = false;
-        if ($rootScope.@class.instance@.id == ''
-        )
+        if ($rootScope.@class.instance@.id == '')
         {
             $rootScope.save();
         }
@@ -39,7 +41,7 @@ function @controller.name@(DAO, $rootScope)
     }
 
     $rootScope.save = function () {
-        DAO.save({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token,@class.instance@:$rootScope.@class.instance@, controller:'@class.instance@', action:'newItem'},
+        DAO.save({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token,@class.name@:$rootScope.@class.instance@, controller:'@class.instance@', action:'newItem'},
         function (result) {
             $rootScope.@class.instance@.id = result.id;
             $rootScope.flags.save = true;
@@ -54,7 +56,7 @@ function @controller.name@(DAO, $rootScope)
 }
 
 $rootScope.update = function () {
-    DAO.update({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token,@class.instance@:$rootScope.@class.instance@, controller:'@class.instance@', action:'update'},
+    DAO.update({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token,@class.name@:$rootScope.@class.instance@, controller:'@class.instance@', action:'update'},
     function (result) {
         $rootScope.flags.save = true;
     },

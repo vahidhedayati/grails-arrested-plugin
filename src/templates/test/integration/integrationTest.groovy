@@ -9,7 +9,7 @@ class @controller.name@IntegrationTest {
     @Before
      void setUp() {
 
-        @controller.name@Test = new @controller.name@
+        @controller.name@Test = new @controller.name@()
         tokenAdmin = ArrestedUser.findByUsername('user@test.me')?.token.token
 
     }

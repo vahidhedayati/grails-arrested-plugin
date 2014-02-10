@@ -47,3 +47,4 @@ class @controller.name@UnitTest {
         assertEquals(response.json.response,"@class.name@_deleted")
         assertNull(@class.name@.findById(params.id as Long))
     }
+}
