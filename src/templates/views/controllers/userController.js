@@ -45,7 +45,7 @@ function UserCtrl($rootScope, DAO){
         DAO.get({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'auth', action:'logout'},
             function(result){
                 initializeVariables();
-                window.location.href="/@app.name@/"
+                window.location.href="#/login"
             },
             function(error){
                 $rootScope.errors.showErrors = true;

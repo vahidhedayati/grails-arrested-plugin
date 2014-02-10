@@ -30,7 +30,7 @@ function @controller.name@(DAO, $rootScope)
 
     $rootScope.manualSave = function () {
         $rootScope.flags.save = false;
-        if ($rootScope.@class.instance@.id == '')
+        if ($rootScope.@class.instance@.id == undefined)
         {
             $rootScope.save();
         }
