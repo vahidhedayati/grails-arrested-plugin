@@ -2,11 +2,11 @@
 function @controller.name@(DAO, $rootScope)
 {
     if (!$rootScope.appConfig) {
-        window.location.href = "#/login"
+        window.location.href = "#/login";
     }
-    $rootScope.filter = ""
-    $rootScope.@class.instance@s = {};
-    $rootScope.@class.instance@ = [];
+    $rootScope.filter = "";
+    $rootScope.@class.instance@s = [];
+    $rootScope.@class.instance@ = {};
     $rootScope.flags = {save: false};
     $rootScope.errors = {showErrors: false, showServerError: false};
 
@@ -27,8 +27,7 @@ function @controller.name@(DAO, $rootScope)
 
     $rootScope.manualSave = function () {
         $rootScope.flags.save = false;
-        if ($rootScope.@class.instance@.id == ''
-        )
+        if ($rootScope.@class.instance@.id == undefined)
         {
             $rootScope.save();
         }
