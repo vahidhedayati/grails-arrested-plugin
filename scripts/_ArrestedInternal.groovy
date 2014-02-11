@@ -78,7 +78,6 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
     if (plugin) {
         cp = domainClass.constrainedProperties
     }
-    println(cp)
     def binding = [
             className: domainClass.getShortName(),
             domainTitle: domainClass.getPropertyName(),
