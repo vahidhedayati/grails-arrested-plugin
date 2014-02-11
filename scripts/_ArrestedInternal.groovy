@@ -76,8 +76,6 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
     def pluginM = PluginManagerHolder.pluginManager
     def plugin = pluginM.getGrailsPlugin("hibernate")
     if (plugin) {
-        println("==============cp==================")
-        println(domainClass.constrainedProperties)
         cp = domainClass.constrainedProperties
     }
 
