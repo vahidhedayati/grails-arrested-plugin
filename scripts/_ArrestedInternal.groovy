@@ -2,6 +2,7 @@ import grails.util.GrailsNameUtils
 import groovy.text.SimpleTemplateEngine
 import groovy.text.Template
 import org.codehaus.groovy.grails.plugins.GrailsPluginManager
+import org.codehaus.groovy.grails.plugins.PluginManagerHolder
 import org.springframework.core.io.ResourceLoader
 import grails.util.Metadata
 
@@ -72,15 +73,10 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
 
     renderEditorTemplate = engine.createTemplate(new File(templateFile))
 
-    boolean hasHibernate = pluginManager?.hasGrailsPlugin('hibernate') || pluginManager?.hasGrailsPlugin('hibernate4')
-    println(pluginManager)
-    println("==============hasHibernate==================")
-    println(hasHibernate)
-
-    if (hasHibernate) {
-        println("==============cp==================")
-        println(domainClass.constrainedProperties[artefactName])
-        cp = domainClass.constrainedProperties[artefactName]
+    def pluginM = PluginManagerHolder.pluginManager
+    def plugin = pluginM.getGrailsPlugin("hibernate")
+    if (plugin) {
+        cp = domainClass.constrainedProperties
     }
 
     def binding = [
