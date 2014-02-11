@@ -73,11 +73,18 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
     renderEditorTemplate = engine.createTemplate(new File(templateFile))
 
     boolean hasHibernate = pluginManager?.hasGrailsPlugin('hibernate') || pluginManager?.hasGrailsPlugin('hibernate4')
+    println(pluginManager)
+    println("==============hasHibernate==================")
+    println(hasHibernate)
+
     if (hasHibernate) {
+        println("==============cp==================")
+        println(domainClass.constrainedProperties[artefactName])
         cp = domainClass.constrainedProperties[artefactName]
     }
 
     def binding = [
+            className: domainClass.getShortName(),
             domainTitle: domainClass.getPropertyName(),
             domainInstance: domainClass.getPropertyName(),
             domainClass: domainClass.getProperties(),

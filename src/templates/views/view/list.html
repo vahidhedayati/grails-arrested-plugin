@@ -1,6 +1,6 @@
 <% import grails.persistence.Event %>
-<div data-ng-controller="${domainTitle}Ctrl" data-ng-init="getAll()">
-    <h1 class="h1Title">${domainTitle} List</h1>
+<div data-ng-controller="${className}Ctrl" data-ng-init="getAll()">
+    <h1 class="h1Title">${className} List</h1>
     <div data-ng-show="errors.showErrors" class="center red">
         <p data-ng-show="errors.showServerError">"Can not connect to the server, try later"</p>
     </div>
@@ -8,7 +8,7 @@
         <div>
             <ul id="Menu" class="nav nav-pills margin-top-small">
                 <li>
-                    <a data-ng-click="new${domainTitle}()">New ${domainTitle}</a>
+                    <a data-ng-click="new${className}()">New ${domainTitle}</a>
                 </li>
             </ul>
             <br/>
