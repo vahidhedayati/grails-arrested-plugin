@@ -1,6 +1,6 @@
 <% import grails.persistence.Event %>
-<div data-ng-controller="${domainTitle}Ctrl">
-    <h1 class="h1Title">${domainTitle} Edit</h1>
+<div data-ng-controller="${className}Ctrl">
+    <h1 class="h1Title">${className} Edit</h1>
     <div data-ng-show="errors.showErrors" class="center red">
         <p data-ng-show="errors.showServerError">"Can not connect to the server, try later"</p>
     </div>
@@ -10,7 +10,7 @@
     <div>
         <ul id="Menu" class="nav nav-pills margin-top-small">
             <li>
-                <a onclick="window.location.href = '#/@class.instance@/list'">List</a>
+                <a onclick="window.location.href = '#/${domainTitle}/list'">List</a>
             </li>
             <!-- the item is an object (not a list) -->
             <li data-ng-hide="${domainTitle}.id" class="">
@@ -20,7 +20,7 @@
                 <a  data-ng-click="manualSave()">Update</a>
             </li>
             <li data-ng-show="${domainTitle}.id" class="">
-                <a data-ng-click="confirmDelete${domainTitle}()" >Delete</a>
+                <a data-ng-click="confirmDelete${className}()" >Delete</a>
             </li>
         </ul>
         <br/>

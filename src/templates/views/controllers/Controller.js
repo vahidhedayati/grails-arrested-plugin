@@ -7,11 +7,13 @@ function @controller.name@(DAO, $rootScope)
         }
     }
 
+    if(!$rootScope.@class.instance@){
     $rootScope.filter = ""
     $rootScope.@class.instance@s = [];
     $rootScope.@class.instance@ = {};
     $rootScope.flags = {save: false};
     $rootScope.errors = {showErrors: false, showServerError: false};
+    }
 
     $rootScope.getAll = function () {
         //get all
@@ -24,7 +26,7 @@ function @controller.name@(DAO, $rootScope)
     };
 
     $rootScope.new@class.name@ = function () {
-    $rootScope.@class.instance@ = [];
+    $rootScope.@class.instance@ = {};
     window.location.href = "#/@class.instance@/create"
 }
 
