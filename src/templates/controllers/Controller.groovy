@@ -31,7 +31,7 @@ class @controller.name@ {
                 props = domainClass.findAll { allowedNames.contains(it.name) && !excludedProps.contains(it.name) && it.type != null && !Collection.isAssignableFrom(it.type) }
                 for (p in props) {
                     if (p.manyToOne || p.oneToOne){%>
-                        item.${p.name} = ${p.type.name}.findById(params.@class.instance@.${p.name}.id as Long)
+                        if(params.@class.instance@.${p.name}) item.${p.name} = ${p.type.name}.findById(params.@class.instance@.${p.name}.id as Long)
                         <%}else if ((p.oneToMany && !p.bidirectional) || (p.manyToMany && p.isOwningSide())) {%>
                         params.@class.instance@.${p.name}.each{
                             item.${p.name}.add(${p.type.name}.findById(it.id as Long))
@@ -57,7 +57,7 @@ class @controller.name@ {
                     props = domainClass.findAll { allowedNames.contains(it.name) && !excludedProps.contains(it.name) && it.type != null && !Collection.isAssignableFrom(it.type) }
                     for (p in props) {
                         if (p.manyToOne || p.oneToOne){%>
-                            item.${p.name} = ${p.type.name}.findById(params.@class.instance@.${p.name}.id as Long)
+                            if(params.@class.instance@.${p.name}) item.${p.name} = ${p.type.name}.findById(params.@class.instance@.${p.name}.id as Long)
                             <%}else if ((p.oneToMany && !p.bidirectional) || (p.manyToMany && p.isOwningSide())) {%>
                             item.${p.name}?.clear()
                             params.@class.instance@.${p.name}.each{
