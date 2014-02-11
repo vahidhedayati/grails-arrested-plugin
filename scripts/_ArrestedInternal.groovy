@@ -4,6 +4,8 @@ import groovy.text.Template
 import org.codehaus.groovy.grails.plugins.GrailsPluginManager
 import org.springframework.core.io.ResourceLoader
 import grails.util.Metadata
+import org.codehaus.groovy.grails.plugins.PluginManagerHolder
+import org.codehaus.groovy.grails.plugins.*
 
 includeTargets << grailsScript("_GrailsBootstrap")
 includeTargets << grailsScript("_GrailsCreateArtifacts")
@@ -77,11 +79,13 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
     println("==============hasHibernate==================")
     println(hasHibernate)
 
-    if (hasHibernate) {
-        println("==============cp==================")
-        println(domainClass.constrainedProperties[artefactName])
-        cp = domainClass.constrainedProperties[artefactName]
-    }
+    def pluginM = PluginManagerHolder.pluginManager
+    def plugin = pluginM.getGrailsPlugin("hibernate")
+    println(plugin)
+
+    println("==============cp==================")
+    println(domainClass.constrainedProperties[artefactName])
+    cp = domainClass.constrainedProperties[artefactName]
 
     def binding = [
             className: domainClass.getShortName(),
