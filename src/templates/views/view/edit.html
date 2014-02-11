@@ -14,10 +14,10 @@
             </li>
             <!-- the item is an object (not a list) -->
             <li data-ng-hide="${domainTitle}.id" class="">
-                <a  data-ng-click="manualSave()">Save</a>
+                <a  data-ng-click="manualSave${className}()">Save</a>
             </li>
             <li data-ng-show="${domainTitle}.id" class="">
-                <a  data-ng-click="manualSave()">Update</a>
+                <a  data-ng-click="manualSave${className}()">Update</a>
             </li>
             <li data-ng-show="${domainTitle}.id" class="">
                 <a data-ng-click="confirmDelete${className}()" >Delete</a>
@@ -86,7 +86,6 @@
     }
     sb << ' name="' << property.name << '"'
     if (cp.maxSize) sb << ' maxlength="' << cp.maxSize << '"'
-    if (!cp.editable) sb << ' readonly="readonly"'
     if (cp.matches) sb << ' pattern="${' << "${domainInstance}.constraints.${property.name}.matches" << '}"'
     if (isRequired()) sb << ' required=""'
     sb << " data-ng-model='${domainTitle}.${property.name}' "
@@ -165,8 +164,8 @@
     sb << ' name="' << property.name << '.id"'
     sb << " data-ng-model='${domainTitle}.${property.name}'"
     sb << ' data-ng-controller="'<< property.type.name <<'Ctrl"'
-    sb << ' data-ng-init="getAll()"'
-    sb << ' ng-options="c as ' << property.type.name.toLowerCase() << 's"'
+    sb << ' data-ng-init="getAll'<< property.type.name <<'()"'
+    sb << ' ng-options="c.id for c in ' << property.type.name.toLowerCase() << 's"'
     if (isRequired()) sb << ' required=""'
     sb << ' class="many-to-one"'
     sb << renderNoSelection(property)
@@ -203,7 +202,7 @@
     if (cls != null) {
     def sb = new StringBuilder()
     sb << '<select name="' << property.name << '"'
-    sb << '  ng-options=" c as ${' << cls.name << '.list()}"'
+    sb << '  ng-options=" c in ${' << cls.name << '.list()}"'
     sb << ' multiple="multiple"'
     sb << ' size="5"'
     if (isRequired()) sb << ' required=""'

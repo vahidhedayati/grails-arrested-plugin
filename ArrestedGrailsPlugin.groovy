@@ -1,6 +1,6 @@
 class ArrestedGrailsPlugin {
     // the plugin version   s
-    def version = "0.0987615412322123"
+    def version = "0.098761541232222123"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.2 > *"
     // resources that are excluded from plugin packaging

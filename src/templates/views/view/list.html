@@ -1,5 +1,5 @@
 <% import grails.persistence.Event %>
-<div data-ng-controller="${className}Ctrl" data-ng-init="getAll()">
+<div data-ng-controller="${className}Ctrl" data-ng-init="getAll${className}()">
     <h1 class="h1Title">${className} List</h1>
     <div data-ng-show="errors.showErrors" class="center red">
         <p data-ng-show="errors.showServerError">"Can not connect to the server, try later"</p>
@@ -33,7 +33,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr data-ng-repeat="instance in ${domainInstance}s" data-ng-click="edit(instance)">
+                        <tr data-ng-repeat="instance in ${domainInstance}s" data-ng-click="edit${className}(instance)">
                             <%  for (p in props) { %>
                             <td>{{instance.${p.name}}}</td>
                             <%  } %>

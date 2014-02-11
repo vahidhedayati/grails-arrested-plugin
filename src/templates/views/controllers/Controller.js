@@ -15,7 +15,7 @@ function @controller.name@(DAO, $rootScope)
     $rootScope.errors = {showErrors: false, showServerError: false};
     }
 
-    $rootScope.getAll = function () {
+    $rootScope.getAll@class.name@ = function () {
         //get all
         DAO.query({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller: '@class.instance@', action: 'getAll'},
             function (result) {
@@ -30,19 +30,19 @@ function @controller.name@(DAO, $rootScope)
     window.location.href = "#/@class.instance@/create"
 }
 
-    $rootScope.manualSave = function () {
+    $rootScope.manualSave@class.name@ = function () {
         $rootScope.flags.save = false;
         if ($rootScope.@class.instance@.id == undefined)
         {
-            $rootScope.save();
+            $rootScope.save@class.name@();
         }
         else
         {
-            $rootScope.update();
+            $rootScope.update@class.name@();
         }
     }
 
-    $rootScope.save = function () {
+    $rootScope.save@class.name@ = function () {
         DAO.save({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token,@class.name@:$rootScope.@class.instance@, controller:'@class.instance@', action:'newItem'},
         function (result) {
             $rootScope.@class.instance@.id = result.id;
@@ -57,7 +57,7 @@ function @controller.name@(DAO, $rootScope)
     ;
 }
 
-$rootScope.update = function () {
+$rootScope.update@class.name@ = function () {
     DAO.update({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token,@class.name@:$rootScope.@class.instance@, controller:'@class.instance@', action:'update'},
     function (result) {
         $rootScope.flags.save = true;
@@ -71,7 +71,7 @@ $rootScope.update = function () {
 ;
 }
 
-$rootScope.edit = function (@class.instance@){
+$rootScope.edit@class.name@ = function (@class.instance@){
     DAO.get({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, id: @class.instance@.id, controller:'@class.instance@', action:'getById'},
 function (result) {
     $rootScope.@class.instance@ = result;

@@ -38,7 +38,8 @@ class @controller.name@ {
                         }
                         <%}else{%>
                         item.${p.name} = params.@class.instance@.${p.name}
-                        <%}}}%>message.response = "@class.name@_created"
+                        <%}}}%> item.save(flush: true)
+            message.response = "@class.name@_created"
             message.id = item.id
         }
         render message as JSON
