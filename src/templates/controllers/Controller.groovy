@@ -1,4 +1,4 @@
-@package.line@
+@package.line@<% import grails.persistence.Event %>
 
 import grails.converters.JSON
 
@@ -23,8 +23,22 @@ class @controller.name@ {
     def newItem(){
         def message = [response:"@class.name@_not_created", id:""]
         if(params.@class.instance@){
-            @class.name@ item = new @class.name@(params.@class.instance@).save(flush: true)
-            message.response = "@class.name@_created"
+            <%if(!cp){%>@class.name@ item = new @class.name@(params.@class.instance@).save(flush: true)
+            <%}else{%>
+                @class.name@ item = new @class.name@()
+                <%  excludedProps = Event.allEvents.toList() << 'id' << 'version'
+                allowedNames = domainClass.name << 'dateCreated' << 'lastUpdated'
+                props = domainClass.findAll { allowedNames.contains(it.name) && !excludedProps.contains(it.name) && it.type != null && !Collection.isAssignableFrom(it.type) }
+                for (p in props) {
+                    if (p.manyToOne || p.oneToOne){%>
+                        item.${p.name} = ${p.type.name}.findById(params.@class.instance@.${p.name}.id as Long)
+                        <%}else if ((p.oneToMany && !p.bidirectional) || (p.manyToMany && p.isOwningSide())) {%>
+                        params.@class.instance@.${p.name}.each{
+                            item.${p.name}.add(${p.type.name}.findById(it.id as Long))
+                        }
+                        <%}else{%>
+                        item.${p.name} = params.@class.instance@.${p.name}
+                        <%}}}%>message.response = "@class.name@_created"
             message.id = item.id
         }
         render message as JSON

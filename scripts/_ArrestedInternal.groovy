@@ -78,7 +78,7 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
     if (plugin) {
         cp = domainClass.constrainedProperties
     }
-
+    println(cp)
     def binding = [
             className: domainClass.getShortName(),
             domainTitle: domainClass.getPropertyName(),
@@ -331,7 +331,7 @@ target(createController: "Creates a standard controller") {
         domainClass ->
             if (domainClass.getShortName() == prefix) {
                 pkg = domainClass.getPackageName()
-                installTemplateEx("${className}.groovy", "grails-app/controllers${packageToPath(pkg)}", "controllers", "Controller.groovy") {
+                installTemplateView(domainClass, "${className}.groovy", "grails-app/controllers${packageToPath(pkg)}", "controllers", "Controller.groovy") {
                     ant.replace(file: artefactFile) {
                         ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
                         ant.replacefilter(token: '@controller.name@', value: className)
@@ -357,8 +357,6 @@ target(createController: "Creates a standard controller") {
                     }
                 }
                 depends(compile)
-
-
             }
     }
     depends(compile)
