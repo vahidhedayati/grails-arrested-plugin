@@ -7,12 +7,13 @@ function @controller.name@(DAO, $rootScope)
         }
     }
 
+    $rootScope.flags = {save: false};
+    $rootScope.errors = {showErrors: false, showServerError: false};
+
     if(!$rootScope.@class.instance@){
     $rootScope.filter = ""
     $rootScope.@class.instance@s = [];
     $rootScope.@class.instance@ = {};
-    $rootScope.flags = {save: false};
-    $rootScope.errors = {showErrors: false, showServerError: false};
     }
 
     $rootScope.getAll@class.name@ = function () {

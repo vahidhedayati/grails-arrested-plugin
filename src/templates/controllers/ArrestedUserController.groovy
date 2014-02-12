@@ -1,77 +1,164 @@
 import grails.converters.JSON
+import grails.converters.XML
+import arrested.ArrestedController
 
-class ArrestedUserController {
-    static allowedMethods = [getCurrent: "GET", getAll: "GET", create: "POST", update: "PUT", changePassword: "PUT", delete: "DELETE"]
+class ArrestedUserController extends ArrestedController {
 
-    def index() {}
+    static allowedMethods = [show: "GET", list: "GET", save: "POST", update: "PUT", delete: "DELETE"]
 
-    def getCurrent() {
-        render ArrestedUser.findByToken(ArrestedToken.findByToken(params.token as String).id)?.toObject() as JSON
+    def show() {
+        if(params.token){
+            ArrestedToken token = ArrestedToken.findByToken(params.token as String)
+            if(token){
+                ArrestedUser user = ArrestedUser.findByToken(token.id)
+                if(user){
+                    withFormat{
+                        xml {
+                            render user.toObject() as XML
+                        }
+                        json  {
+                            render user.toObject() as JSON
+                        }
+                    }
+                }
+                else{
+                    renderNotFound("", "User")
+                }
+            }
+            else{
+                renderNotFound("", "Token")
+            }
+        }
+        else{
+            renderNotParam("token")
+        }
     }
 
-    def getAll() {
+    def list() {
         def users = []
         ArrestedUser.list().each {
             users.add(it.showInformation())
         }
-        render users as JSON
-    }
-
-    def create() {
-        def message = [response: "user_not_created"]
-        if (params.user) {
-            if (ArrestedUser.findByUsername(params.user.username as String)) {
-                message.response = "username_used"
-            } else {
-                ArrestedUser user = new ArrestedUser(params.user)
-                user.save(flush: true)
-                message.response = "user_created"
+        withFormat{
+            xml {
+                render users as XML
+            }
+            json  {
+                render users as JSON
             }
         }
-        render message as JSON
+    }
+
+    def save() {
+        if (params.user) {
+            if (ArrestedUser.findByUsername(params.user.username as String)) {
+                renderconflict("Username used")
+            } else {
+                ArrestedUser user = new ArrestedUser(params.user)
+                if(user.save(flush: true)){
+                    withFormat {
+                        xml {
+                            response.status = 200
+                            render user.toObject() as XML
+                        }
+                        json {
+                            response.status = 200
+                            render user.toObject() as JSON
+                        }
+                    }
+                }
+                else{
+                    render409orEdit(user)
+                }
+            }
+        }
+        else{
+            renderNotParam("user")
+        }
     }
 
     def update() {
-        def message = [response: "user_not_updated"]
-        ArrestedUser user = ArrestedUser.findByToken(ArrestedToken.findByToken(params.token as String).id)
-        if (user && params.user) {
-            if (user.username != params.user.username && ArrestedUser.findByUsername(params.user.username as String)) {
-                message.response = "username_used"
-            } else {
-                user.properties = params.user
-                user.save(flush: true)
-                message.response = "user_updated"
+        if(params.user){
+            if(params.token){
+                ArrestedToken token = ArrestedToken.findByToken(params.token as String)
+                if(token){
+                    ArrestedUser user = ArrestedUser.findByToken(token.id)
+                    if(user){
+                        if (user.username != params.user.username && ArrestedUser.findByUsername(params.user.username as String)){
+                            renderconflict("Username used")
+                        } else {
+                            user.properties = params.user
+                            if(user.save(flush: true)){
+                                withFormat {
+                                    xml {
+                                        response.status = 200
+                                        render user.toObject() as XML
+                                    }
+                                    json {
+                                        response.status = 200
+                                        render user.toObject() as JSON
+                                    }
+                                }
+                            }
+                            else{
+                                render409orEdit(user)
+                            }
+                        }
+                    }
+                    else{
+                        renderNotFound(params.user.id, "User")
+                    }
+                }
+                else{
+                    renderNotFound("", "Token")
+                }
+            }
+            else{
+                renderNotParam("token")
             }
         }
-        render message as JSON
-    }
-
-    def changePassword() {
-        def message = [response: "user_not_updated"]
-        ArrestedUser user = ArrestedUser.findByToken(ArrestedToken.findByToken(params.token as String).id)
-        if (user && params.currentPassword && params.newPassword) {
-            if (user.passwordHash == params.currentPassword) {
-                user.setPasswordHash(params.newPassword)
-                user.save(flush: true)
-                message.response = "user_updated"
-            } else {
-                message.response = "password_incorrect"
-            }
+        else{
+            renderNotParam("user")
         }
-        render message as JSON
     }
 
     def delete() {
-        def message = [response: "user_not_deleted"]
-        ArrestedToken token = ArrestedToken.findByToken(params.token as String)
-        if (token) {
-            ArrestedUser user = ArrestedUser.findByToken(token.id)
-            if (user) {
-                token.delete(flush: true)
-                user.delete(flush: true)
-                message.response = "user_deleted"
+        if(params.token){
+            ArrestedToken token = ArrestedToken.findByToken(params.token as String)
+            if (token){
+                ArrestedUser user = ArrestedUser.findByToken(token.id)
+                if (user){
+                    if(token.delete(flush: true)){
+                        if(user.delete(flush: true)){
+                            withFormat {
+                                xml {
+                                    response.status = 200
+                                    render "User deleted"
+                                }
+                                json {
+                                    response.status = 200
+                                    render "User deleted"
+                                }
+                            }
+                        }
+                        else{
+                            renderconflict("User could not be deleted")
+                        }
+                    }
+                    else{
+                        renderconflict("Token could not be deleted")
+                    }
+                }
+                else{
+                    renderNotFound("", "User")
+                }
+            }
+            else{
+                renderNotFound("", "Token")
             }
         }
-        render message as JSON
+        else{
+            renderNotParam("token")
+        }
     }
 }

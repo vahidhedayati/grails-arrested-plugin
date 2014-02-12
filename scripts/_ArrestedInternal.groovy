@@ -160,6 +160,17 @@ target(createUserController: "Create a user class") {
 
     println("ArrestedUserController.groovy created and Unit & Integration Tests")
 }
+target(createArrestedController: "Create the controller Arrested") {
+    depends(compile)
+    def (pkg, prefix) = parsePrefix()
+    installTemplateEx("ArrestedController.groovy", "grails-app/controllers/arrested", "controllers", "ArrestedController.groovy") {
+        ant.replace(file: artefactFile) {
+            ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
+        }
+    }
+    depends(compile)
+    println("ArrestedController.groovy created")
+}
 target(createAuth: "Create a authentication controller") {
     depends(compile)
     def (pkg, prefix) = parsePrefix()
@@ -553,6 +564,9 @@ target(updateLayout: "Update the layout view") {
                 ".footer{\n" +
                 "    background: #C8CCBE !important;\n" +
                 "}\n" +
+                ".red{\n" +
+                "    color: red;\n" +
+                "}\n" +
                 "a:link, a:visited, a:hover {\n" +
                 "    color: #000000 !important;\n" +
                 "}\n" +
@@ -574,7 +588,7 @@ target(updateLayout: "Update the layout view") {
                 "        <p></p>\n" +
                 "        <ul class=\"nav navbar-nav col-md-12\" style=\"min-height: 30px;\">\n" +
                 "            <g:each var=\"c\" in=\"\${grailsApplication.controllerClasses.sort { it.fullName } }\">\n" +
-                "                <g:if test=\"\${!(c.fullName.contains('DbdocController')||c.fullName.contains('ArrestedUser')||c.fullName.contains('AuthController'))}\">\n" +
+                "                <g:if test=\"\${!(c.fullName.contains('DbdocController')||c.fullName.contains('ArrestedUser')||c.fullName.contains('ArrestedController')||c.fullName.contains('AuthController'))}\">\n" +
                 "                    <li class=\"controller\">\n" +
                 "                        <a onclick='window.location.href=\"#/\${c.logicalPropertyName}/list\"'>\n" +
                 "                            \${c.name}\n" +

@@ -1,7 +1,7 @@
 <% import grails.persistence.Event %>
 <div data-ng-controller="${className}Ctrl" data-ng-init="getAll${className}()">
     <h1>${className} List</h1>
-    <div data-ng-show="errors.showErrors" class="center red">
+    <div data-ng-show="errors.showErrors" class="red">
         <p data-ng-show="errors.showServerError">"Can not connect to the server, try later"</p>
     </div>
     <div>
