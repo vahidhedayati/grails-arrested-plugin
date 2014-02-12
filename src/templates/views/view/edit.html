@@ -1,6 +1,6 @@
 <% import grails.persistence.Event %>
 <div data-ng-controller="${className}Ctrl">
-    <h1 class="h1Title">${className} Edit</h1>
+    <h1>${className} Edit</h1>
     <div data-ng-show="errors.showErrors" class="center red">
         <p data-ng-show="errors.showServerError">"Can not connect to the server, try later"</p>
     </div>
@@ -8,22 +8,12 @@
     <div>
     <div>
     <div>
-        <ul id="Menu" class="nav nav-pills margin-top-small">
-            <li>
-                <a onclick="window.location.href = '#/${domainTitle}/list'">List</a>
-            </li>
-            <!-- the item is an object (not a list) -->
-            <li data-ng-hide="${domainTitle}.id" class="">
-                <a  data-ng-click="manualSave${className}()">Save</a>
-            </li>
-            <li data-ng-show="${domainTitle}.id" class="">
-                <a  data-ng-click="manualSave${className}()">Update</a>
-            </li>
-            <li data-ng-show="${domainTitle}.id" class="">
-                <a data-ng-click="confirmDelete${className}()" >Delete</a>
-            </li>
-        </ul>
-        <br/>
+        <p></p>
+        <a class="btn btn-primary btn-primary" onclick="window.location.href = '#/${domainTitle}/list'"><span class="glyphicon glyphicon-align-justify"></span>  List</a>
+        <a class="btn btn-primary btn-success" data-ng-hide="${domainTitle}.id" data-ng-click="manualSave${className}()"><span class="glyphicon glyphicon-floppy-disk"></span> Save</a>
+        <a class="btn btn-primary btn-success" data-ng-show="${domainTitle}.id" data-ng-click="manualSave${className}()"><span class="glyphicon glyphicon-floppy-disk"></span> Update</a>
+        <a class="btn btn-primary btn-danger" data-ng-show="${domainTitle}.id"  data-ng-click="confirmDelete${className}()"><span class="glyphicon glyphicon-trash"></span> Delete</a>
+        <p></p>
     </div>
     <div>
     <div>

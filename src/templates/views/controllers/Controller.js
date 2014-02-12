@@ -17,7 +17,7 @@ function @controller.name@(DAO, $rootScope)
 
     $rootScope.getAll@class.name@ = function () {
         //get all
-        DAO.query({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller: '@class.instance@', action: 'getAll'},
+        DAO.query({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller: '@class.instance@', action: 'list'},
             function (result) {
                 $rootScope.@class.instance@s = result;
             },
@@ -43,9 +43,9 @@ function @controller.name@(DAO, $rootScope)
     }
 
     $rootScope.save@class.name@ = function () {
-        DAO.save({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token,@class.name@:$rootScope.@class.instance@, controller:'@class.instance@', action:'newItem'},
+        DAO.save({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token,@class.name@:$rootScope.@class.instance@, controller:'@class.instance@', action:'save'},
         function (result) {
-            $rootScope.@class.instance@.id = result.id;
+            $rootScope.@class.instance@ = result;
             $rootScope.flags.save = true;
         },
         function (error) {
@@ -72,7 +72,7 @@ $rootScope.update@class.name@ = function () {
 }
 
 $rootScope.edit@class.name@ = function (@class.instance@){
-    DAO.get({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, id: @class.instance@.id, controller:'@class.instance@', action:'getById'},
+    DAO.get({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, id: @class.instance@.id, controller:'@class.instance@', action:'show'},
 function (result) {
     $rootScope.@class.instance@ = result;
     window.location.href = "#/@class.instance@/edit"

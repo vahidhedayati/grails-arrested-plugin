@@ -231,8 +231,14 @@ target(updateResources: "Update the application resources") {
     configFile.withWriterAppend { BufferedWriter writer ->
         writer.writeLine "modules = {"
         writer.writeLine "    application {"
-        writer.writeLine "        dependsOn 'angularControllers'"
+        writer.writeLine "        dependsOn 'bootstrap'"
         writer.writeLine "        resource url:'js/application.js'"
+        writer.writeLine "    }"
+        writer.writeLine ""
+        writer.writeLine "    bootstrap {"
+        writer.writeLine "        dependsOn 'angularControllers'"
+        writer.writeLine "        resource url:'http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css'"
+        writer.writeLine "        resource url:'http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js'"
         writer.writeLine "    }"
         writer.writeLine ""
         writer.writeLine "    angularControllers {"
@@ -479,7 +485,7 @@ target(updateLayout: "Update the layout view") {
                 "\t\t\t}\n" +
                 "\n" +
                 "\t\t\t#page-body {\n" +
-                "\t\t\t\tmargin: 2em 1em 1.25em 18em;\n" +
+                "                margin: 1% 5%;\n" +
                 "\t\t\t}\n" +
                 "\n" +
                 "\t\t\th2 {\n" +
@@ -519,21 +525,7 @@ target(updateLayout: "Update the layout view") {
                 "\t\t</style>\n" +
                 "\t</head>\n" +
                 "\t<body>\n" +
-                "\t\t<div id=\"status\" role=\"complementary\">\n" +
-                "\t\t\t<h1>Controllers</h1>\n" +
-                "\t\t\t<ul >\n" +
-                "                <g:each var=\"c\" in=\"\${grailsApplication.controllerClasses.sort { it.fullName } }\">\n" +
-                "                    <g:if test=\"\${!(c.fullName.contains('DbdocController')||c.fullName.contains('ArrestedUser'))}\">\n" +
-                "                        <li class=\"controller\">\n" +
-                "                            <a onclick='window.location.href=\"#/\${c.logicalPropertyName}/list\"'>\n" +
-                "                            \${c.name}\n" +
-                "                            </a>\n" +
-                "                        </li>\n" +
-                "                    </g:if>\n" +
-                "                </g:each>\n" +
-                "\t\t\t</ul>\n" +
-                "\t\t</div>\n" +
-                "\t\t<div id=\"page-body\" role=\"main\">\n" +
+                "\t\t<div class=\"row\" id=\"page-body\" role=\"main\">\n" +
                 "            <div class=\"content\" role=\"main\" data-ng-view>\n" +
                 "            </div>\n" +
                 "\t\t</div>\n" +
@@ -547,8 +539,7 @@ target(updateLayout: "Update the layout view") {
     }
     configFile.createNewFile()
     configFile.withWriterAppend { BufferedWriter writer ->
-        writer.writeLine "\n" +
-                "#h1Header {\n" +
+        writer.writeLine "#h1Header {\n" +
                 "    font-size: 2.25em !important;\n" +
                 "    text-align: center !important;\n" +
                 "    padding: 10px !important;\n" +
@@ -557,10 +548,18 @@ target(updateLayout: "Update the layout view") {
                 "    min-height: 30px !important;\n" +
                 "}\n" +
                 "#arrestedHeader{\n" +
-                "    background-color: #abbf78;\n" +
+                "    background-color: #C8CCBE;\n" +
                 "}\n" +
-                ".h1Title{\n " +
-                "    padding-left: 2% !important;\n" +
+                ".footer{\n" +
+                "    background: #C8CCBE !important;\n" +
+                "}\n" +
+                "a:link, a:visited, a:hover {\n" +
+                "    color: #000000 !important;\n" +
+                "}\n" +
+                "\n" +
+                "body {\n" +
+                "    margin: 0 5% 0 5% !important;\n" +
+                "    max-width: 100% !important;\n" +
                 "}"
     }
 
@@ -570,12 +569,12 @@ target(updateLayout: "Update the layout view") {
     }
     configFile.createNewFile()
     configFile.withWriterAppend { BufferedWriter writer ->
-        writer.writeLine "<div class=\"container\">\n" +
-                "    <div>\n" +
+        writer.writeLine "<div class=\"container row\" data-ng-controller=\"UserCtrl\" data-ng-show=\"appConfig.token!=''\">\n" +
+                "    <div class=\"col-md-12\">\n" +
                 "        <p></p>\n" +
-                "        <ul class=\"nav navbar-nav\" style=\"min-height: 30px;\">\n" +
+                "        <ul class=\"nav navbar-nav col-md-12\" style=\"min-height: 30px;\">\n" +
                 "            <g:each var=\"c\" in=\"\${grailsApplication.controllerClasses.sort { it.fullName } }\">\n" +
-                "                <g:if test=\"\${!(c.fullName.contains('DbdocController')||c.fullName.contains('ArrestedUser'))}\">\n" +
+                "                <g:if test=\"\${!(c.fullName.contains('DbdocController')||c.fullName.contains('ArrestedUser')||c.fullName.contains('AuthController'))}\">\n" +
                 "                    <li class=\"controller\">\n" +
                 "                        <a onclick='window.location.href=\"#/\${c.logicalPropertyName}/list\"'>\n" +
                 "                            \${c.name}\n" +
