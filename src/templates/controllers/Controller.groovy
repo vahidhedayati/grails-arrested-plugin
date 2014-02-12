@@ -124,20 +124,16 @@ class @controller.name@ extends ArrestedController {
         if (params.id){
             @class.name@ instance = @class.name@.findById(params.id as Long)
             if (instance){
-                if(instance.delete(flush: true)){
-                    withFormat {
-                        xml {
-                            response.status = 200
-                            render "@class.name@ deleted"
-                        }
-                        json {
-                            response.status = 200
-                            render "@class.name@ deleted"
-                        }
+                instance.delete(flush: true)
+                withFormat {
+                    xml {
+                        response.status = 200
+                        render "@class.name@ deleted"
                     }
-                }
-                else{
-                    renderconflict("@class.name@ could not be deleted")
+                    json {
+                        response.status = 200
+                        render "@class.name@ deleted"
+                    }
                 }
             }
             else{

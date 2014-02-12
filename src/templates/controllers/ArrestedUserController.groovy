@@ -128,25 +128,17 @@ class ArrestedUserController extends ArrestedController {
             if (token){
                 ArrestedUser user = ArrestedUser.findByToken(token.id)
                 if (user){
-                    if(token.delete(flush: true)){
-                        if(user.delete(flush: true)){
-                            withFormat {
-                                xml {
-                                    response.status = 200
-                                    render "User deleted"
-                                }
-                                json {
-                                    response.status = 200
-                                    render "User deleted"
-                                }
-                            }
+                    token.delete(flush: true)
+                    user.delete(flush: true)
+                    withFormat {
+                        xml {
+                            response.status = 200
+                            render "User deleted"
                         }
-                        else{
-                            renderconflict("User could not be deleted")
+                        json {
+                            response.status = 200
+                            render "User deleted"
                         }
-                    }
-                    else{
-                        renderconflict("Token could not be deleted")
                     }
                 }
                 else{
