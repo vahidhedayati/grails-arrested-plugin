@@ -160,6 +160,17 @@ target(createUserController: "Create a user class") {
 
     println("ArrestedUserController.groovy created and Unit & Integration Tests")
 }
+target(createArrestedController: "Create the controller Arrested") {
+    depends(compile)
+    def (pkg, prefix) = parsePrefix()
+    installTemplateEx("ArrestedController.groovy", "grails-app/controllers/arrested", "controllers", "ArrestedController.groovy") {
+        ant.replace(file: artefactFile) {
+            ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
+        }
+    }
+    depends(compile)
+    println("ArrestedController.groovy created")
+}
 target(createAuth: "Create a authentication controller") {
     depends(compile)
     def (pkg, prefix) = parsePrefix()

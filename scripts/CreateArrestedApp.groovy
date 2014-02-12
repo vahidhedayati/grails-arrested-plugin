@@ -8,6 +8,7 @@ USAGE = """
 target(default: "Token, User, SecurityFilter, and the base JS files and mapping defaults for REST") {
     depends(parseArguments, createToken)
     depends(parseArguments, createUser)
+    depends(parseArguments, createArrestedController)
     depends(parseArguments, createUserController)
     depends(parseArguments, createAngularUser)
     depends(parseArguments, createAuth)
