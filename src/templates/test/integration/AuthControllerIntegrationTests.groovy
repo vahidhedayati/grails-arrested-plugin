@@ -4,15 +4,14 @@ import static org.junit.Assert.*
 import org.junit.*
 
 class AuthControllerIntegrationTests {
-    def authCont
+    private authCont = new AuthController()
 
     @Before
     void setUp() {
         // Setup logic here
-        authCont = new AuthController()
 
-        ArrestedUser UserTest = ArrestedUser.findByUsername('user@test.me')
-        if(UserTest != null){
+        ArrestedUser userTest = ArrestedUser.findByUsername('user@test.me')
+        if(!userTest){
             //Create User for test
             new ArrestedUser(
                     username: "user@test.me",

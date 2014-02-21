@@ -6,9 +6,9 @@ class @controller.name@ extends ArrestedController {
 
     static allowedMethods = [show: "GET", list: "GET", save: "POST", update: "PUT", delete: "DELETE"]
 
-    def show() {
-        if(params.id){
-            @class.name@ instance = @class.name@.findById(params.id as Long)
+    def show(Long id) {
+        if(id){
+            @class.name@ instance = @class.name@.get(id)
             if(instance){
                 withFormat{
                     xml {
@@ -20,7 +20,7 @@ class @controller.name@ extends ArrestedController {
                 }
             }
             else{
-                renderNotFound(params.id, "@class.name@")
+                renderNotFound(id, "@class.name@")
             }
         }
         else{
@@ -29,10 +29,7 @@ class @controller.name@ extends ArrestedController {
     }
 
     def list() {
-        def instances = []
-        @class.name@.list().each {
-            instances.add(it)
-        }
+        def instances = @class.name@.list()
         withFormat{
             xml {
                 render instances as XML
@@ -50,10 +47,10 @@ class @controller.name@ extends ArrestedController {
                 props = domainClass.findAll { allowedNames.contains(it.name) && !excludedProps.contains(it.name) && it.type != null && !Collection.isAssignableFrom(it.type) }
                 for (p in props) {
                     if (p.manyToOne || p.oneToOne){%>
-                        if(params.@class.instance@.${p.name}) instance.${p.name} = ${p.type.name}.findById(params.@class.instance@.${p.name}.id as Long)
+                        if(params.@class.instance@.${p.name}) instance.${p.name} = ${p.type.name}.get(params.@class.instance@.${p.name}.id as Long)
                         <%}else if ((p.oneToMany && !p.bidirectional) || (p.manyToMany && p.isOwningSide())) {%>
                         params.@class.instance@.${p.name}.each{
-                            instance.${p.name}.add(${p.type.name}.findById(it.id as Long))
+                            instance.${p.name}.add(${p.type.name}.get(it.id as Long))
                         }
                         <%}else{%>
                         if(params.@class.instance@.${p.name}) instance.${p.name} = params.@class.instance@.${p.name}
@@ -80,7 +77,7 @@ class @controller.name@ extends ArrestedController {
 
     def update() {
         if (params.@class.instance@) {
-            @class.name@ instance = @class.name@.findById(params.@class.instance@.id as Long)
+            @class.name@ instance = @class.name@.get(params.@class.instance@.id as Long)
             if(instance){ <%if(!cp){%>instance.properties = params.@class.instance@
                     <%}else{
                     excludedProps = Event.allEvents.toList() << 'id' << 'version'
@@ -88,10 +85,10 @@ class @controller.name@ extends ArrestedController {
                     props = domainClass.findAll { allowedNames.contains(it.name) && !excludedProps.contains(it.name) && it.type != null && !Collection.isAssignableFrom(it.type) }
                     for (p in props) {
                         if (p.manyToOne || p.oneToOne){%>
-                            if(params.@class.instance@.${p.name}) instance.${p.name} = ${p.type.name}.findById(params.@class.instance@.${p.name}.id as Long)
+                            if(params.@class.instance@.${p.name}) instance.${p.name} = ${p.type.name}.get(params.@class.instance@.${p.name}.id as Long)
                             <%}else if ((p.oneToMany && !p.bidirectional) || (p.manyToMany && p.isOwningSide())) {%>
                             params.@class.instance@.${p.name}.each{
-                                instance.${p.name}.add(${p.type.name}.findById(it.id as Long))
+                                instance.${p.name}.add(${p.type.name}.get(it.id as Long))
                             }
                             <%}else{%>
                             if(params.@class.instance@.${p.name}) instance.${p.name} = params.@class.instance@.${p.name}
@@ -120,9 +117,9 @@ class @controller.name@ extends ArrestedController {
         }
     }
 
-    def delete() {
-        if (params.id){
-            @class.name@ instance = @class.name@.findById(params.id as Long)
+    def delete(Long id) {
+        if (id){
+            @class.name@ instance = @class.name@.get(id)
             if (instance){
                 instance.delete(flush: true)
                 withFormat {
@@ -137,7 +134,7 @@ class @controller.name@ extends ArrestedController {
                 }
             }
             else{
-                renderNotFound(params.id, "@class.name@")
+                renderNotFound(id, "@class.name@")
             }
         }
         else{

@@ -1,11 +1,11 @@
 includeTargets << grailsScript("_GrailsArgParsing")
-includeTargets << new File ("${arrestedPluginDir}/Scripts/_ArrestedInternal.groovy")
+includeTargets << new File (arrestedPluginDir, "Scripts/_ArrestedInternal.groovy")
 
 USAGE = """
-   create-arrested-app
+   grails create-arrested-app
 """
 
-target(default: "Token, User, SecurityFilter, and the base JS files and mapping defaults for REST") {
+target(createArrestedApp: "Token, User, SecurityFilter, and the base JS files and mapping defaults for REST") {
     depends(parseArguments, createToken)
     depends(parseArguments, createUser)
     depends(parseArguments, createArrestedController)
@@ -19,3 +19,5 @@ target(default: "Token, User, SecurityFilter, and the base JS files and mapping 
     depends(parseArguments, createAngularIndex)
     depends(parseArguments, updateLayout)
 }
+
+setDefaultTarget 'createArrestedApp'

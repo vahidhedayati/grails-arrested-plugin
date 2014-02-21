@@ -6,15 +6,15 @@ class AuthController extends ArrestedController {
 
     static allowedMethods = [login: "POST", logout: "GET"]
 
-    def login(){
-        if(params.username){
-            if(params.passwordHash){
-                ArrestedUser user = ArrestedUser.findByUsername(params.username as String)
+    def login(String username, String passwordHash){
+        if(username){
+            if(passwordHash){
+                ArrestedUser user = ArrestedUser.findByUsername(username)
                 if(user){
-                    if (user.passwordHash == params.passwordHash as String){
+                    if (user.passwordHash == passwordHash){
                         Date valid = new Date()
                         valid + 1
-                        ArrestedToken token = ArrestedToken.findById(user.token)
+                        ArrestedToken token = ArrestedToken.get(user.token)
                         if(!token){
                             user.setToken(new ArrestedToken( token: UUID.randomUUID().toString(), valid: true, owner: user.id).save(flush: true).id)
                             user.save(flush: true)
@@ -49,14 +49,14 @@ class AuthController extends ArrestedController {
         }
     }
 
-    def logout() {
-        if(params.token){
-            ArrestedToken token = ArrestedToken.findByToken(params.token as String)
-            if(token){
-                ArrestedUser user = ArrestedUser.findByToken(token.id)
+    def logout(String token) {
+        if(token){
+            ArrestedToken arrestedToken = ArrestedToken.findByToken(token)
+            if(arrestedToken){
+                ArrestedUser user = ArrestedUser.findByToken(arrestedToken.id)
                 if(user){
-                    token.setValid(false)
-                    token.save(flush: true)
+                    arrestedToken.valid = false
+                    arrestedToken.save(flush: true)
                     withFormat{
                         xml {
                             render "Logout successfully"
