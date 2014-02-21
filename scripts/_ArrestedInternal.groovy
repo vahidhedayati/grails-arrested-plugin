@@ -1,4 +1,3 @@
-import grails.util.GrailsNameUtils
 import groovy.text.SimpleTemplateEngine
 import groovy.text.Template
 import org.codehaus.groovy.grails.plugins.GrailsPluginManager
@@ -46,12 +45,11 @@ installTemplateEx = { String artefactName, String artefactPath, String templateP
 }
 installTemplateView = { domainClass, String artefactName, String artefactPath, String templatePath, String templateName, Closure c ->
     // Copy over the standard auth controller.
-    Template renderEditorTemplate;
-    SimpleTemplateEngine engine = new SimpleTemplateEngine();
+    Template renderEditorTemplate
+    SimpleTemplateEngine engine = new SimpleTemplateEngine()
     GrailsPluginManager pluginManager
     ResourceLoader resourceLoader
     def cp
-
 
     def artefactFile = "${basedir}/${artefactPath}/${artefactName}"
 
@@ -88,10 +86,10 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
 
     ant.copy(file: templateFile, tofile: artefactFile, overwrite: true)
 
-    File file = new File(artefactFile);
-    BufferedWriter output = new BufferedWriter(new FileWriter(file));
-    output.write(renderEditorTemplate.make(binding).toString());
-    output.close();
+    File file = new File(artefactFile)
+    BufferedWriter output = new BufferedWriter(new FileWriter(file))
+    output.write(renderEditorTemplate.make(binding).toString())
+    output.close()
 
     // Perform any custom processing that may be required.
     if (c) {

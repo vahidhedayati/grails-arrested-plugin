@@ -6,11 +6,11 @@ class ArrestedUserController extends ArrestedController {
 
     static allowedMethods = [show: "GET", list: "GET", save: "POST", update: "PUT", delete: "DELETE"]
 
-    def show() {
-        if(params.token){
-            ArrestedToken token = ArrestedToken.findByToken(params.token as String)
-            if(token){
-                ArrestedUser user = ArrestedUser.findByToken(token.id)
+    def show(String token) {
+        if(token){
+            ArrestedToken arrestedToken = ArrestedToken.findByToken(token)
+            if(arrestedToken){
+                ArrestedUser user = ArrestedUser.findByToken(arrestedToken.id)
                 if(user){
                     withFormat{
                         xml {
@@ -35,10 +35,7 @@ class ArrestedUserController extends ArrestedController {
     }
 
     def list() {
-        def users = []
-        ArrestedUser.list().each {
-            users.add(it.showInformation())
-        }
+        def users = ArrestedUser.list().collect { it.showInformation() }
         withFormat{
             xml {
                 render users as XML
@@ -77,12 +74,12 @@ class ArrestedUserController extends ArrestedController {
         }
     }
 
-    def update() {
+    def update(String token) {
         if(params.user){
-            if(params.token){
-                ArrestedToken token = ArrestedToken.findByToken(params.token as String)
-                if(token){
-                    ArrestedUser user = ArrestedUser.findByToken(token.id)
+            if(token){
+                ArrestedToken arrestedToken = ArrestedToken.findByToken(token)
+                if(arrestedToken){
+                    ArrestedUser user = ArrestedUser.findByToken(arrestedToken.id)
                     if(user){
                         if (user.username != params.user.username && ArrestedUser.findByUsername(params.user.username as String)){
                             renderconflict("Username used")
@@ -122,13 +119,13 @@ class ArrestedUserController extends ArrestedController {
         }
     }
 
-    def delete() {
-        if(params.token){
-            ArrestedToken token = ArrestedToken.findByToken(params.token as String)
-            if (token){
-                ArrestedUser user = ArrestedUser.findByToken(token.id)
+    def delete(String token) {
+        if(token){
+            ArrestedToken arrestedToken = ArrestedToken.findByToken(token)
+            if (arrestedToken){
+                ArrestedUser user = ArrestedUser.findByToken(arrestedToken.id)
                 if (user){
-                    token.delete(flush: true)
+                    arrestedToken.delete(flush: true)
                     user.delete(flush: true)
                     withFormat {
                         xml {
