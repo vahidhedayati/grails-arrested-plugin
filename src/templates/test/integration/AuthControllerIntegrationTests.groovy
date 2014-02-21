@@ -42,5 +42,4 @@ class AuthControllerIntegrationTests {
         assertEquals(authCont.response.json.response,'logout_successfully')
         assertEquals(ArrestedToken.findByToken(authCont.params.token as String).owner.token.valid, false)
     }
-
 }

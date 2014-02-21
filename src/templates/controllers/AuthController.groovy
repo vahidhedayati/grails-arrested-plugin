@@ -41,11 +41,11 @@ class AuthController extends ArrestedController {
                 }
             }
             else{
-                renderNotParam("passwordHash")
+                renderMisingParam("passwordHash")
             }
         }
         else{
-            renderNotParam("username")
+            renderMisingParam("username")
         }
     }
 
@@ -75,7 +75,7 @@ class AuthController extends ArrestedController {
             }
         }
         else{
-            renderNotParam("token")
+            renderMisingParam("token")
         }
     }
 }

@@ -9,7 +9,6 @@ includeTargets << grailsScript("_GrailsBootstrap")
 includeTargets << grailsScript("_GrailsCreateArtifacts")
 includeTargets << grailsScript("_GrailsCompile")
 
-
 installTemplate = { String artefactName, String artefactPath, String templatePath ->
     installTemplateEx(artefactName, artefactPath, templatePath, artefactName, null)
 }
@@ -33,7 +32,6 @@ installTemplateEx = { String artefactName, String artefactPath, String templateP
         ant.echo("[Arrested plugin] Error: src/templates/${templatePath}/${templateName} does not exist!")
         return
     }
-
     ant.copy(file: templateFile, tofile: artefactFile, overwrite: true)
 
     // Perform any custom processing that may be required.
@@ -90,7 +88,6 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
     BufferedWriter output = new BufferedWriter(new FileWriter(file))
     output.write(renderEditorTemplate.make(binding).toString())
     output.close()
-
     // Perform any custom processing that may be required.
     if (c) {
         c.delegate = [artefactFile: artefactFile]
@@ -599,8 +596,6 @@ target(updateLayout: "Update the layout view") {
                 "    </div>\n" +
                 "</div>"
     }
-
-
     depends(compile)
     println("main.gsp, index.gsp, arrested.css, _navbar.gsp updated")
 }

@@ -11,8 +11,6 @@ class UserControllerIntegrationTests {
         // Setup logic here
         userCont = new ArrestedUserController()
         tokenAdmin = ArrestedUser.findByUsername('user@test.me')?.token.token
-
-
         ArrestedUser UserTest = ArrestedUser.findByUsername('user@test.me')
         if(UserTest != null){
             new ArrestedUser(
@@ -33,7 +31,6 @@ class UserControllerIntegrationTests {
     @After
     void tearDown() {
         // Tear down logic here
-
         ArrestedUser admin = ArrestedUser.findByUsername('user@test.me')
         admin?.setPasswordHash('admin')
         admin?.save(flush: true)

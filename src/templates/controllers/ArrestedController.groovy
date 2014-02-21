@@ -44,7 +44,7 @@ class ArrestedController {
         }
     }
 
-    def renderNotParam(param){
+    def renderMisingParam(param){
         withFormat{
             xml {
                 response.status = 412

@@ -98,4 +98,3 @@ $rootScope.confirmDelete@class.name@ = function () {
     }
 );}
 }
-

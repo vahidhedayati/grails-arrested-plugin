@@ -30,7 +30,7 @@ class ArrestedUserController extends ArrestedController {
             }
         }
         else{
-            renderNotParam("token")
+            renderMisingParam("token")
         }
     }
 
@@ -70,7 +70,7 @@ class ArrestedUserController extends ArrestedController {
             }
         }
         else{
-            renderNotParam("user")
+            renderMisingParam("user")
         }
     }
 
@@ -111,11 +111,11 @@ class ArrestedUserController extends ArrestedController {
                 }
             }
             else{
-                renderNotParam("token")
+                renderMisingParam("token")
             }
         }
         else{
-            renderNotParam("user")
+            renderMisingParam("user")
         }
     }
 
@@ -147,7 +147,7 @@ class ArrestedUserController extends ArrestedController {
             }
         }
         else{
-            renderNotParam("token")
+            renderMisingParam("token")
         }
     }
 }

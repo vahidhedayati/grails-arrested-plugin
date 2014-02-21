@@ -11,7 +11,6 @@ class @controller.name@IntegrationTest {
 
         @controller.name@Test = new @controller.name@()
         tokenAdmin = ArrestedUser.findByUsername('user@test.me')?.token.token
-
     }
 
     @After
@@ -56,6 +55,4 @@ class @controller.name@IntegrationTest {
         assertEquals(response.json.response,"@class.name@_deleted")
         assertNull(@class.name@.findById(@controller.name@Test.params.id as Long))
     }
-
-
 }

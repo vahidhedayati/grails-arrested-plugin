@@ -24,7 +24,7 @@ class @controller.name@ extends ArrestedController {
             }
         }
         else{
-            renderNotParam("id")
+            renderMisingParam("id")
         }
     }
 
@@ -71,7 +71,7 @@ class @controller.name@ extends ArrestedController {
             }
         }
         else{
-            renderNotParam("@class.instance@")
+            renderMisingParam("@class.instance@")
         }
     }
 
@@ -113,7 +113,7 @@ class @controller.name@ extends ArrestedController {
             }
         }
         else{
-            renderNotParam("@class.instance@")
+            renderMisingParam("@class.instance@")
         }
     }
 
@@ -138,7 +138,7 @@ class @controller.name@ extends ArrestedController {
             }
         }
         else{
-            renderNotParam("id")
+            renderMisingParam("id")
         }
     }
 }
