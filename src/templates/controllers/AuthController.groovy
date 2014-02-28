@@ -33,19 +33,19 @@ class AuthController extends ArrestedController {
                         }
                     }
                     else{
-                        renderconflict("Username and/or password incorrect")
+                        renderConflict("Username and/or password incorrect")
                     }
                 }
                 else{
-                    renderconflict("Username and/or password incorrect")
+                    renderConflict("Username and/or password incorrect")
                 }
             }
             else{
-                renderMisingParam("passwordHash")
+                renderMissingParam("passwordHash")
             }
         }
         else{
-            renderMisingParam("username")
+            renderMissingParam("username")
         }
     }
 
@@ -75,7 +75,7 @@ class AuthController extends ArrestedController {
             }
         }
         else{
-            renderMisingParam("token")
+            renderMissingParam("token")
         }
     }
 }

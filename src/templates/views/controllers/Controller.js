@@ -44,7 +44,7 @@ function @controller.name@(DAO, $rootScope)
     }
 
     $rootScope.save@class.name@ = function () {
-        DAO.save({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token,@class.name@:$rootScope.@class.instance@, controller:'@class.instance@', action:'save'},
+        DAO.save({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, instance:$rootScope.@class.instance@, controller:'@class.instance@', action:'save'},
         function (result) {
             $rootScope.@class.instance@ = result;
             $rootScope.flags.save = true;
@@ -59,7 +59,7 @@ function @controller.name@(DAO, $rootScope)
 }
 
 $rootScope.update@class.name@ = function () {
-    DAO.update({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token,@class.name@:$rootScope.@class.instance@, controller:'@class.instance@', action:'update'},
+    DAO.update({serverHost: $rootScope.appConfig.serverHost, appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, instance:$rootScope.@class.instance@, controller:'@class.instance@', action:'update'},
     function (result) {
         $rootScope.flags.save = true;
     },

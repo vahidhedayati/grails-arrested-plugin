@@ -31,7 +31,7 @@ class ArrestedController {
         }
     }
 
-    def renderconflict(conflict){
+    def renderConflict(conflict){
         withFormat{
             xml {
                 response.status = 409
@@ -44,7 +44,7 @@ class ArrestedController {
         }
     }
 
-    def renderMisingParam(param){
+    def renderMissingParam(param){
         withFormat{
             xml {
                 response.status = 412

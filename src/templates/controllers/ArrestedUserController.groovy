@@ -30,7 +30,7 @@ class ArrestedUserController extends ArrestedController {
             }
         }
         else{
-            renderMisingParam("token")
+            renderMissingParam("token")
         }
     }
 
@@ -47,11 +47,12 @@ class ArrestedUserController extends ArrestedController {
     }
 
     def save() {
-        if (params.user) {
-            if (ArrestedUser.findByUsername(params.user.username as String)) {
-                renderconflict("Username used")
+        if (params.instance) {
+            def data = JSON.parse(params.instance)
+            if (ArrestedUser.findByUsername(data.username as String)) {
+                renderConflict("Username used")
             } else {
-                ArrestedUser user = new ArrestedUser(params.user)
+                ArrestedUser user = new ArrestedUser(data)
                 if(user.save(flush: true)){
                     withFormat {
                         xml {
@@ -70,21 +71,22 @@ class ArrestedUserController extends ArrestedController {
             }
         }
         else{
-            renderMisingParam("user")
+            renderMissingParam("user")
         }
     }
 
     def update(String token) {
-        if(params.user){
+        if(params.instance){
+            def data = JSON.parse(params.instance)
             if(token){
                 ArrestedToken arrestedToken = ArrestedToken.findByToken(token)
                 if(arrestedToken){
                     ArrestedUser user = ArrestedUser.findByToken(arrestedToken.id)
                     if(user){
-                        if (user.username != params.user.username && ArrestedUser.findByUsername(params.user.username as String)){
-                            renderconflict("Username used")
+                        if (user.username != data.username && ArrestedUser.findByUsername(data.username as String)){
+                            renderConflict("Username used")
                         } else {
-                            user.properties = params.user
+                            user.properties = data
                             if(user.save(flush: true)){
                                 withFormat {
                                     xml {
@@ -103,7 +105,7 @@ class ArrestedUserController extends ArrestedController {
                         }
                     }
                     else{
-                        renderNotFound(params.user.id, "User")
+                        renderNotFound(data.id, "User")
                     }
                 }
                 else{
@@ -111,11 +113,11 @@ class ArrestedUserController extends ArrestedController {
                 }
             }
             else{
-                renderMisingParam("token")
+                renderMissingParam("token")
             }
         }
         else{
-            renderMisingParam("user")
+            renderMissingParam("user")
         }
     }
 
@@ -147,7 +149,7 @@ class ArrestedUserController extends ArrestedController {
             }
         }
         else{
-            renderMisingParam("token")
+            renderMissingParam("token")
         }
     }
 }

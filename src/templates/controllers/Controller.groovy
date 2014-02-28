@@ -24,7 +24,7 @@ class @controller.name@ extends ArrestedController {
             }
         }
         else{
-            renderMisingParam("id")
+            renderMissingParam("id")
         }
     }
 
@@ -41,19 +41,20 @@ class @controller.name@ extends ArrestedController {
     }
 
     def save() {
-        if (params.@class.instance@) {
-            <%if(!cp){%>@class.name@ instance = new @class.name@(params.@class.instance@)<%}else{%>@class.name@ instance = new @class.name@() <%  excludedProps = Event.allEvents.toList() << 'id' << 'version'
+        if (params.instance) {
+            def data = JSON.parse(params.instance)
+            <%if(!cp){%>@class.name@ instance = new @class.name@(data)<%}else{%>@class.name@ instance = new @class.name@() <%  excludedProps = Event.allEvents.toList() << 'id' << 'version'
                 allowedNames = domainClass.name << 'dateCreated' << 'lastUpdated'
                 props = domainClass.findAll { allowedNames.contains(it.name) && !excludedProps.contains(it.name) && it.type != null && !Collection.isAssignableFrom(it.type) }
                 for (p in props) {
                     if (p.manyToOne || p.oneToOne){%>
-                        if(params.@class.instance@.${p.name}) instance.${p.name} = ${p.type.name}.get(params.@class.instance@.${p.name}.id as Long)
+                        if(data.${p.name}) instance.${p.name} = ${p.type.name}.get(data.${p.name}.id as Long)
                         <%}else if ((p.oneToMany && !p.bidirectional) || (p.manyToMany && p.isOwningSide())) {%>
-                        params.@class.instance@.${p.name}.each{
+                        data.${p.name}.each{
                             instance.${p.name}.add(${p.type.name}.get(it.id as Long))
                         }
                         <%}else{%>
-                        if(params.@class.instance@.${p.name}) instance.${p.name} = params.@class.instance@.${p.name}
+                        if(data.${p.name}) instance.${p.name} = data.${p.name}
                         <%}}}%>if(instance.save(flush: true)){
                 withFormat {
                     xml {
@@ -71,27 +72,28 @@ class @controller.name@ extends ArrestedController {
             }
         }
         else{
-            renderMisingParam("@class.instance@")
+            renderMissingParam("@class.instance@")
         }
     }
 
     def update() {
-        if (params.@class.instance@) {
-            @class.name@ instance = @class.name@.get(params.@class.instance@.id as Long)
-            if(instance){ <%if(!cp){%>instance.properties = params.@class.instance@
+        if (params.instance) {
+            def data = JSON.parse(params.instance)
+            @class.name@ instance = @class.name@.get(data.id as Long)
+            if(instance){ <%if(!cp){%>instance.properties = data
                     <%}else{
                     excludedProps = Event.allEvents.toList() << 'id' << 'version'
                     allowedNames = domainClass.name << 'dateCreated' << 'lastUpdated'
                     props = domainClass.findAll { allowedNames.contains(it.name) && !excludedProps.contains(it.name) && it.type != null && !Collection.isAssignableFrom(it.type) }
                     for (p in props) {
                         if (p.manyToOne || p.oneToOne){%>
-                            if(params.@class.instance@.${p.name}) instance.${p.name} = ${p.type.name}.get(params.@class.instance@.${p.name}.id as Long)
+                            if(data.${p.name}) instance.${p.name} = ${p.type.name}.get(data.${p.name}.id as Long)
                             <%}else if ((p.oneToMany && !p.bidirectional) || (p.manyToMany && p.isOwningSide())) {%>
-                            params.@class.instance@.${p.name}.each{
+                            params.instance.${p.name}.each{
                                 instance.${p.name}.add(${p.type.name}.get(it.id as Long))
                             }
                             <%}else{%>
-                            if(params.@class.instance@.${p.name}) instance.${p.name} = params.@class.instance@.${p.name}
+                            if(data.${p.name}) instance.${p.name} = data.${p.name}
                             <%}}}%>if(instance.save(flush: true)){
                     withFormat {
                         xml {
@@ -109,11 +111,11 @@ class @controller.name@ extends ArrestedController {
                 }
             }
             else{
-                renderNotFound(params.@class.instance@.id, "@class.name@")
+                renderNotFound(data.id, "@class.name@")
             }
         }
         else{
-            renderMisingParam("@class.instance@")
+            renderMissingParam("@class.instance@")
         }
     }
 
@@ -138,7 +140,7 @@ class @controller.name@ extends ArrestedController {
             }
         }
         else{
-            renderMisingParam("id")
+            renderMissingParam("id")
         }
     }
 }
