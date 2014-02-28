@@ -12,18 +12,18 @@ We need to set up a couple things before we get started generating your REST con
 
 To get started with arrested run:
 
-> grails arrested-server
+> grails create-arrested-app
 
 
 To generate a REST controller run: 
 (This will generate a Controller and put the appropriate configurations in UrlMapping to be RESTful)
 
-> grails generate-arrested-controller DomainClassName
+> grails create-arrested-controller DomainClassName
 
 To generate views for your newly created REST controller run: 
 (This will generate a index.gsp file in your views directory ie. /views/domainclassname/index.gsp; and the javascript files to interact with your REST controller.  It's configured to use the security token and will pass a token on each request for data.)
 
-> grails generate-arrested-view DomainClassName
+> grails create-arrested-view DomainClassName
 
 
 Security
