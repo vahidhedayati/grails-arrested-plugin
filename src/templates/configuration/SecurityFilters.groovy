@@ -7,10 +7,8 @@ class SecurityFilters {
                 }
                 if(params.token){
                     ArrestedToken token = ArrestedToken.findByToken(params.token as String)
-                    if(token){
-                        if(token.valid){
-                            return true
-                        }
+                    if(token?.valid){
+                        return true
                     }
                 }
                 return false
