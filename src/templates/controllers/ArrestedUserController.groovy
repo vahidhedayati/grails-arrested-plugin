@@ -1,6 +1,7 @@
 import grails.converters.JSON
 import grails.converters.XML
 import arrested.ArrestedController
+import org.apache.shiro.crypto.hash.Sha256Hash
 
 class ArrestedUserController extends ArrestedController {
 
@@ -52,7 +53,7 @@ class ArrestedUserController extends ArrestedController {
             if (ArrestedUser.findByUsername(data.username as String)) {
                 renderConflict("Username used")
             } else {
-                ArrestedUser user = new ArrestedUser(data)
+                ArrestedUser user = new ArrestedUser(username:data.username, passwordHash: new Sha256Hash(data.passwordHash as String).toHex())
                 if(user.save(flush: true)){
                     withFormat {
                         xml {

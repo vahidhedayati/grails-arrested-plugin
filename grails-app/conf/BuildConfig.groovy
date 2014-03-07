@@ -11,6 +11,10 @@ grails.project.dependency.resolution = {
         mavenCentral()
     }
 
+    dependencies {
+        compile 'org.apache.shiro:shiro-core:1.2.0'
+    }
+
     plugins {
         runtime ":cors:1.1.4"
         build ':release:2.2.1', ':rest-client-builder:1.0.3', {

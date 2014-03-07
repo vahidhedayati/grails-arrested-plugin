@@ -1,6 +1,7 @@
 import grails.converters.JSON
 import grails.converters.XML
 import arrested.ArrestedController
+import org.apache.shiro.crypto.hash.Sha256Hash
 
 class AuthController extends ArrestedController {
 
@@ -11,7 +12,7 @@ class AuthController extends ArrestedController {
             if(passwordHash){
                 ArrestedUser user = ArrestedUser.findByUsername(username)
                 if(user){
-                    if (user.passwordHash == passwordHash){
+                    if (user.passwordHash == new Sha256Hash(passwordHash as String).toHex()){
                         Date valid = new Date()
                         valid + 1
                         ArrestedToken token = ArrestedToken.get(user.token)
