@@ -34,3 +34,47 @@ Security
 
 
 How to Integrate
+Creating a user at startup:
+
+```
+class BootStrap {
+
+    def init = { servletContext ->
+		
+		ArrestedUser user,user1
+		ArrestedToken token,token1
+		
+		 user = new ArrestedUser(
+			username: "me@test.me",
+			passwordHash: "admin",
+			dateCreated: new Date()
+		).save()
+		
+		user1 = new ArrestedUser(
+			username: 'you@test.me',
+			passwordHash: "admin",
+			dateCreated: new Date()
+		).save()
+
+		 //Create tokens for users
+		token = new ArrestedToken(
+			token: 'token',
+			valid: true,
+			owner: user.id
+		).save(flush: true)
+		user.setToken(token.id)
+		user.save()
+
+		token1 = new ArrestedToken(
+			token: 'token1',
+			valid: true,
+			owner: user1.id
+		).save(flush: true)
+		user1.setToken(token1.id)
+		user1.save()
+	
+    }
+    ....
+```
+
+
