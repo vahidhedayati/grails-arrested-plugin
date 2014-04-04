@@ -19,6 +19,9 @@ To generate a REST domainClass run:
 (This will generate a Controller and put the appropriate configurations in UrlMapping to be RESTful)
 > grails create-domain-class DomainClassName
 
+Once you have generated a domainClass ensure you add at least one element inside it before proceeding to the next step:
+
+
 To generate a REST controller run: 
 (This will generate a Controller and put the appropriate configurations in UrlMapping to be RESTful)
 
@@ -34,6 +37,7 @@ Security
 
 
 How to Integrate
+
 Creating a user at startup:
 
 ```
