@@ -15,6 +15,10 @@ To get started with arrested run:
 > grails create-arrested-app
 
 
+To generate a REST domainClass run: 
+(This will generate a Controller and put the appropriate configurations in UrlMapping to be RESTful)
+> grails create-domain-class DomainClassName
+
 To generate a REST controller run: 
 (This will generate a Controller and put the appropriate configurations in UrlMapping to be RESTful)
 
