@@ -8,15 +8,36 @@ import grails.util.Metadata
 includeTargets << grailsScript("_GrailsBootstrap")
 includeTargets << grailsScript("_GrailsCreateArtifacts")
 includeTargets << grailsScript("_GrailsCompile")
-
+overwriteAll = false
 installTemplate = { String artefactName, String artefactPath, String templatePath ->
     installTemplateEx(artefactName, artefactPath, templatePath, artefactName, null)
 }
+okToWrite = { String dest ->
+	def file = new File(dest)
+	if (overwriteAll || !file.exists()) {
+		return true
+	}
+	
+	String propertyName = "file.overwrite.$file.name"
+	ant.input(addProperty: propertyName, message: "$dest exists, ok to overwrite?", validargs: 'y,n,a', defaultvalue: 'y')
+	
+	if (ant.antProject.properties."$propertyName" == 'n') {
+		return false
+	}
+	
+	if (ant.antProject.properties."$propertyName" == 'a') {
+		overwriteAll = true
+	}
+	true
+}
+
 installTemplateEx = { String artefactName, String artefactPath, String templatePath, String templateName, Closure c ->
     // Copy over the standard auth controller.
     def artefactFile = "${basedir}/${artefactPath}/${artefactName}"
-
-    if (new File(artefactFile).exists()) {
+	if (!okToWrite(artefactFile)) {
+		return
+	}
+    /*if (new File(artefactFile).exists()) {
         ant.input(
                 addProperty: "${args}.${artefactName}.overwrite",
                 message: "${artefactName} already exists. Overwrite? [y/n]")
@@ -24,7 +45,7 @@ installTemplateEx = { String artefactName, String artefactPath, String templateP
         if (ant.antProject.properties."${args}.${artefactName}.overwrite" == "n") {
             return
         }
-    }
+    }*/
 
     // Copy the template file to the 'grails-app/controllers' directory.
     templateFile = "${arrestedPluginDir}/src/templates/${templatePath}/${templateName}"
@@ -50,8 +71,10 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
     def cp
 
     def artefactFile = "${basedir}/${artefactPath}/${artefactName}"
-
-    if (new File(artefactFile).exists()) {
+	if (!okToWrite(artefactFile)) {
+		return
+	}
+    /*if (new File(artefactFile).exists()) {
         ant.input(
                 addProperty: "${args}.${artefactName}.overwrite",
                 message: "${artefactName} already exists. Overwrite? [y/n]")
@@ -59,7 +82,8 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
         if (ant.antProject.properties."${args}.${artefactName}.overwrite" == "n") {
             return
         }
-    }
+    }*/
+	
     // Copy the template file to the 'grails-app/controllers' directory.
     templateFile = "${arrestedPluginDir}/src/templates/${templatePath}/${templateName}"
     if (!new File(templateFile).exists()) {
@@ -608,7 +632,8 @@ private parsePrefix() {
         prefix = givenValue[-1]
         pkg = givenValue.size() > 1 ? givenValue[0..-2].join('.') : ""
     }
-    return [pkg, prefix]
+	
+    return [pkg ?: 'arrested', prefix]
 }
 
 private packageToPath(String pkg) {
