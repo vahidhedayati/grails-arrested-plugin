@@ -52,7 +52,7 @@ To generate views for your newly created REST controller run:
 
 
 BootStrap:
-```
+```groovy
 import org.apache.shiro.crypto.hash.Sha256Hash
 
 import arrested.ArrestedToken
@@ -97,6 +97,5 @@ For a sample site please visit [testingarrested](https://github.com/vahidhedayat
 2. Your project name should not have - (dashes) for some reason an example project called arrested-test doing this exact task bypasses authentication - and does not allow any record manipluation, after a few tests it turned out to be related to dashes in project name.
  
 
-```
 
 
