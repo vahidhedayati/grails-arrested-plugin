@@ -88,7 +88,7 @@ class BootStrap {
 
 Configuration completed
 
-For a sample site please visit [testingarrested:https://github.com/vahidhedayati/testingarrested]
+For a sample site please visit [testingarrested](https://github.com/vahidhedayati/testingarrested)
 
 #### Limitations:
 
