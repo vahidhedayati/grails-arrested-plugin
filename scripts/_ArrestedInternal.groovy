@@ -1,10 +1,12 @@
+import grails.util.Holders
+import grails.util.Metadata
 import groovy.text.SimpleTemplateEngine
 import groovy.text.Template
+
 import org.codehaus.groovy.grails.plugins.GrailsPluginManager
 import org.codehaus.groovy.grails.plugins.PluginManagerHolder
 import org.springframework.core.io.ResourceLoader
-import grails.util.Metadata
-
+includeTargets << grailsScript('_GrailsPackage')
 includeTargets << grailsScript("_GrailsBootstrap")
 includeTargets << grailsScript("_GrailsCreateArtifacts")
 includeTargets << grailsScript("_GrailsCompile")
@@ -137,7 +139,7 @@ target(createViewController: "Creates view") {
 }
 target(createToken: "Create a token class") {
     depends(compile)
-    def (pkg, prefix) = parsePrefix()
+    def (pkg, prefix) = parsePrefix1()
     installTemplateEx("ArrestedToken.groovy", "grails-app/domain${packageToPath(pkg)}", "classes", "ArrestedToken.groovy") {
         ant.replace(file: artefactFile) {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
@@ -147,7 +149,7 @@ target(createToken: "Create a token class") {
 }
 target(createUser: "Create a user class") {
     depends(compile)
-    def (pkg, prefix) = parsePrefix()
+    def (pkg, prefix) = parsePrefix1()
     installTemplateEx("ArrestedUser.groovy", "grails-app/domain${packageToPath(pkg)}", "classes", "ArrestedUser.groovy") {
         ant.replace(file: artefactFile) {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
@@ -157,7 +159,7 @@ target(createUser: "Create a user class") {
 }
 target(createUserController: "Create a user class") {
     depends(compile)
-    def (pkg, prefix) = parsePrefix()
+    def (pkg, prefix) = parsePrefix1()
     installTemplateEx("ArrestedUserController.groovy", "grails-app/controllers${packageToPath(pkg)}", "controllers", "ArrestedUserController.groovy") {
         ant.replace(file: artefactFile) {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
@@ -181,7 +183,7 @@ target(createUserController: "Create a user class") {
 }
 target(createArrestedController: "Create the controller Arrested") {
     depends(compile)
-    def (pkg, prefix) = parsePrefix()
+    def (pkg, prefix) = parsePrefix1()
     installTemplateEx("ArrestedController.groovy", "grails-app/controllers/arrested", "controllers", "ArrestedController.groovy") {
         ant.replace(file: artefactFile) {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
@@ -192,7 +194,7 @@ target(createArrestedController: "Create the controller Arrested") {
 }
 target(createAuth: "Create a authentication controller") {
     depends(compile)
-    def (pkg, prefix) = parsePrefix()
+    def (pkg, prefix) = parsePrefix1()
     installTemplateEx("AuthController.groovy", "grails-app/controllers${packageToPath(pkg)}", "controllers", "AuthController.groovy") {
         ant.replace(file: artefactFile) {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
@@ -214,7 +216,7 @@ target(createAuth: "Create a authentication controller") {
 }
 target(createFilter: "Create a security filter") {
     depends(compile)
-    def (pkg, prefix) = parsePrefix()
+    def (pkg, prefix) = parsePrefix1()
     installTemplateEx("SecurityFilters.groovy", "grails-app/conf${packageToPath(pkg)}", "configuration", "SecurityFilters.groovy") {
         ant.replace(file: artefactFile) {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
@@ -409,6 +411,7 @@ target(createJSController: "Creates a standard angular controller") {
                     ant.replace(file: artefactFile) {
                         ant.replacefilter(token: '@controller.name@', value: className)
                         ant.replacefilter(token: '@class.name@', value: prefix)
+						//VAHID
                         ant.replacefilter(token: '@class.instance@', value: domainClass.getPropertyName())
                         ant.replacefilter(token: '@app.name@', value: Metadata.current.'app.name')
                     }
@@ -418,11 +421,14 @@ target(createJSController: "Creates a standard angular controller") {
     depends(compile)
 }
 target(createAngularUser: "Create the angular user controller") {
-    depends(compile)
+    depends(compile, createConfig)
     def (pkg, prefix) = parsePrefix()
     installTemplateEx("userCtrl.js", "web-app/js/", "views/controllers", "userController.js") {
         ant.replace(file: artefactFile) {
             ant.replacefilter(token: '@app.name@', value: Metadata.current.'app.name')
+	
+			def url=config.grails.serverURL ?: 'localhost:8080'
+			ant.replacefilter(token: '@server.url@', value: url)
         }
     }
     installTemplateEx("login.html", "web-app/Views/${packageToPath(pkg)}auth", "views/view", "login.html") {}
@@ -632,10 +638,18 @@ private parsePrefix() {
         prefix = givenValue[-1]
         pkg = givenValue.size() > 1 ? givenValue[0..-2].join('.') : ""
     }
-	
-    return [pkg ?: 'arrested', prefix]
+    return [pkg, prefix]
 }
-
+private parsePrefix1() {
+	def prefix = "Arrested"
+	def pkg = ""
+	if (argsMap['params'][0] != null) {
+		def givenValue = argsMap['params'][0].split(/\./, -1)
+		prefix = givenValue[-1]
+		pkg = givenValue.size() > 1 ? givenValue[0..-2].join('.') : ""
+	}
+	return [pkg ?: 'arrested', prefix]
+}
 private packageToPath(String pkg) {
     return pkg ? '/' + pkg.replace('.' as char, '/' as char) : ''
 }
