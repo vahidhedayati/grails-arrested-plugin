@@ -88,7 +88,7 @@ class BootStrap {
 
 Configuration completed
 
-
+For a sample site please visit [testingarrested:https://github.com/vahidhedayati/testingarrested]
 Limitations:
 
 1. The relationship does not appear to be working or passed between authors and books - possibly using a true DB will get around this issue, since a refresh to main site also logs user back out.
