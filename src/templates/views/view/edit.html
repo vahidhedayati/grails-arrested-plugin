@@ -147,6 +147,9 @@
 
     private renderManyToOne(domainClass,property) {
     if (property.association) {
+    if (property.type.name.indexOf('.')>-1) {
+    	property.type.name=property.type.name.substring(property.type.name.lastIndexOf('.')+1,property.type.name.length())
+    }
     def sb = new StringBuilder()
     sb << '<select'
     // id is "x" and name is "x.id" as the label will have for="x" and "." in an id will confuse CSS

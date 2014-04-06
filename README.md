@@ -9,7 +9,7 @@ AngularJs + RESTful = Arrested
 # Installation:
 
 Add plugin Dependency in BuildConfig.groovy :
->compile ":arrested:1.2"
+>compile ":arrested:1.4"
 
 
 # Getting Started
@@ -86,16 +86,31 @@ class BootStrap {
 }
 ```
 
+# Config.groovy 
+#### Web application url:
+>grails.serverURL = "http://www.changeme.com"
+Enable this option in your Config.groovy to override default http://localhost:8080/ url set in UserCtrl.js
+
+
 Configuration completed
 
-For a sample site please visit [testingarrested](https://github.com/vahidhedayati/testingarrested)
+For a sample site please visit [testingarrested](https://github.com/vahidhedayati/testingarrested), this project consists of a basic Books,Authors data modelling where 
+Authors have many books. To log in 
+>username:  me@domain.com
+>password:  password
+
+Refer to Bootstrap configuration on this demo project to see how that works, once in, you can create authors then add books to those authors.
+  
+
 
 #### Limitations:
 
-1. The relationship does not appear to be working or passed between authors and books - possibly using a true DB will get around this issue, since a refresh to main site also logs user back out.
-
-2. Your project name should not have - (dashes) for some reason an example project called arrested-test doing this exact task bypasses authentication - and does not allow any record manipluation, after a few tests it turned out to be related to dashes in project name.
- 
+1. If your project has a dash i.e. grails-app for some reason there is currently a bug stopping things from working properly.
+Try testing out the plugin in a new project and calling your project a full name i.e. myproject
 
 
+### Version info:
+>1.4 : Minor changes to edit.html renderManyToOne : property.type.name substring lastIndexOf . to end (this may be needed in other calls, further tests needed)
+>1.3 : Changes made to ArrestedUser & Token so they default to arrested package - this now fixes unit tests for newly created controllers, added serverURL config override.
+>1.2 : Fixed some minor issues with uppercase Scripts to scripts etc. 
 
