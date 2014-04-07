@@ -86,10 +86,6 @@ class BootStrap {
 }
 ```
 
-# Config.groovy 
-#### Web application url:
->grails.serverURL = "http://www.changeme.com"
-Enable this option in your Config.groovy to override default http://localhost:8080/ url set in UserCtrl.js
 
 
 Configuration completed
@@ -110,7 +106,10 @@ Try testing out the plugin in a new project and calling your project a full name
 
 
 ### Version info:
->1.4 : Minor changes to edit.html renderManyToOne : property.type.name substring lastIndexOf . to end (this may be needed in other calls, further tests needed)
->1.3 : Changes made to ArrestedUser & Token so they default to arrested package - this now fixes unit tests for newly created controllers, added serverURL config override.
->1.2 : Fixed some minor issues with uppercase Scripts to scripts etc. 
+```
+1.5 : changed static/Views to Views - this caused issued on 2.3.7+, removed serverHost change resource to a dynamic call within service.js
+1.4 : Minor changes to edit.html renderManyToOne : property.type.name substring lastIndexOf . to end (this may be needed in other calls, further tests needed)
+1.3 : Changes made to ArrestedUser & Token so they default to arrested package - this now fixes unit tests for newly created controllers, added serverURL config override.
+1.2 : Fixed some minor issues with uppercase Scripts to scripts etc.
+``` 
 
