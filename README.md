@@ -9,7 +9,7 @@ AngularJs + RESTful = Arrested
 # Installation:
 
 Add plugin Dependency in BuildConfig.groovy :
->compile ":arrested:1.5"
+>compile ":arrested:1.6"
 
 
 # Getting Started
@@ -100,15 +100,24 @@ Refer to Bootstrap configuration on this demo project to see how that works, onc
 
 
 #### Limitations:
-
-The only limitation noticed, is if you have saved your password and it auto fills the password, authentication is not accepted. You need to type in password everytime.
+Nothing noticed / reported at the moment - 
 
 
 ### Version info:
 ```
-1.5 : changed static/Views to Views - this caused issued on 2.3.7+, removed serverHost change resource to a dynamic call within service.js
-1.4 : Minor changes to edit.html renderManyToOne : property.type.name substring lastIndexOf . to end (this may be needed in other calls, further tests needed)
-1.3 : Changes made to ArrestedUser & Token so they default to arrested package - this now fixes unit tests for newly created controllers, added serverURL config override.
-1.2 : Fixed some minor issues with uppercase Scripts to scripts etc.
+1.6 : 	Fixed issue with applications that have a dash / (hyphens). This was due to var in index.js also adopting dashes and breaking javascript, 
+		Added extra autocomplete="off" to login form, a limitation in where browser saved passwords auto complete does not work well with this technology.
+		In order to successfully log in, user must fill in username and password. The extra additions to login.html appears to have fixed on firefox. 
+
+1.5 : 	changed static/Views to Views - this caused issued on 2.3.7+, removed serverHost change
+		resource to a dynamic call within service.js
+		
+1.4 : 	Minor changes to edit.html renderManyToOne : property.type.name substring lastIndexOf . to end 
+		(this may be needed in other calls, further tests needed)
+		
+1.3 : 	Changes made to ArrestedUser & Token so they default to arrested package - this now fixes unit tests 
+		for newly created controllers, added serverURL config override.
+		
+1.2 : 	Fixed some minor issues with uppercase Scripts to scripts etc.
 ``` 
 
