@@ -6,7 +6,6 @@ import groovy.text.Template
 import org.codehaus.groovy.grails.plugins.GrailsPluginManager
 import org.codehaus.groovy.grails.plugins.PluginManagerHolder
 import org.springframework.core.io.ResourceLoader
-includeTargets << grailsScript('_GrailsPackage')
 includeTargets << grailsScript("_GrailsBootstrap")
 includeTargets << grailsScript("_GrailsCreateArtifacts")
 includeTargets << grailsScript("_GrailsCompile")
@@ -411,7 +410,6 @@ target(createJSController: "Creates a standard angular controller") {
                     ant.replace(file: artefactFile) {
                         ant.replacefilter(token: '@controller.name@', value: className)
                         ant.replacefilter(token: '@class.name@', value: prefix)
-						//VAHID
                         ant.replacefilter(token: '@class.instance@', value: domainClass.getPropertyName())
                         ant.replacefilter(token: '@app.name@', value: Metadata.current.'app.name')
                     }
@@ -421,14 +419,11 @@ target(createJSController: "Creates a standard angular controller") {
     depends(compile)
 }
 target(createAngularUser: "Create the angular user controller") {
-    depends(compile, createConfig)
+    depends(compile)
     def (pkg, prefix) = parsePrefix()
     installTemplateEx("userCtrl.js", "web-app/js/", "views/controllers", "userController.js") {
         ant.replace(file: artefactFile) {
             ant.replacefilter(token: '@app.name@', value: Metadata.current.'app.name')
-	
-			def url=config.grails.serverURL ?: 'localhost:8080'
-			ant.replacefilter(token: '@server.url@', value: url)
         }
     }
     installTemplateEx("login.html", "web-app/Views/${packageToPath(pkg)}auth", "views/view", "login.html") {}
