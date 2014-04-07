@@ -101,8 +101,7 @@ Refer to Bootstrap configuration on this demo project to see how that works, onc
 
 #### Limitations:
 
-1. If your project has a dash i.e. grails-app for some reason there is currently a bug stopping things from working properly.
-Try testing out the plugin in a new project and calling your project a full name i.e. myproject
+The only limitation noticed, is if you have saved your password and it auto fills the password, authentication is not accepted. You need to type in password everytime.
 
 
 ### Version info:
