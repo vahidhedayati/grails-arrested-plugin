@@ -20,6 +20,7 @@
     <div>
     <%
     private renderEditor(property){
+    cp=cp."${property.name}"
     if (property.type == Boolean || property.type == boolean)
     renderBooleanEditor(domainClass, property)
     else if (property.type && Number.isAssignableFrom(property.type) || (property.type?.isPrimitive() && property.type != boolean))

@@ -9,7 +9,7 @@ AngularJs + RESTful = Arrested
 # Installation:
 
 Add plugin Dependency in BuildConfig.groovy :
->compile ":arrested:1.6"
+>compile ":arrested:1.7"
 
 
 # Getting Started
@@ -105,6 +105,8 @@ Nothing noticed / reported at the moment -
 
 ### Version info:
 ```
+1.7 :	edit.html constraints not working - now fixed, added extra sha256Password encryption to testUnit for controller
+
 1.6 : 	Fixed issue with applications that have a dash / (hyphens). This was due to var in index.js also adopting dashes and breaking javascript, 
 		Added extra autocomplete="off" to login form, a limitation in where browser saved passwords auto complete does not work well with this technology.
 		In order to successfully log in, user must fill in username and password. The extra additions to login.html appears to have fixed on firefox. 
