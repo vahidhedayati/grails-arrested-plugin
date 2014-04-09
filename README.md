@@ -9,7 +9,7 @@ AngularJs + RESTful = Arrested
 # Installation:
 
 Add plugin Dependency in BuildConfig.groovy :
->compile ":arrested:1.7"
+>compile ":arrested:1.8"
 
 
 # Getting Started
@@ -105,6 +105,8 @@ Nothing noticed / reported at the moment -
 
 ### Version info:
 ```
+1.8 :	Should have tested 1.7 properly - whilst it worked in one field instance, bugs with multiElement. Now fixed
+
 1.7 :	edit.html constraints not working - now fixed, added extra sha256Password encryption to testUnit for controller
 
 1.6 : 	Fixed issue with applications that have a dash / (hyphens). This was due to var in index.js also adopting dashes and breaking javascript, 
