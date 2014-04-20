@@ -357,12 +357,12 @@ target(createAngularIndex: "Create the angular file configuration") {
         writer.writeLine "]);"
 		
 		// Password Matching directive added 0.10
-		writer.writeLine shortname + ".directive('passwordMatch', [function () {\n"
-		writer.writeLine "\treturn {\n"+
-		writer.writeLine "\trestrict: 'A',\n"+
-		writer.writeLine "\tscope:true,\n"+
-		writer.writeLine "\trequire: 'ngModel',\n"+
-		writer.writeLine "\tlink: function (scope, elem , attrs,control) {\n"+
+		writer.writeLine shortname + ".directive('passwordMatch', [function () {"
+		writer.writeLine "\treturn {"
+		writer.writeLine "\trestrict: 'A',"
+		writer.writeLine "\tscope:true,"
+		writer.writeLine "\trequire: 'ngModel',"
+		writer.writeLine "\tlink: function (scope, elem , attrs,control) {"
 		writer.writeLine "\t\tvar checker = function () {"
 		writer.writeLine "\t\t//get the value of the first password"
 		writer.writeLine "\t\tvar e1 = scope.\$eval(attrs.ngModel);"
@@ -454,7 +454,8 @@ target(createAngularUser: "Create the angular user controller") {
         }
     }
     installTemplateEx("login.html", "web-app/Views/${packageToPath(pkg)}auth", "views/view", "login.html") {}
-    println("userController.js and login.html created")
+	installTemplateEx("signup.html", "web-app/Views/${packageToPath(pkg)}auth", "views/view", "signup.html") {}
+    println("userController.js and login.html signup.html created")
     depends(compile)
 }
 target(updateLayout: "Update the layout view") {
