@@ -199,7 +199,7 @@
     sb << " data-ng-model='${domainTitle}.${property.name}'"
     sb << ' data-ng-controller="'<< property.type.name <<'Ctrl"'
     sb << ' data-ng-init="getAll'<< property.type.name <<'()"'
-    sb << ' ng-options="c.id for c in ' << property.type.name.toLowerCase() << 's"'
+    sb << ' ng-options="c.id for c in ' << property.type.name.toLowerCase() << 's track by c.id"'
     if (isRequired()) sb << ' required=""'
     sb << ' class="many-to-one"'
     sb << renderNoSelection(property)

@@ -345,6 +345,7 @@ target(createAngularIndex: "Create the angular file configuration") {
                 "    function(\$routeProvider) {\n" +
                 "        \$routeProvider."
         writer.writeLine "            when('/login', {templateUrl: 'Views/auth/login.html', controller: 'UserCtrl'})."
+		writer.writeLine "            when('/signup', {templateUrl: 'Views/auth/signup.html', controller: 'UserCtrl'})."
         names.each {
             writer.writeLine "            when('/" + it.propertyName + "/create', {templateUrl: 'Views/" + it.propertyName + "/edit.html', controller: '" + it.className + "Ctrl'})."
             writer.writeLine "            when('/" + it.propertyName + "/edit', {templateUrl: 'Views/" + it.propertyName + "/edit.html', controller: '" + it.className + "Ctrl'})."
@@ -354,6 +355,31 @@ target(createAngularIndex: "Create the angular file configuration") {
         writer.writeLine "            otherwise({redirectTo: '/login'});"
         writer.writeLine "    }"
         writer.writeLine "]);"
+		
+		// Password Matching directive added 0.10
+		writer.writeLine shortname + ".directive('passwordMatch', [function () {\n"
+		writer.writeLine "\treturn {\n"+
+		writer.writeLine "\trestrict: 'A',\n"+
+		writer.writeLine "\tscope:true,\n"+
+		writer.writeLine "\trequire: 'ngModel',\n"+
+		writer.writeLine "\tlink: function (scope, elem , attrs,control) {\n"+
+		writer.writeLine "\t\tvar checker = function () {"
+		writer.writeLine "\t\t//get the value of the first password"
+		writer.writeLine "\t\tvar e1 = scope.\$eval(attrs.ngModel);"
+		writer.writeLine "\t\t//get the value of the other password"
+		writer.writeLine "\t\tvar e2 = scope.\$eval(attrs.passwordMatch);"
+		writer.writeLine "\t\treturn e1 == e2;"
+		writer.writeLine "\t};"
+		writer.writeLine "\tscope.\$watch(checker, function (n) {"
+		writer.writeLine "\t\t//set the form control to valid if both"
+		writer.writeLine "\t\t//passwords are the same, else invalid"
+		writer.writeLine "\t\tcontrol.\$setValidity('unique', n);"
+		writer.writeLine "\t});"
+		writer.writeLine "\t}"
+		writer.writeLine "\t};"
+		writer.writeLine "}]);"
+	
+		
     }
     depends(compile)
     println("index.js created")
