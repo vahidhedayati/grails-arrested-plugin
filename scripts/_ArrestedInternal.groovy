@@ -381,7 +381,30 @@ target(createAngularIndex: "Create the angular file configuration") {
 		writer.writeLine "\t};"
 		writer.writeLine "}]);"
 	
-		
+		// Unique username directive - needs work
+		/*
+		writer.writeLine shortname + ".directive('uniqueEmail', [\"ArrestedUser\", function (ArrestedUser) {"
+		writer.writeLine """	return {
+			  require:'ngModel',
+			  restrict:'A',
+			  link:function (scope, el, attrs, ctrl) {
+				ctrl.\$parsers.push(function (viewValue) {
+		  
+				  if (viewValue) {
+					ArrestedUser.query({username:viewValue}, function (users) {
+					  if (users.length === 0) {
+						ctrl.\$setValidity('uniqueEmail', true);
+					  } else {
+						ctrl.\$setValidity('uniqueEmail', false);
+					  }
+					});
+					return viewValue;
+				  }
+				});
+			  }
+			};
+		  }])
+		"""*/
     }
     depends(compile)
     println("index.js created")
