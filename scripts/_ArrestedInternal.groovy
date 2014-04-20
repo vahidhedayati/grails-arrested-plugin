@@ -455,7 +455,9 @@ target(createAngularUser: "Create the angular user controller") {
     }
     installTemplateEx("login.html", "web-app/Views/${packageToPath(pkg)}auth", "views/view", "login.html") {}
 	installTemplateEx("signup.html", "web-app/Views/${packageToPath(pkg)}auth", "views/view", "signup.html") {}
-    println("userController.js and login.html signup.html created")
+	installTemplateEx("logout.html", "web-app/Views/${packageToPath(pkg)}auth", "views/view", "logout.html") {}
+
+    println("userController.js and login.html signup.html logout.html created")
     depends(compile)
 }
 target(updateLayout: "Update the layout view") {
@@ -644,6 +646,9 @@ target(updateLayout: "Update the layout view") {
                 "                    </li>\n" +
                 "                </g:if>\n" +
                 "            </g:each>\n" +
+				"	 		<li class='controller'>\n"+
+				"				<a onclick='window.location.href=\"#/logout\"'>LOG OUT</a>\n"+
+				"			</li>\n"+
                 "        </ul>\n" +
                 "\n" +
                 "    </div>\n" +
