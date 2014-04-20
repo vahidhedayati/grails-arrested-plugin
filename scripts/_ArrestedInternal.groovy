@@ -648,6 +648,31 @@ target(updateLayout: "Update the layout view") {
                 "    margin: 0 5% 0 5% !important;\n" +
                 "    max-width: 100% !important;\n" +
                 "}"
+				writer.writeLine """
+.left-inner-addon {
+	position: relative;
+}
+.left-inner-addon input {
+	padding-left: 30px;
+}
+.left-inner-addon i {
+	position: absolute;
+	padding: 10px 12px;
+	pointer-events: none;
+}
+.right-inner-addon {
+	position: relative;
+}
+.right-inner-addon input {
+	padding-right: 30px;    
+}
+.right-inner-addon i {
+	position: absolute;
+	right: 0px;
+	padding: 10px 12px;
+	pointer-events: none;
+}
+"""
     }
 
     configFile = new File("${basedir}/grails-app/views/layouts/_navbar.gsp")
@@ -671,7 +696,7 @@ target(updateLayout: "Update the layout view") {
                 "            </g:each>\n" +
 				"	 		<li class='controller'>"
 				writer.writeLine """<a data-ng-controller='UserCtrl' data-ng-click='logout()' title="\${message(code: 'security.signoff.label', default: 'Log out')}">
-								<g:message code="security.signoff.label"/>
+								<span class="glyphicon glyphicon-log-out"></span> <g:message code="security.signoff.label"/>
 							</a>
 							</li>
 						</ul>
