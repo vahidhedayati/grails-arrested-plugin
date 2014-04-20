@@ -11,7 +11,7 @@
     <div>
    
         <p></p>
-        <a class="btn btn-primary btn-primary" onclick="window.location.href = '#/${domainTitle}/list'"><span class="glyphicon glyphicon-align-justify"></span>  List</a>
+        <a class="btn btn-primary btn-primary" onclick="window.location.href = '#/${domainTitle}/list'"><span class="glyphicon glyphicon-align-justify"></span> List</a>
         <a class="btn btn-primary btn-success" data-ng-hide="${domainTitle}.id"  ng-disabled="${domainTitle}Form.\$invalid" ng-enabled="!${domainTitle}Form.\$invalid" data-ng-click="manualSave${className}()"><span class="glyphicon glyphicon-floppy-disk"></span> Save</a>
         <a class="btn btn-primary btn-success" data-ng-show="${domainTitle}.id"  ng-disabled="${domainTitle}Form.\$invalid" ng-enabled="!${domainTitle}Form.\$invalid" data-ng-click="manualSave${className}()"><span class="glyphicon glyphicon-floppy-disk"></span> Update</a>
         <a class="btn btn-primary btn-danger" data-ng-show="${domainTitle}.id"  data-ng-click="confirmDelete${className}()"><span class="glyphicon glyphicon-trash"></span> Delete</a>

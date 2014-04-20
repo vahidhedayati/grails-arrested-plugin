@@ -270,6 +270,7 @@ target(updateResources: "Update the application resources") {
         writer.writeLine "        dependsOn 'angularControllers'"
         writer.writeLine "        resource url:'http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css'"
         writer.writeLine "        resource url:'http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js'"
+		writer.writeLine "        resource url:'http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css'"
         writer.writeLine "    }"
         writer.writeLine ""
         writer.writeLine "    angularControllers {"
@@ -485,7 +486,7 @@ target(updateLayout: "Update the layout view") {
                 "    <r:layoutResources />\n" +
                 "</head>\n" +
                 "<body>\n" +
-                "<div id=\"arrestedHeader\" role=\"banner\"><h1 id=\"h1Header\">Arrested Plugin</h1></div>\n" +
+                "<div id=\"arrestedHeader\" role=\"banner\"><h1 id=\"h1Header\"><g:message code=\"default.welcome.title\" args=\"[meta(name:'app.name')]\"/></h1></div>\n" +
                 "<g:render template=\"/layouts/navbar\"/>\n" +
                 "<g:layoutBody/>\n" +
                 "<div class=\"footer\" role=\"contentinfo\"></div>\n" +
@@ -505,7 +506,7 @@ target(updateLayout: "Update the layout view") {
                 "<html>\n" +
                 "\t<head>\n" +
                 "\t\t<meta name=\"layout\" content=\"main\"/>\n" +
-                "\t\t<title>Welcome to Arrested</title>\n" +
+                "\t\t<title><g:message code=\"default.welcome.title\" args=\"[meta(name:'app.name')]\"/></title>\n" +
                 "\t\t<style type=\"text/css\" media=\"screen\">\n" +
                 "\t\t\t#status {\n" +
                 "\t\t\t\tbackground-color: #eee;\n" +
@@ -644,14 +645,16 @@ target(updateLayout: "Update the layout view") {
                 "                    </li>\n" +
                 "                </g:if>\n" +
                 "            </g:each>\n" +
-				"	 		<li class='controller'>\n"+
-				"				<a data-ng-controller='UserCtrl' data-ng-click='logout()'>LOG OUT</a>\n"+
-				"			</li>\n"+
-                "        </ul>\n" +
-                "\n" +
-                "    </div>\n" +
-                "</div>"
-    }
+				"	 		<li class='controller'>"
+				writer.writeLine """<a data-ng-controller='UserCtrl' data-ng-click='logout()' title="\${message(code: 'security.signoff.label', default: 'Log out')}">
+								<g:message code="security.signoff.label"/>
+							</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+"""
+}
     depends(compile)
     println("main.gsp, index.gsp, arrested.css, _navbar.gsp updated")
 }
