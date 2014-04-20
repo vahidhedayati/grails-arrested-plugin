@@ -11,10 +11,12 @@
     <div>
    
         <p></p>
-        <a class="btn btn-primary btn-primary" onclick="window.location.href = '#/${domainTitle}/list'"><span class="glyphicon glyphicon-align-justify"></span> List</a>
-        <a class="btn btn-primary btn-success" data-ng-hide="${domainTitle}.id"  ng-disabled="${domainTitle}Form.\$invalid" ng-enabled="!${domainTitle}Form.\$invalid" data-ng-click="manualSave${className}()"><span class="glyphicon glyphicon-floppy-disk"></span> Save</a>
-        <a class="btn btn-primary btn-success" data-ng-show="${domainTitle}.id"  ng-disabled="${domainTitle}Form.\$invalid" ng-enabled="!${domainTitle}Form.\$invalid" data-ng-click="manualSave${className}()"><span class="glyphicon glyphicon-floppy-disk"></span> Update</a>
-        <a class="btn btn-primary btn-danger" data-ng-show="${domainTitle}.id"  data-ng-click="confirmDelete${className}()"><span class="glyphicon glyphicon-trash"></span> Delete</a>
+        
+        <a class="btn btn-primary btn-primary" onclick="window.location.href = '#/${domainTitle}/list'"  title="\${message(code: 'default.list.label',args:['${className}'], default: 'List')}"><span class="glyphicon glyphicon-align-justify"></span> 	<g:message code="default.list.label" args="['${className}']" default="List"/></a>
+  
+        <a class="btn btn-primary btn-success" data-ng-hide="${domainTitle}.id"  ng-disabled="${domainTitle}Form.\$invalid" title="\${message(code: 'default.save.label',args:['${className}'], default: 'Save')}" ng-enabled="!${domainTitle}Form.\$invalid" data-ng-click="manualSave${className}()"><span class="glyphicon glyphicon-floppy-disk"></span> <g:message code="default.save.label" args="['${className}']" default="Save"/></a>
+        <a class="btn btn-primary btn-success" data-ng-show="${domainTitle}.id"  ng-disabled="${domainTitle}Form.\$invalid" title="\${message(code: 'default.update.label',args:['${className}'], default: 'Update')}" ng-enabled="!${domainTitle}Form.\$invalid" data-ng-click="manualSave${className}()"><span class="glyphicon glyphicon-floppy-disk"></span> <g:message code="default.update.label" args="['${className}']" default="Update"/></a>
+        <a class="btn btn-primary btn-danger" data-ng-show="${domainTitle}.id"  title="\${message(code: 'default.delete.label',args:['${className}'], default: 'Delete')}" data-ng-click="confirmDelete${className}()"><span class="glyphicon glyphicon-trash"></span> <g:message code="default.update.label" args="['${className}']" default="Delete"/></a>
         <p></p>
     </div>
     <div>

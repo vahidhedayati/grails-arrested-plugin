@@ -130,8 +130,9 @@ target(createViewController: "Creates view") {
         domainClass ->
             if (domainClass.getShortName() == prefix) {
                 def className = domainClass.getPropertyName()
-                installTemplateView(domainClass, "list.html", "web-app/Views/${packageToPath(pkg)}${className}", "views/view", "list.html") {}
-                installTemplateView(domainClass, "edit.html", "web-app/Views/${packageToPath(pkg)}${className}", "views/view", "edit.html") {}
+                installTemplateView(domainClass, "list.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "list.html") {}
+                installTemplateView(domainClass, "edit.gsp", "grails-app/views/${packageToPath(pkg)}${className}", "views/view", "edit.html") {}
+				
             }
     }
     depends(compile)
@@ -345,13 +346,13 @@ target(createAngularIndex: "Create the angular file configuration") {
                 "    '\$routeProvider',\n" +
                 "    function(\$routeProvider) {\n" +
                 "        \$routeProvider."
-        writer.writeLine "            when('/login', {templateUrl: 'Views/auth/login.html', controller: 'UserCtrl'})."
-		writer.writeLine "            when('/signup', {templateUrl: 'Views/auth/signup.html', controller: 'UserCtrl'})."
+        writer.writeLine "            when('/login', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/showLogin', controller: 'UserCtrl'})."
+		writer.writeLine "            when('/signup', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/showSignup', controller: 'UserCtrl'})."
         names.each {
-            writer.writeLine "            when('/" + it.propertyName + "/create', {templateUrl: 'Views/" + it.propertyName + "/edit.html', controller: '" + it.className + "Ctrl'})."
-            writer.writeLine "            when('/" + it.propertyName + "/edit', {templateUrl: 'Views/" + it.propertyName + "/edit.html', controller: '" + it.className + "Ctrl'})."
-            writer.writeLine "            when('/" + it.propertyName + "/list', {templateUrl: 'Views/" + it.propertyName + "/list.html', controller: '" + it.className + "Ctrl'})."
-            writer.writeLine "            when('/" + it.propertyName + "', {templateUrl: 'Views/" + it.propertyName + "/list.html', controller: '" + it.className + "Ctrl'})."
+            writer.writeLine "            when('/" + it.propertyName + "/create', {templateUrl: '/" + Metadata.current.'app.name' + "/" + it.propertyName + "/edit', controller: '" + it.className + "Ctrl'})."
+            writer.writeLine "            when('/" + it.propertyName + "/edit', {templateUrl: '/" + Metadata.current.'app.name' + "/" + it.propertyName + "/edit', controller: '" + it.className + "Ctrl'})."
+            writer.writeLine "            when('/" + it.propertyName + "/list', {templateUrl: '/" + Metadata.current.'app.name' + "/"  + it.propertyName + "/listing', controller: '" + it.className + "Ctrl'})."
+            writer.writeLine "            when('/" + it.propertyName + "', {templateUrl: '/" + Metadata.current.'app.name' + "/" + it.propertyName + "/listing', controller: '" + it.className + "Ctrl'})."
         }
         writer.writeLine "            otherwise({redirectTo: '/login'});"
         writer.writeLine "    }"
@@ -454,8 +455,8 @@ target(createAngularUser: "Create the angular user controller") {
             ant.replacefilter(token: '@app.name@', value: Metadata.current.'app.name')
         }
     }
-    installTemplateEx("login.html", "web-app/Views/${packageToPath(pkg)}auth", "views/view", "login.html") {}
-	installTemplateEx("signup.html", "web-app/Views/${packageToPath(pkg)}auth", "views/view", "signup.html") {}
+    installTemplateEx("login.gsp", "grails-app/views/${packageToPath(pkg)}auth", "views/view", "login.html") {}
+	installTemplateEx("signup.gsp", "grails-app/views/${packageToPath(pkg)}auth", "views/view", "signup.html") {}
     println("userController.js and login.html signup.html created")
     depends(compile)
 }

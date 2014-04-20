@@ -8,6 +8,20 @@ class AuthController extends ArrestedController {
 
     static allowedMethods = [login: "POST", logout: "GET"]
 
+	def showLogin() {
+		withFormat {
+			html {
+				render(view: "login")
+			}
+		}
+	}
+	def showSignup() {
+		withFormat {
+			html {
+				render(view: "signup")
+			}
+		}
+	}
 	def signup(String username, String passwordHash,String passwordConfirm){
 		if(username){
 			if((passwordHash&&passwordConfirm)&&(passwordHash.equals(passwordConfirm))){
