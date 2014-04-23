@@ -49,6 +49,10 @@ class @controller.name@ extends ArrestedController {
     }
 
     def save() {
+		def jsonObject = request.JSON.instance
+		if (jsonObject) {
+			def instance = new Authors(jsonObject)
+		/*
         if (params.instance) {
             def data = JSON.parse(params.instance)
             <%if(!cp){%>@class.name@ instance = new @class.name@(data)<%}else{%>@class.name@ instance = new @class.name@() <%  excludedProps = Event.allEvents.toList() << 'id' << 'version'
@@ -63,7 +67,7 @@ class @controller.name@ extends ArrestedController {
                         }
                         <%}else{%>
                         if(data.${p.name}) instance.${p.name} = data.${p.name}
-                        <%}}}%>
+                        <%}}}%>*/
             if(instance.save(flush: true)){
                 withFormat {
                     xml {

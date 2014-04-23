@@ -18,25 +18,28 @@ function UserCtrl($rootScope, DAO){
     };
 
     $rootScope.signup = function(){
-       	  DAO.save({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'arrestedUser', action:'save', instance:$rootScope.user},
-     		      
-             function(result){
-                 if(result.response == "bad_login"){
-                     $rootScope.errors.showErrors = true;
-                     $rootScope.errors.showFunctionError = true;
-                 }
-                 else{
-                     $rootScope.user = result;
-                     $rootScope.appConfig.token = result.token;
-                     delete $rootScope.user.token;
-                     window.location.href="#/"
-                 }
-             },
-             function(error){
-                 $rootScope.errors.showErrors = true;
-                 $rootScope.errors.showServerError = true;
-             });
-     };
+        DAO.save({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'arrestedUser', action:'save' , username:$rootScope.user.username, passwordHash:$rootScope.user.passwordHash, passwordConfirm:$rootScope.user.passwordConfirm},
+        function(result){
+               if(result.response == "user_created"){
+                   $rootScope.errors.showMessage = true;
+                   window.location.href="#/"
+               }
+               else if(result.response == "email_used"){
+                   $rootScope.errors.showErrors = true;
+                   $rootScope.errors.showFunctionError = true;
+               }else{
+                   $rootScope.user = result;
+                   $rootScope.appConfig.token = result.token;
+                   delete $rootScope.user.token;
+                   window.location.href="#/"
+               }
+           },
+           function(error){
+               $rootScope.errors.showErrors = true;
+               $rootScope.errors.showServerError = true;
+           });
+    };
+    
     $rootScope.login = function(){
         DAO.save({appName: $rootScope.appConfig.appName, controller:'auth', action:'login', username:$rootScope.user.username, passwordHash:$rootScope.user.passwordHash},
             function(result){
@@ -62,24 +65,6 @@ function UserCtrl($rootScope, DAO){
             function(result){
                 initializeVariables();
                 window.location.href="#/login"
-            },
-            function(error){
-                $rootScope.errors.showErrors = true;
-                $rootScope.errors.showServerError = true;
-            });
-    };
-
-    $rootScope.register = function(){
-        DAO.save({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'user', action:'save', instance:$rootScope.user},
-            function(result){
-                if(result.response == "user_created"){
-                    $rootScope.errors.showMessage = true;
-                    window.location.href="#/"
-                }
-                else if(result.response == "email_used"){
-                    $rootScope.errors.showErrors = true;
-                    $rootScope.errors.showFunctionError = true;
-                }
             },
             function(error){
                 $rootScope.errors.showErrors = true;
