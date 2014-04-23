@@ -50,7 +50,7 @@ class ArrestedUserController extends ArrestedController {
     }
 
 	def save(){
-		def data = request.JSON.instance
+		def data = request.JSON
 
 		String username=data.username as String
 		String passwordHash=data.passwordHash as String

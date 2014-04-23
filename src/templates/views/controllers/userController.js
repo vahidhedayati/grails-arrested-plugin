@@ -41,7 +41,7 @@ function UserCtrl($rootScope, DAO){
     };
     
     $rootScope.login = function(){
-    	 DAO.save({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'arrestedUser', action:'save', instance:$rootScope.user},
+        DAO.save({appName: $rootScope.appConfig.appName, controller:'auth', action:'login', username:$rootScope.user.username, passwordHash:$rootScope.user.passwordHash},
             function(result){
                 if(result.response == "bad_login"){
                     $rootScope.errors.showErrors = true;
@@ -71,6 +71,8 @@ function UserCtrl($rootScope, DAO){
                 $rootScope.errors.showServerError = true;
             });
     };
+
+   
 
     $rootScope.updateProfile= function(){
         DAO.update({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'user', action:'update', instance:$rootScope.user},
