@@ -49,7 +49,13 @@ class ArrestedUserController extends ArrestedController {
         }
     }
 
-	def save(String username, String passwordHash,String passwordConfirm){
+	def save(){
+		def data = request.JSON.instance
+
+		String username=data.username as String
+		String passwordHash=data.passwordHash as String
+		String passwordConfirm=data.passwordConfirm as String
+
 		if(username){
 			if((passwordHash&&passwordConfirm)&&(passwordHash.equals(passwordConfirm))){
 				if (ArrestedUser.findByUsername(username)) {
@@ -58,7 +64,7 @@ class ArrestedUserController extends ArrestedController {
 					ArrestedUser user = new ArrestedUser( username:username, passwordHash: new Sha256Hash(passwordHash).toHex() )
 					user.save(flush: true)
 
-					ArrestedToken token = new ArrestedToken( token: 'token',        valid: true, owner: user.id )
+					ArrestedToken token = new ArrestedToken( token: 'token', valid: true, owner: user.id )
 					token.save(flush: true)
 					user.setToken(token.id)
 					if(user.save(flush: true)){
