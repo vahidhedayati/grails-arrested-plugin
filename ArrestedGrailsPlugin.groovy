@@ -12,7 +12,7 @@ class ArrestedGrailsPlugin {
     ]
     def issueManagement = [system: 'GITHUB', url: 'https://github.com/PureSrc/grails-arrested-plugin/issues']
     def scm = [url: 'https://github.com/PureSrc/grails-arrested-plugin']
-	
+		
 	def doWithApplicationContext = { applicationContext ->
 		// Collect all *.properties files in the I18N directory and build list of "available" locales
 		def locales = []
