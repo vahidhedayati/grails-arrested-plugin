@@ -1,9 +1,11 @@
 <% import grails.persistence.Event %>
 <div data-ng-controller="${className}Ctrl">
     <h1>${className} Edit</h1>
-    <div data-ng-show="errors.showErrors" class="red">
-        <p data-ng-show="errors.showServerError">"Can not connect to the server, try later"</p>
-    </div>
+ 	<div data-ng-show="errors.showErrors" class="red">
+	<div ng-repeat="error in errors.errorMessages">
+		<strong></strong> <span ng-bind="error"></span>
+	</div>
+	</div>
      <form name="${domainTitle}Form"  novalidate>
     <div>
     <div>

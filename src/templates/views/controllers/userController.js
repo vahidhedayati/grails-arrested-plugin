@@ -22,11 +22,15 @@ function UserCtrl($rootScope, DAO){
         function(result){
                if(result.response == "user_created"){
                    $rootScope.errors.showMessage = true;
+                   $rootScope.errors.errorMessages.push('user_created: '+result.content+' |'+result.status+'|');
                    window.location.href="#/"
+                   
                }
                else if(result.response == "email_used"){
                    $rootScope.errors.showErrors = true;
                    $rootScope.errors.showFunctionError = true;
+                   $rootScope.errors.errorMessages.push('email_used: '+result.content+' |'+result.status+'|');
+                   
                }else{
                    $rootScope.user = result;
                    $rootScope.appConfig.token = result.token;
@@ -37,6 +41,7 @@ function UserCtrl($rootScope, DAO){
            function(error){
                $rootScope.errors.showErrors = true;
                $rootScope.errors.showServerError = true;
+               $rootScope.errors.errorMessages.push('Error: '+error.data+' |'+error.status+'|');
            });
     };
     
@@ -46,6 +51,7 @@ function UserCtrl($rootScope, DAO){
                 if(result.response == "bad_login"){
                     $rootScope.errors.showErrors = true;
                     $rootScope.errors.showFunctionError = true;
+                    $rootScope.errors.errorMessages.push('Bad login: '+result.content+' |'+result.status+'|');
                 }
                 else{
                     $rootScope.user = result;
@@ -57,6 +63,7 @@ function UserCtrl($rootScope, DAO){
             function(error){
                 $rootScope.errors.showErrors = true;
                 $rootScope.errors.showServerError = true;
+                $rootScope.errors.errorMessages.push('Error: '+error.data+' |'+error.status+'|');
             });
     };
 
@@ -69,6 +76,7 @@ function UserCtrl($rootScope, DAO){
             function(error){
                 $rootScope.errors.showErrors = true;
                 $rootScope.errors.showServerError = true;
+                $rootScope.errors.errorMessages.push('Error: '+error.data+' |'+error.status+'|');
             });
     };
 
@@ -80,18 +88,22 @@ function UserCtrl($rootScope, DAO){
                 if(result.response == "user_not_updated"){
                     $rootScope.errors.showErrors = true;
                     $rootScope.errors.showServerError = true;
+                    $rootScope.errors.errorMessages.push('user_not_updated: '+result.content+' |'+result.status+'|');
                 }
                 else if(result.response == "email_used"){
                     $rootScope.errors.showErrors = true;
                     $rootScope.errors.showFunctionError = true;
+                    $rootScope.errors.errorMessages.push('email_used: '+result.content+' |'+result.status+'|');
                 }
                 else if(result.response == "user_updated"){
                     $rootScope.errors.showMessage = true;
+                    $rootScope.errors.errorMessages.push('user_updated: '+result.content+' |'+result.status+'|');
                 }
             },
             function(error){
                 $rootScope.errors.showErrors = true;
                 $rootScope.errors.showServerError = true;
+                $rootScope.errors.errorMessages.push('Error: '+error.data+' |'+error.status+'|');
             });
     };
 }
