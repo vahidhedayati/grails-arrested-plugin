@@ -14,7 +14,7 @@ Add plugin Dependency in BuildConfig.groovy :
 
 # Getting Started
 
-You can watch this video to help understand what you are about to do : (arrested website video)[https://www.youtube.com/watch?v=popG4gucZ0Y]
+You can watch this video to help understand what you are about to do : [arrested website video](https://www.youtube.com/watch?v=popG4gucZ0Y)
 
 
 We need to set up a couple things before we get started generating your REST controllers and Angular views.  Namely we need our User and Token Entities, a Security Filter that validates a token header field, and some base Angular js files that act as a DAO to your rest services.
