@@ -1,0 +1,25 @@
+includeTargets << grailsScript("_GrailsArgParsing")
+includeTargets << grailsScript('_GrailsPackage')
+includeTargets << new File (arrestedPluginDir, "scripts/_ArrestedInternal.groovy")
+
+USAGE = """
+   grails  arrested [NAME]
+"""
+
+
+target(createArrestedView: "This creates the GSP mapped at index (view is index.gsp) AND the javascript controller") {
+	depends(compile)
+	depends(loadApp)
+	def domainClasses = grailsApp.domainClasses
+	domainClasses.each {
+		domainClass ->
+		def pkg=domainClass.getPackageName()
+		def fn=domainClass.getFullName()
+		if (!pkg.equals('arrested')) {
+			argsMap['params'][0]=fn
+			depends(parseArguments, createController)
+		}	
+	}
+}
+
+setDefaultTarget 'createArrestedView'
