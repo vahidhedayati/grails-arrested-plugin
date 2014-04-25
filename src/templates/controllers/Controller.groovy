@@ -28,7 +28,6 @@ class @controller.name@ extends ArrestedController {
                 }
             }
             else{
-                //renderNotFound(id, "@class.name@")
 				renderNotFound(id, "\${message(code: 'default.@class.name@.notfound.label', default:'@class.name@ not found')}")
 				
             }
@@ -123,12 +122,10 @@ class @controller.name@ extends ArrestedController {
                 }
             }
             else{
-                //renderNotFound(data.id, "@class.name@")
 				renderNotFound(data.id, "\${message(code: 'default.@class.name@.notfound.label', default: '@class.name@ not found')}")
             }
         }
         else{
-            //renderMissingParam("@class.instance@")
 			renderMissingParam("\${message(code: 'default.@class.instance@.missing.label', default: '@class.instance@ missing')}")
         }
     }
@@ -141,23 +138,19 @@ class @controller.name@ extends ArrestedController {
                 withFormat {
                     xml {
                         response.status = 200
-                        //render "@class.name@ deleted"
-						"\${message(code: 'default.@class.name@.deleted.label', default: '@class.name@ deleted')}"
+						render "\${message(code: 'default.@class.name@.deleted.label', default: '@class.name@ deleted')}"
                     }
                     json {
                         response.status = 200
-                        //render "@class.name@ deleted"
-						"\${message(code: 'default.@class.name@.deleted.label', default: '@class.name@ deleted')}"
+						render "\${message(code: 'default.@class.name@.deleted.label', default: '@class.name@ deleted')}"
                     }
                 }
             }
             else{
-                //renderNotFound(id, "@class.name@")
 				renderNotFound(id, "\${message(code: 'default.@class.name@.notfound.label', default: '@class.name@ not found')}")
             }
         }
         else{
-            //renderMissingParam("id")
 			renderMissingParam("\${message(code: 'default.id.missing.label', default: 'id missing')}")
         }
     }

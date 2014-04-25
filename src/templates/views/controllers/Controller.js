@@ -70,6 +70,9 @@ $rootScope.update@class.name@ = function () {
     DAO.update({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, instance:$rootScope.@class.instance@, controller:'@class.instance@', action:'update'},
     function (result) {
         $rootScope.flags.save = true;
+        //if (result.status == "200") {
+        //    window.location.href = "#/@class.instance@/list"
+       // }
     },
     function (error) {
         $rootScope.flags.save = false;
@@ -102,14 +105,13 @@ $rootScope.confirmDelete@class.name@ = function () {
     DAO.delete({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, id: $rootScope.@class.instance@.id, controller:'@class.instance@', action:'delete'},
     function (result) {
         if (result.response == "@class.name@_deleted") {
+    	//if (result.status == "200") {
             window.location.href = "#/@class.instance@/list"
         }
     },
     function (error) {
         $rootScope.errors.showErrors = true;
         $rootScope.errors.showServerError = true;
-        window.location.href = "#/@class.instance@/list"
-        //$rootScope.errors.errorMessages.push('Error: '+error.status+' '+error.data);
     }
 );}
 }
