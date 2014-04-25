@@ -26,7 +26,7 @@ function @controller.name@(DAO, $rootScope)
             function (error) {
             	$rootScope.errors.showErrors = true;
                 $rootScope.errors.showServerError = true;
-            	$rootScope.errors.errorMessages.push('Error: '+error.data+' |'+error.status+'|');
+            	$rootScope.errors.errorMessages.push('Error:  '+error.status+' '+error.data);
             });
     };
 
@@ -59,7 +59,7 @@ function @controller.name@(DAO, $rootScope)
             $rootScope.flags.save = false;
             $rootScope.errors.showErrors = true;
             $rootScope.errors.showServerError = true;
-            $rootScope.errors.errorMessages.push('Error: '+error.data+' |'+error.status+'|');
+            $rootScope.errors.errorMessages.push('Error:  '+error.status+' '+error.data);
         }
 )
     ;
@@ -75,7 +75,8 @@ $rootScope.update@class.name@ = function () {
         $rootScope.flags.save = false;
         $rootScope.errors.showErrors = true;
         $rootScope.errors.showServerError = true;
-        $rootScope.errors.errorMessages.push('Error: '+error.data+' |'+error.status+'|');
+       // $rootScope.errors.errorMessages.push('Error:  '+error.status+' '+error.data);
+        window.location.href = "#/@class.instance@/list"
     }
 )
 ;
@@ -92,7 +93,7 @@ function (result) {
 function (error) {
     $rootScope.errors.showErrors = true;
     $rootScope.errors.showServerError = true;
-    $rootScope.errors.errorMessages.push('Error: '+error.data+' |'+error.status+'|');
+    $rootScope.errors.errorMessages.push('Error: '+error.status+' '+error.data);
 });
 }
 
@@ -107,7 +108,8 @@ $rootScope.confirmDelete@class.name@ = function () {
     function (error) {
         $rootScope.errors.showErrors = true;
         $rootScope.errors.showServerError = true;
-        $rootScope.errors.errorMessages.push('Error: '+error.data+' |'+error.status+'|');
+        window.location.href = "#/@class.instance@/list"
+        //$rootScope.errors.errorMessages.push('Error: '+error.status+' '+error.data);
     }
 );}
 }
