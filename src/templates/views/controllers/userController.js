@@ -4,20 +4,21 @@ function UserCtrl($rootScope, DAO){
     if(!$rootScope.appConfig){
         $rootScope.appConfig = {appName:'@app.name@', token:''};
         $rootScope.user = {username:'', passwordHash:''};
-        $rootScope.errors = {forgotPassword:false, showErrors:false, showMessage:false, showFunctionError:false, showServerError:false, showPasswordError:false};
+        $rootScope.errors = {forgotPassword:false, showErrors:false, errorMessages:'',showMessage:false, showFunctionError:false, showServerError:false, showPasswordError:false};
     }
 
     function initializeVariables(){
         $rootScope.appConfig = {appName:'@app.name@', token:''};
         $rootScope.user = {username:'', passwordHash:''};
-        $rootScope.errors = {forgotPassword:false, showErrors:false, showMessage:false, showFunctionError:false, showServerError:false, showPasswordError:false};
+        $rootScope.errors = {forgotPassword:false, showErrors:false, errorMessages:'',showMessage:false, showFunctionError:false, showServerError:false, showPasswordError:false};
     }
 
     $rootScope.errorValidation = function(){
-        $rootScope.errors = {forgotPassword:false, showErrors:false, showMessage:false, showFunctionError:false, showServerError:false, showPasswordError:false};
+        $rootScope.errors = {forgotPassword:false, showErrors:false, errorMessages:'',showMessage:false, showFunctionError:false, showServerError:false, showPasswordError:false};
     };
 
     $rootScope.signup = function(){
+    	$rootScope.errors.errorMessages = [];
         DAO.save({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'arrestedUser', action:'save' , username:$rootScope.user.username, passwordHash:$rootScope.user.passwordHash, passwordConfirm:$rootScope.user.passwordConfirm},
         function(result){
                if(result.response == "user_created"){
@@ -46,6 +47,7 @@ function UserCtrl($rootScope, DAO){
     };
     
     $rootScope.login = function(){
+    	$rootScope.errors.errorMessages = [];
         DAO.save({appName: $rootScope.appConfig.appName, controller:'auth', action:'login', username:$rootScope.user.username, passwordHash:$rootScope.user.passwordHash},
             function(result){
                 if(result.response == "bad_login"){
@@ -68,6 +70,7 @@ function UserCtrl($rootScope, DAO){
     };
 
     $rootScope.logout = function(){
+    	$rootScope.errors.errorMessages = [];
         DAO.get({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'auth', action:'logout'},
             function(result){
                 initializeVariables();
@@ -83,6 +86,7 @@ function UserCtrl($rootScope, DAO){
    
 
     $rootScope.updateProfile= function(){
+    	$rootScope.errors.errorMessages = [];
         DAO.update({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'user', action:'update', instance:$rootScope.user},
             function(result){
                 if(result.response == "user_not_updated"){

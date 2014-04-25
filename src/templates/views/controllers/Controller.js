@@ -8,7 +8,7 @@ function @controller.name@(DAO, $rootScope)
     }
 
     $rootScope.flags = {save: false};
-    $rootScope.errors = {showErrors: false, showServerError: false};
+    $rootScope.errors = {showErrors: false, showServerError: false,errorMessages:''};
 
     if(!$rootScope.@class.instance@){
     $rootScope.filter = ""
@@ -17,12 +17,16 @@ function @controller.name@(DAO, $rootScope)
     }
 
     $rootScope.getAll@class.name@ = function () {
+    	$rootScope.errors.errorMessages = [];
         //get all
         DAO.query({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller: '@class.instance@', action: 'list'},
             function (result) {
                 $rootScope.@class.instance@s = result;
             },
             function (error) {
+            	$rootScope.errors.showErrors = true;
+                $rootScope.errors.showServerError = true;
+            	$rootScope.errors.errorMessages.push('Error: '+error.data+' |'+error.status+'|');
             });
     };
 
@@ -32,6 +36,7 @@ function @controller.name@(DAO, $rootScope)
 }
 
     $rootScope.manualSave@class.name@ = function () {
+    	$rootScope.errors.errorMessages = [];
         $rootScope.flags.save = false;
         if ($rootScope.@class.instance@.id == undefined)
         {
@@ -44,6 +49,7 @@ function @controller.name@(DAO, $rootScope)
     }
 
     $rootScope.save@class.name@ = function () {
+    	$rootScope.errors.errorMessages = [];
         DAO.save({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, instance:$rootScope.@class.instance@, controller:'@class.instance@', action:'save'},
         function (result) {
             $rootScope.@class.instance@ = result;
@@ -53,12 +59,14 @@ function @controller.name@(DAO, $rootScope)
             $rootScope.flags.save = false;
             $rootScope.errors.showErrors = true;
             $rootScope.errors.showServerError = true;
+            $rootScope.errors.errorMessages.push('Error: '+error.data+' |'+error.status+'|');
         }
 )
     ;
 }
 
 $rootScope.update@class.name@ = function () {
+	$rootScope.errors.errorMessages = [];
     DAO.update({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, instance:$rootScope.@class.instance@, controller:'@class.instance@', action:'update'},
     function (result) {
         $rootScope.flags.save = true;
@@ -67,12 +75,14 @@ $rootScope.update@class.name@ = function () {
         $rootScope.flags.save = false;
         $rootScope.errors.showErrors = true;
         $rootScope.errors.showServerError = true;
+        $rootScope.errors.errorMessages.push('Error: '+error.data+' |'+error.status+'|');
     }
 )
 ;
 }
 
 $rootScope.edit@class.name@ = function (@class.instance@){
+	$rootScope.errors.errorMessages = [];
     DAO.get({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, id: @class.instance@.id, controller:'@class.instance@', action:'show'},
 function (result) {
     $rootScope.@class.instance@ = result;
@@ -82,10 +92,12 @@ function (result) {
 function (error) {
     $rootScope.errors.showErrors = true;
     $rootScope.errors.showServerError = true;
+    $rootScope.errors.errorMessages.push('Error: '+error.data+' |'+error.status+'|');
 });
 }
 
 $rootScope.confirmDelete@class.name@ = function () {
+	$rootScope.errors.errorMessages = [];
     DAO.delete({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, id: $rootScope.@class.instance@.id, controller:'@class.instance@', action:'delete'},
     function (result) {
         if (result.response == "@class.name@_deleted") {
@@ -95,6 +107,7 @@ $rootScope.confirmDelete@class.name@ = function () {
     function (error) {
         $rootScope.errors.showErrors = true;
         $rootScope.errors.showServerError = true;
+        $rootScope.errors.errorMessages.push('Error: '+error.data+' |'+error.status+'|');
     }
 );}
 }
