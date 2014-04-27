@@ -28,7 +28,7 @@
 
 
 	                <div class="form-group">
-	                <div  class="control-group" ng-class="{'has-error': signUpForm1.password.$invalid && signUpForm1.password.$error.pattern && (signUpForm1.password.$dirty || signUpForm1.password.$pristine),  'has-success': !signUpForm1.password.$invalid && signUpForm1.password.$dirty&&!signUpForm1.password.$pristine && !signUpForm1.password.$error.pattern  }" >
+	                <div  class="control-group" ng-class="{'has-error': (signUpForm1.password.$invalid || signUpForm1.password.$error.pattern) && (signUpForm1.password.$dirty || signUpForm1.password.$pristine),  'has-success': !signUpForm1.password.$invalid && signUpForm1.password.$dirty&&!signUpForm1.password.$pristine && !signUpForm1.password.$error.pattern  }" >
 					<div class="input-group">
                      	<span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
                         <input type="text" name="preventAutoPass" id="preventAutoPass" style="display:none" />

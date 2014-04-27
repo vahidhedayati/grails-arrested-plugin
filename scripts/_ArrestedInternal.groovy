@@ -685,18 +685,23 @@ target(updateLayout: "Update the layout view") {
                 "    <div class=\"col-md-12\">\n" +
                 "        <p></p>\n" +
                 "        <ul class=\"nav navbar-nav col-md-12\" style=\"min-height: 30px;\">\n" +
+				"			<li class='controller'>"+
+				" 			<span class=\"glyphicon glyphicon-user\"></span>"+
+				"				{{user.username}}"+
+				"			</li>"+
                 "            <g:each var=\"c\" in=\"\${grailsApplication.controllerClasses.sort { it.fullName } }\">\n" +
                 "                <g:if test=\"\${!(c.fullName.contains('DbdocController')||c.fullName.contains('ArrestedUser')||c.fullName.contains('ArrestedController')||c.fullName.contains('AuthController'))}\">\n" +
                 "                    <li class=\"controller\">\n" +
-                "                        <a onclick='window.location.href=\"#/\${c.logicalPropertyName}/list\"'>\n" +
-                "                            \${c.name}\n" +
+                "                        <a onclick='window.location.href=\"#/\${c.logicalPropertyName}/list\" title=\"\${message(code: 'security.'+c.name+'.label', default: ''+c.name+'')}\"'>\n" +
+				"							<g:message code=\"defaultc.\${c.name}.label\"  default=\"\${c.name}\"/>"	
+               // "                            \${c.name}\n" +
                 "                        </a>\n" +
                 "                    </li>\n" +
                 "                </g:if>\n" +
                 "            </g:each>\n" +
 				"	 		<li class='controller'>"
 				writer.writeLine """<a data-ng-controller='UserCtrl' data-ng-click='logout()' title="\${message(code: 'security.signoff.label', default: 'Log out')}">
-								<span class="glyphicon glyphicon-log-out"></span> <g:message code="security.signoff.label"/>
+								<span class="glyphicon glyphicon-log-out"></span> <g:message code="security.signoff.label" default="Sign Off"/>
 							</a>
 							</li>
 						</ul>
