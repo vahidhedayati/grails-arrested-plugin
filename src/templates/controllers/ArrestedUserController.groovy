@@ -90,9 +90,10 @@ class ArrestedUserController extends ArrestedController {
 			renderMissingParam("${message(code: 'default.username.missing.label', default: 'Username missing')}")
 		}
 	}
+	
     def update(String token) {
-        if(params.instance){
-            def data = JSON.parse(params.instance)
+		def data = request.JSON
+        if(data.username){
             if(token){
                 ArrestedToken arrestedToken = ArrestedToken.findByToken(token)
                 if(arrestedToken){

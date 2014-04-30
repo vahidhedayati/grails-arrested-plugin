@@ -15,7 +15,7 @@
                     <form name="signUpForm1"  class="form form-signup" role="form" novalidate>
                         
  				 	<div class="form-group">
-                    <div  class="control-group" ng-class="{'has-error': signUpForm1.username.$invalid && (signUpForm1.password.$dirty || signUpForm1.password.$pristine), 'has-success': !signUpForm1.username.$invalid && signUpForm1.username.$dirty && !signUpForm1.username.$pristine}" >
+                    <div  class="control-group" ng-class="{'has-error': signUpForm1.username.$invalid && (signUpForm1.username.$dirty || signUpForm1.username.$pristine), 'has-success': !signUpForm1.username.$invalid && signUpForm1.username.$dirty && !signUpForm1.username.$pristine}" >
                     <div class="input-group">
                     	<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
                         <input type="text" name="username" data-ng-model="user.username" class="form-control" ng-minlength="4" ng-maxlength="40" placeholder="${message(code: 'security.username.label', default: 'Username')}" required="required" />
