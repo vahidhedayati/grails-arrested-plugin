@@ -93,16 +93,18 @@ class ArrestedUserController extends ArrestedController {
 	
     def update(String token) {
 		def data = request.JSON
-        if(data.username){
+		def instance=request.JSON.instance
+        if(instance.username){
             if(token){
                 ArrestedToken arrestedToken = ArrestedToken.findByToken(token)
                 if(arrestedToken){
                     ArrestedUser user = ArrestedUser.findByToken(arrestedToken.id)
                     if(user){
-                        if (user.username != data.username && ArrestedUser.findByUsername(data.username as String)){
+                        if (user.username != instance.username && ArrestedUser.findByUsername(instance.username as String)){
                             renderConflict("${message(code: 'default.username.used.label', default: 'Username already in use')}")
                         } else {
-                            user.properties = data
+							instance.passwordHash=new Sha256Hash(instance.passwordHash).toHex()
+                            user.properties = instance
                             if(user.save(flush: true)){
                                 withFormat {
                                     xml {

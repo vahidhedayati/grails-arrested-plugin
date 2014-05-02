@@ -78,6 +78,9 @@ function UserCtrl($rootScope, DAO){
                 else if(result.response == "user_updated"){
                     $rootScope.errors.showMessage = true;
                     $rootScope.errors.errorMessages.push('user_updated:  '+result.status+' '+result.content);
+                }else{
+                	 $rootScope.user = result;
+                	 window.location.href="#/"
                 }
             },
             function(error){
