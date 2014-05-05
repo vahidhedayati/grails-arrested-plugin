@@ -277,9 +277,11 @@ target(updateResources: "Update the application resources") {
         writer.writeLine "    angularControllers {"
         writer.writeLine "        dependsOn 'ngRoute'"
         writer.writeLine "        resource url:'js/userCtrl.js'"
-        names.each {
-            writer.writeLine "        resource url:'js/"+it.className+"Ctrl.js'"
-        }
+		names.each {
+			if (new File("${basedir}/web-app/js/${it.className}Ctrl.js").exists()) {
+				writer.writeLine "        resource url:'js/"+it.className+"Ctrl.js'"
+			}
+		}
         writer.writeLine "    }"
         writer.writeLine ""
         writer.writeLine "    ngRoute {"
