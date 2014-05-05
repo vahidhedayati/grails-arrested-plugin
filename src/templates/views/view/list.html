@@ -26,7 +26,7 @@
                     props = domainClass.findAll { allowedNames.contains(it.name) && !excludedProps.contains(it.name) && it.type != null && !Collection.isAssignableFrom(it.type) }
                     %>
 
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-bordered table-striped table-responsive table-condensed table-hover">
                         <thead>
                         <tr>
                             <%for (p in props) {
@@ -44,8 +44,8 @@
                             <td>{{instance.${p.name}}}</td>
                             <%  } %>
                             <td>
-                            <a class="btn btn-primary btn-danger" data-ng-show="${domainTitle}.id"  title="\${message(code: 'default.delete.label',args:['${className}'], default: 'Delete')}" data-ng-click="confirmDelete${className}()"><span class="glyphicon glyphicon-trash"></span> <g:message code="default.delete.label" args="['${className}']" default="Delete"/></a>
-                            <a class="btn btn-primary btn-warn" data-ng-show="${domainTitle}.id"  title="\${message(code: 'default.update.label',args:['${className}'], default: 'Update')}" data-ng-click="edit${className}(instance)"><span class="glyphicon glyphicon-trash"></span> <g:message code="default.update.label" args="['${className}']" default="Update"/></a>
+                            <a class="btn btn-mini btn-danger" data-ng-show="${domainTitle}.id"  title="\${message(code: 'default.delete.label',args:['${className}'], default: 'Delete')}" data-ng-click="confirmDelete${className}()"><span class="glyphicon glyphicon-trash"></span> <g:message code="default.delete.label" args="['${className}']" default="Delete"/></a>
+                            <a class="btn btn-mini btn-success" data-ng-show="${domainTitle}.id"  title="\${message(code: 'default.update.label',args:['${className}'], default: 'Update')}" data-ng-click="edit${className}(instance)"><span class="glyphicon glyphicon-floppy-disk"></span><g:message code="default.update.label" args="['${className}']" default="Update"/></a>
                             </td>
                         </tr>
                         </tbody>
