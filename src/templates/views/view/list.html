@@ -10,7 +10,7 @@
 	
         <div>
             <p></p>
-            <a class="btn btn-primary btn-primary" data-ng-click="new${className}()"><span class="glyphicon glyphicon-plus"></span> New ${domainTitle}</a>
+                <a class="btn btn-primary btn-primary" data-ng-click="new${className}()"><span class="glyphicon glyphicon-plus"></span><g:message code="default.new.label" args="['${domainTitle}']" default="New ${domainTitle}"/></a>
             <p></p>
         </div>
         <div>
@@ -39,7 +39,6 @@
                             <td>{{instance.${p.name}}}</td>
                             <%  } %>
                             <td>
-                            <a class="btn btn-mini btn-danger" data-ng-show="${domainTitle}.id"  title="\${message(code: 'default.delete.label',args:['${className}'], default: 'Delete')}" data-ng-click="confirmDelete${className}()"><span class="glyphicon glyphicon-trash"></span> <g:message code="default.delete.label" args="['${className}']" default="Delete"/></a>
                             <a class="btn btn-mini btn-success" data-ng-show="${domainTitle}.id"  title="\${message(code: 'default.update.label',args:['${className}'], default: 'Update')}" data-ng-click="edit${className}(instance)"><span class="glyphicon glyphicon-floppy-disk"></span><g:message code="default.update.label" args="['${className}']" default="Update"/></a>
                             </td>
                         </tr>

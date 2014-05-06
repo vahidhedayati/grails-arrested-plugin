@@ -508,7 +508,7 @@ target(updateLayout: "Update the layout view") {
                 "    <link rel=\"shortcut icon\" href=\"\${resource(dir: 'images', file: 'favicon.ico')}\" type=\"image/x-icon\">\n" +
                 "    <link rel=\"apple-touch-icon\" href=\"\${resource(dir: 'images', file: 'apple-touch-icon.png')}\">\n" +
                 "    <link rel=\"apple-touch-icon\" sizes=\"114x114\" href=\"\${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}\">\n" +
-                "    <link rel=\"stylesheet\" href=\"\${resource(dir: 'css', file: 'main.css')}\" type=\"text/css\">\n" +
+               // "    <link rel=\"stylesheet\" href=\"\${resource(dir: 'css', file: 'main.css')}\" type=\"text/css\">\n" +
                 "    <link rel=\"stylesheet\" href=\"\${resource(dir: 'css', file: 'arrested.css')}\" type=\"text/css\">\n" +
                 "    <link rel=\"stylesheet\" href=\"\${resource(dir: 'css', file: 'mobile.css')}\" type=\"text/css\">\n" +
                 "    <r:require module='application'/>\n" +
@@ -516,9 +516,12 @@ target(updateLayout: "Update the layout view") {
                 "    <r:layoutResources />\n" +
                 "</head>\n" +
                 "<body>\n" +
-                "<div id=\"arrestedHeader\" role=\"banner\"><h1 id=\"h1Header\"><g:message code=\"default.welcome.title\" args=\"[meta(name:'app.name')]\"/></h1></div>\n" +
                 "<g:render template=\"/layouts/navbar\"/>\n" +
+				"<div class=\"clear\"></div>\n<p></p>\n"+
+				"<div id=\"Content\" class=\"container\">\n"+
+				"<div id=\"arrestedHeader\" role=\"banner\"><h1 id=\"h1Header\"><g:message code=\"default.welcome.title\" args=\"[meta(name:'app.name')]\"/></h1></div>\n" +
                 "<g:layoutBody/>\n" +
+				"</div>\n"+
                 "<div class=\"footer\" role=\"contentinfo\"></div>\n" +
                 "<div id=\"spinner\" class=\"spinner\" style=\"display:none;\"><g:message code=\"spinner.alt\" default=\"Loading&hellip;\"/></div>\n" +
                 "<r:layoutResources />\n" +
@@ -628,9 +631,40 @@ target(updateLayout: "Update the layout view") {
         configFile.delete()
     }
     configFile.createNewFile()
-/*
-* 
-	 * table {
+
+	
+    configFile.withWriterAppend { BufferedWriter writer ->
+		writer.writeLine """
+#h1Header {
+    font-size: 2.25em !important;
+    text-align: center !important;
+    padding: 10px !important;
+}
+.nav {
+    min-height: 30px !important;
+}
+.clear{
+     clear: both;
+}
+#arrestedHeader{
+	margin-top: 3em;
+}
+.footer{
+    background: #C8CCBE !important;
+}
+.red{
+    color: red;
+}
+a:link, a:visited, a:hover {
+    color: #000000 !important;
+}
+
+body {
+    margin: 0 5% 0 5% !important;
+    max-width: 100% !important;
+}
+
+table {
   border-collapse: separate;
   border-spacing: 0 5px;
 }
@@ -655,37 +689,6 @@ tr th:last-child {
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
 }
-* 
-*/
-	
-    configFile.withWriterAppend { BufferedWriter writer ->
-		
-        writer.writeLine "#h1Header {\n" +
-                "    font-size: 2.25em !important;\n" +
-                "    text-align: center !important;\n" +
-                "    padding: 10px !important;\n" +
-                "}\n" +
-                ".nav {\n" +
-                "    min-height: 30px !important;\n" +
-                "}\n" +
-                "#arrestedHeader{\n" +
-                "    background-color: #C8CCBE;\n" +
-                "}\n" +
-                ".footer{\n" +
-                "    background: #C8CCBE !important;\n" +
-                "}\n" +
-                ".red{\n" +
-                "    color: red;\n" +
-                "}\n" +
-                "a:link, a:visited, a:hover {\n" +
-                "    color: #000000 !important;\n" +
-                "}\n" +
-                "\n" +
-                "body {\n" +
-                "    margin: 0 5% 0 5% !important;\n" +
-                "    max-width: 100% !important;\n" +
-                "}"
-				writer.writeLine """
 .left-inner-addon {
 	position: relative;
 }
@@ -709,6 +712,85 @@ tr th:last-child {
 	padding: 10px 12px;
 	pointer-events: none;
 }
+.spinner {
+	background: url(../images/spinner.gif) 50% 50% no-repeat transparent;
+	height: 16px;
+	width: 16px;
+    padding: 0.5em;
+    position: absolute;
+    right: 0;
+	top: 0;
+	text-indent: -9999px;
+}
+
+fieldset,
+.property-list {
+	margin: 0.6em 1.25em 0 1.25em;
+	padding: 0.3em 1.8em 1.25em;
+	position: relative;
+	zoom: 1;
+	border: none;
+}
+
+.property-list .fieldcontain {
+	list-style: none;
+	overflow: hidden;
+	zoom: 1;
+}
+
+.fieldcontain {
+	margin-top: 1em;
+}
+
+.fieldcontain label,
+.fieldcontain .property-label {
+	color: #666666;
+	text-align: right;
+	width: 25%;
+}
+
+.fieldcontain .property-label {
+	float: left;
+}
+
+.fieldcontain .property-value {
+	display: block;
+	margin-left: 27%;
+}
+.required-indicator {
+	color: #48802C;
+	display: inline-block;
+	font-weight: bold;
+	margin-left: 0.3em;
+	position: relative;
+	top: 0.1em;
+}
+th.sortable a {
+	background-position: right;
+	background-repeat: no-repeat;
+	padding-right: 1.1em;
+}
+
+th.asc a {
+	background-image: url(../images/skin/sorted_asc.gif);
+}
+
+th.desc a {
+	background-image: url(../images/skin/sorted_desc.gif);
+}
+
+.odd {
+	background: #f7f7f7;
+}
+
+.even {
+	background: #ffffff;
+}
+
+th:hover, tr:hover {
+	background: #62A9FF;
+}
+
 """
     }
 
@@ -719,13 +801,28 @@ tr th:last-child {
     configFile.createNewFile()
     configFile.withWriterAppend { BufferedWriter writer ->
         writer.writeLine """
-	<nav class="navbar navbar-default" role="navigation" data-ng-show="appConfig.token!=''">
-	<div class="container-fluid" data-ng-controller="UserCtrl" >
+		<nav id="Navbar" class="navbar navbar-fixed-top navbar-inverse" role="navigation" data-ng-show="appConfig.token!=''">
+		<div class="container-fluid" data-ng-controller="UserCtrl" >
 	
-    	<ul  class="nav navbar-left" >
+	    <div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+        		<span class="sr-only">Toggle navigation</span>
+        		<span class="icon-bar"></span>
+	           	<span class="icon-bar"></span>
+	           	<span class="icon-bar"></span>
+			</button>
+			
+			<a class="navbar-brand" href="\${createLink(uri: '/')}">
+				\${meta(name:'app.name')}
+				</a>
+			</div>
+
+		<div class="collapse navbar-collapse navbar-ex1-collapse" role="navigation">
+
+    	<ul class="nav navbar-nav">
 			<g:each var="c" in="\${grailsApplication.controllerClasses.sort { it.fullName } }">
             	<g:if test="\${!(c.fullName.contains('DbdocController')||c.fullName.contains('ArrestedUser')||c.fullName.contains('ArrestedController')||c.fullName.contains('AuthController'))}">
-                	<li class="controller">
+                	<li>
                     	<a onclick='window.location.href="#/\${c.logicalPropertyName}/list"' title="\${message(code: 'default.'+c.name+'.update', default: ''+c.name+'')}">
 							<g:message code="default.\${c.name}.label"  default="\${c.name}"/>	
                         </a>
@@ -733,8 +830,9 @@ tr th:last-child {
                   </g:if>
               </g:each>
          </ul>
-         
-         <ul  class="nav navbar-right" >
+
+
+         <ul  class="nav navbar-nav navbar-right" >
          	<li  class="dropdown">
 				<a class="dropdown-toggle" role="button" data-toggle="dropdown">
 					<span id="userMessage">
@@ -757,7 +855,7 @@ tr th:last-child {
 				</a>
 			</li>
 		</ul>
-		
+		</div>
 	</div>
 </nav>
 """
