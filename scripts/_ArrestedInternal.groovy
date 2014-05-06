@@ -628,7 +628,38 @@ target(updateLayout: "Update the layout view") {
         configFile.delete()
     }
     configFile.createNewFile()
+/*
+* 
+	 * table {
+  border-collapse: separate;
+  border-spacing: 0 5px;
+}
+
+thead th {
+  background-color: #006DCC;
+  color: white;
+}
+
+tbody td {
+  background-color: #EEEEEE;
+}
+
+tr td:first-child,
+tr th:first-child {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+tr td:last-child,
+tr th:last-child {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+* 
+*/
+	
     configFile.withWriterAppend { BufferedWriter writer ->
+		
         writer.writeLine "#h1Header {\n" +
                 "    font-size: 2.25em !important;\n" +
                 "    text-align: center !important;\n" +
