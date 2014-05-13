@@ -20,6 +20,7 @@ function UserCtrl($rootScope, DAO){
     $rootScope.signup = function(){
         DAO.save({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'arrestedUser', action:'save' , username:$rootScope.user.username, passwordHash:$rootScope.user.passwordHash, passwordConfirm:$rootScope.user.passwordConfirm},
            function(result){
+        		$rootScope.loading=true;
         		$rootScope.user = result;
                 $rootScope.appConfig.token = result.token;
                 delete $rootScope.user.token;
@@ -35,6 +36,7 @@ function UserCtrl($rootScope, DAO){
     $rootScope.login = function(){
         DAO.save({appName: $rootScope.appConfig.appName, controller:'auth', action:'login', username:$rootScope.user.username, passwordHash:$rootScope.user.passwordHash},
         	function(result){
+        		$rootScope.loading=true;
             	 $rootScope.user = result;
                  $rootScope.appConfig.token = result.token;
                  delete $rootScope.user.token;
@@ -50,6 +52,7 @@ function UserCtrl($rootScope, DAO){
     $rootScope.logout = function(){
         DAO.get({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'auth', action:'logout'},
             function(result){
+        		$rootScope.loading=true;
                 initializeVariables();
                 window.location.href="#/login"
             },
@@ -65,6 +68,7 @@ function UserCtrl($rootScope, DAO){
     $rootScope.updateProfile= function(){
         DAO.update({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'arrestedUser', action:'update', instance:$rootScope.user},
             function(result){
+        		$rootScope.loading=true;
                 if(result.response == "user_not_updated"){
                     $rootScope.errors.showErrors = true;
                     $rootScope.errors.showServerError = true;

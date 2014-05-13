@@ -20,9 +20,11 @@ function @controller.name@(DAO, $rootScope)
         //get all
         DAO.query({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller: '@class.instance@', action: 'list'},
             function (result) {
+        		$rootScope.loading=true;
                 $rootScope.@class.instance@s = result;
             },
             function (error) {
+            	$rootScope.loading=false;
             	$rootScope.errors.showErrors = true;
                 $rootScope.errors.showServerError = true;
             	$rootScope.errors.errorMessages.push(''+error.status+' '+error.data);
@@ -49,10 +51,12 @@ function @controller.name@(DAO, $rootScope)
     $rootScope.save@class.name@ = function () {
         DAO.save({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, instance:$rootScope.@class.instance@, controller:'@class.instance@', action:'save'},
         function (result) {
+        	$rootScope.loading=true;
             $rootScope.@class.instance@ = result;
             $rootScope.flags.save = true;
         },
         function (error) {
+        	$rootScope.loading=false;
             $rootScope.flags.save = false;
             $rootScope.errors.showErrors = true;
             $rootScope.errors.showServerError = true;
@@ -65,11 +69,13 @@ function @controller.name@(DAO, $rootScope)
 $rootScope.update@class.name@ = function () {
     DAO.update({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, instance:$rootScope.@class.instance@, controller:'@class.instance@', action:'update'},
     function (result) {
+    	$rootScope.loading=true;
     	$rootScope.@class.instance@s = result;
         $rootScope.flags.save = true;
         window.location.href = "#/@class.instance@/list"
     },
     function (error) {
+    	$rootScope.loading=false;
         $rootScope.flags.save = false;
         $rootScope.errors.showErrors = true;
         $rootScope.errors.showServerError = true;
@@ -82,12 +88,14 @@ $rootScope.update@class.name@ = function () {
 $rootScope.edit@class.name@ = function (@class.instance@){
     DAO.get({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, instance:$rootScope.@class.instance@, id: @class.instance@.id, controller:'@class.instance@', action:'show'},
 function (result) {
+    $rootScope.loading=true;
     $rootScope.@class.instance@ = result;
     $rootScope.flags.save = true;
     window.location.href = "#/@class.instance@/edit"
 }
 ,
 function (error) {
+	$rootScope.loading=false;
     $rootScope.errors.showErrors = true;
     $rootScope.errors.showServerError = true;
     $rootScope.errors.errorMessages.push('Error: '+error.status+' '+error.data);
@@ -98,10 +106,12 @@ $rootScope.confirmDelete@class.name@ = function () {
     DAO.delete({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, instance:$rootScope.@class.instance@, id: $rootScope.@class.instance@.id, controller:'@class.instance@', action:'delete'},
     function (result) {
     	//$rootScope.@class.instance@s = result;
+    	$rootScope.loading=true;
     	$rootScope.flags.save = true;
         window.location.href = "#/@class.instance@/list"
     },
     function (error) {
+    	$rootScope.loading=false;
         $rootScope.errors.showErrors = true;
         $rootScope.errors.showServerError = true;
         $rootScope.errors.errorMessages.push(''+error.status+' '+error.data);

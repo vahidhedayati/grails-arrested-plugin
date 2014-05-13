@@ -674,6 +674,34 @@ thead th {
   color: white;
 }
 
+
+th:hover, tr:hover {
+	background: #62A9FF;
+}
+
+th.sortable a {
+	background-position: right;
+	background-repeat: no-repeat;
+	padding-right: 1.1em;
+}
+
+th.asc a {
+	background-image: url(../images/skin/sorted_asc.gif);
+}
+
+th.desc a {
+	background-image: url(../images/skin/sorted_desc.gif);
+}
+
+.odd {
+	background: #f7f7f7;
+}
+
+.even {
+	background: #ffffff;
+}
+
+
 tbody td {
   background-color: #EEEEEE;
 }
@@ -765,30 +793,24 @@ fieldset,
 	position: relative;
 	top: 0.1em;
 }
-th.sortable a {
-	background-position: right;
-	background-repeat: no-repeat;
-	padding-right: 1.1em;
-}
 
-th.asc a {
-	background-image: url(../images/skin/sorted_asc.gif);
+input.ng-invalid {
+		border: 1px solid red;
 }
-
-th.desc a {
-	background-image: url(../images/skin/sorted_desc.gif);
+input.ng-valid {
+		border: 1px solid green;
 }
-
-.odd {
-	background: #f7f7f7;
+.ng-pristine { 
+		border: 1px solid green;
 }
-
-.even {
-	background: #ffffff;
+.ng-dirty { 
+		border: 1px solid orange;
 }
-
-th:hover, tr:hover {
-	background: #62A9FF;
+.ng-invalid.ng-dirty {
+		border: 1px solid red;
+}
+.ng-valid.ng-dirty {
+		border: 1px solid green;
 }
 
 """
@@ -816,10 +838,11 @@ th:hover, tr:hover {
 				\${meta(name:'app.name')}
 				</a>
 			</div>
-
+			
 		<div class="collapse navbar-collapse navbar-ex1-collapse" role="navigation">
-
+		
     	<ul class="nav navbar-nav">
+			<li ng-show="loading"><img src="images/spinner.gif"></li>
 			<g:each var="c" in="\${grailsApplication.controllerClasses.sort { it.fullName } }">
             	<g:if test="\${!(c.fullName.contains('DbdocController')||c.fullName.contains('ArrestedUser')||c.fullName.contains('ArrestedController')||c.fullName.contains('AuthController'))}">
                 	<li>
