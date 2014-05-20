@@ -38,15 +38,6 @@ installTemplateEx = { String artefactName, String artefactPath, String templateP
 	if (!okToWrite(artefactFile)) {
 		return
 	}
-    /*if (new File(artefactFile).exists()) {
-        ant.input(
-                addProperty: "${args}.${artefactName}.overwrite",
-                message: "${artefactName} already exists. Overwrite? [y/n]")
-
-        if (ant.antProject.properties."${args}.${artefactName}.overwrite" == "n") {
-            return
-        }
-    }*/
 
     // Copy the template file to the 'grails-app/controllers' directory.
     templateFile = "${arrestedPluginDir}/src/templates/${templatePath}/${templateName}"
@@ -75,16 +66,7 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
 	if (!okToWrite(artefactFile)) {
 		return
 	}
-    /*if (new File(artefactFile).exists()) {
-        ant.input(
-                addProperty: "${args}.${artefactName}.overwrite",
-                message: "${artefactName} already exists. Overwrite? [y/n]")
 
-        if (ant.antProject.properties."${args}.${artefactName}.overwrite" == "n") {
-            return
-        }
-    }*/
-	
     // Copy the template file to the 'grails-app/controllers' directory.
     templateFile = "${arrestedPluginDir}/src/templates/${templatePath}/${templateName}"
     if (!new File(templateFile).exists()) {
@@ -273,7 +255,7 @@ target(updateResources: "Update the application resources") {
         writer.writeLine "        resource url:'http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js'"
 		writer.writeLine "        resource url:'http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css'"
 		writer.writeLine "        resource url:'http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css'"
-		writer.writeLine "        resource url:'http://cdn.jsdelivr.net/foundation/5.1.1/css/foundation.min.css'"
+	//	writer.writeLine "        resource url:'http://cdn.jsdelivr.net/foundation/5.1.1/css/foundation.min.css'"
         writer.writeLine "    }"
         writer.writeLine ""
         writer.writeLine "    angularControllers {"
@@ -519,7 +501,6 @@ target(updateLayout: "Update the layout view") {
                 "</head>\n" +
                 "<body>\n" +
                 "<g:render template=\"/layouts/navbar\"/>\n" +
-				"<div class=\"clear\"></div>\n<p></p>\n"+
 				"<div id=\"Content\" class=\"container\">\n"+
 				"<g:render template=\"/layouts/controllers\"/>\n" +
                 "<g:layoutBody/>\n" +
@@ -637,41 +618,6 @@ target(updateLayout: "Update the layout view") {
 	
     configFile.withWriterAppend { BufferedWriter writer ->
 		writer.writeLine """
-#h1Header {
-    font-size: 2.25em !important;
-    text-align: center !important;
-    padding: 10px !important;
-}
-
-#h2Header {
-    font-size: 1.8em !important;
-    text-align: center !important;
-	color: #FFF;
-	padding-left: 0.50em;
-}
-
-.nav {
-    min-height: 30px !important;
-}
-.clear{
-     clear: both;
-}
-#arrestedHeader{
-
-	padding-top: 4em;
-}
-.footer{
-    background: #C8CCBE !important;
-}
-.red{
-    color: red;
-}
-a:link, a:visited, a:hover {
-    color: #000000 !important;
-}
-.controller a:link, .controller a:visited,.controller a:hover {
-    color: #FF0000 !important;
-}
 
 body {
     margin: 0 5% 0 5% !important;
@@ -731,6 +677,48 @@ tr th:last-child {
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
 }
+#Content {
+		padding-top: 70px;
+}
+#h1Header {
+    font-size: 2.25em !important;
+    text-align: center !important;
+    padding: 10px !important;
+}
+
+#h2Header {
+	display: inline-block;
+	*zoom: 1;
+	*display: inline; 
+    font-size: 1.8em !important;
+    text-align: center !important;
+	color: #FFF;
+	padding-left: 0.50em;
+}
+
+.nav {
+    min-height: 30px !important;
+}
+.clear{
+     clear: both;
+}
+#arrestedHeader{
+
+	padding-top: 4em;
+}
+.footer{
+    background: #C8CCBE !important;
+}
+.red{
+    color: red;
+}
+a:link, a:visited, a:hover {
+    color: #000000 !important;
+}
+.controller a:link, .controller a:visited,.controller a:hover {
+    color:#5bc0de !important;
+}
+
 .left-inner-addon {
 	position: relative;
 }
@@ -806,6 +794,7 @@ fieldset,
 	*zoom: 1;
 	*display: inline; 
 	margin-top: 0.30em;
+	padding-left: 0.30em;
 }
 .ng-pristine { 	border: 1px solid green; }
 .ng-dirty { border: 1px solid orange; }
@@ -815,6 +804,7 @@ input.ng-invalid-minlength.ng-dirty { border: 1px solid blue; }
 input.ng-invalid-maxlength.ng-dirty { border: 1px solid yellow; }
 input.ng-invalid { border: 1px solid red; }
 input.ng-valid { border: 1px solid green;}
+.navbar .container {width:auto;}
 """
     }
 
@@ -843,7 +833,7 @@ input.ng-valid { border: 1px solid green;}
 		<div class="collapse navbar-collapse navbar-ex1-collapse" role="navigation">
     	<ul class="nav navbar-nav">
 			<li class="controller">
-				<h2 id="h2Header"><g:message code="default.welcome.title" args="[meta(name:'app.name')]"/></h2>
+				<div id="h2Header"><g:message code="default.welcome.title" args="[meta(name:'app.name')]"/></div>
 			</li>
          </ul>
 
@@ -880,7 +870,7 @@ input.ng-valid { border: 1px solid green;}
 }
 	
 	
-	
+/*	
 configFile = new File("${basedir}/grails-app/views/layouts/_controllers.gsp")
 	if (configFile.exists()) {
 		configFile.delete()
@@ -888,7 +878,7 @@ configFile = new File("${basedir}/grails-app/views/layouts/_controllers.gsp")
 	configFile.createNewFile()
 	configFile.withWriterAppend { BufferedWriter writer ->
 		writer.writeLine """
-<div data-ng-show="appConfig.token!=''">
+<div class="container-fluid" data-ng-controller="UserCtrl"  data-ng-show="appConfig.token!=''">
 	<g:each var="c" in="\${grailsApplication.controllerClasses.sort { it.fullName } }">
             	<g:if test="\${!(c.fullName.contains('DbdocController')||c.fullName.contains('ArrestedUser')||c.fullName.contains('ArrestedController')||c.fullName.contains('AuthController'))}">
                 	<div class="btn btn-default">
@@ -900,11 +890,52 @@ configFile = new File("${basedir}/grails-app/views/layouts/_controllers.gsp")
               </g:each>	
 </div>
 		"""		
-	
+
 	}
-	
+	*/
     depends(compile)
-   println("main.gsp, index.gsp, arrested.css, _navbar.gsp _controllers.gsp updated")
+   println("main.gsp, index.gsp, arrested.css, _navbar.gsp updated")
+}
+
+target(createControllerGsp: "Create the angular controller.gsp template") {
+	depends(compile)
+	depends(loadApp)
+	def (pkg, prefix) = parsePrefix()
+	def domainClasses = grailsApp.domainClasses
+	def names = []
+	domainClasses.each {
+		domainClass ->
+			if (domainClass.getShortName() != "ArrestedUser" && domainClass.getShortName() != "ArrestedToken") {
+				names.add([propertyName: domainClass.getPropertyName(), className: domainClass.getShortName()])
+			}
+	}
+	def configFile = new File("${basedir}/grails-app/views/layouts/_controllers.gsp")
+	if (configFile.exists()) {
+		configFile.delete()
+	}
+	configFile.createNewFile()
+	def shortname= Metadata.current.'app.name'.toString().replaceAll(/(\_|\-|\.)/, '')
+	
+	configFile.withWriterAppend { BufferedWriter writer ->
+		writer.writeLine """
+<div class="container-fluid" data-ng-controller="UserCtrl"  data-ng-show="appConfig.token!=''">
+"""
+
+		names.each {
+			if (new File("${basedir}/web-app/js/${it.className}Ctrl.js").exists()) {
+				writer.writeLine """
+				<div class="btn btn-default">
+				<a onclick='window.location.href="#/${it.propertyName}/list"' title="\${message(code: 'default.${it.propertyName}.label', default: '${it.className}')}">
+					<g:message code="default.${it.propertyName}.label"  default="${it.className}"/>
+				</a>
+				</div>
+				"""
+			}
+		}
+		writer.writeLine "</div>"
+	}
+	depends(compile)
+    println("_controllers.js created")
 }
 
 private parsePrefix() {
