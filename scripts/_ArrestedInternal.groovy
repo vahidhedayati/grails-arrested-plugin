@@ -521,11 +521,11 @@ target(updateLayout: "Update the layout view") {
                 "<g:render template=\"/layouts/navbar\"/>\n" +
 				"<div class=\"clear\"></div>\n<p></p>\n"+
 				"<div id=\"Content\" class=\"container\">\n"+
-				"<div id=\"arrestedHeader\" role=\"banner\"><h1 id=\"h1Header\"><g:message code=\"default.welcome.title\" args=\"[meta(name:'app.name')]\"/></h1></div>\n" +
+				"<g:render template=\"/layouts/controllers\"/>\n" +
                 "<g:layoutBody/>\n" +
 				"</div>\n"+
                 "<div class=\"footer\" role=\"contentinfo\"></div>\n" +
-                "<div id=\"spinner\" class=\"spinner\" style=\"display:none;\"><g:message code=\"spinner.alt\" default=\"Loading&hellip;\"/></div>\n" +
+               // "<div id=\"spinner\" class=\"spinner\" style=\"display:none;\"><g:message code=\"spinner.alt\" default=\"Loading&hellip;\"/></div>\n" +
                 "<r:layoutResources />\n" +
                 "</body>\n" +
                 "</html>"
@@ -642,6 +642,14 @@ target(updateLayout: "Update the layout view") {
     text-align: center !important;
     padding: 10px !important;
 }
+
+#h2Header {
+    font-size: 1.8em !important;
+    text-align: center !important;
+	color: #FFF;
+	padding-left: 0.50em;
+}
+
 .nav {
     min-height: 30px !important;
 }
@@ -649,7 +657,8 @@ target(updateLayout: "Update the layout view") {
      clear: both;
 }
 #arrestedHeader{
-	margin-top: 3em;
+
+	padding-top: 4em;
 }
 .footer{
     background: #C8CCBE !important;
@@ -659,6 +668,9 @@ target(updateLayout: "Update the layout view") {
 }
 a:link, a:visited, a:hover {
     color: #000000 !important;
+}
+.controller a:link, .controller a:visited,.controller a:hover {
+    color: #FF0000 !important;
 }
 
 body {
@@ -830,20 +842,14 @@ input.ng-valid { border: 1px solid green;}
 		</div>
 		<div class="collapse navbar-collapse navbar-ex1-collapse" role="navigation">
     	<ul class="nav navbar-nav">
-			<g:each var="c" in="\${grailsApplication.controllerClasses.sort { it.fullName } }">
-            	<g:if test="\${!(c.fullName.contains('DbdocController')||c.fullName.contains('ArrestedUser')||c.fullName.contains('ArrestedController')||c.fullName.contains('AuthController'))}">
-                	<li class="controller">
-                    	<a onclick='window.location.href="#/\${c.logicalPropertyName}/list"' title="\${message(code: 'default.'+c.name+'.update', default: ''+c.name+'')}">
-							<g:message code="default.\${c.name}.label"  default="\${c.name}"/>
-                        </a>
-                     </li>
-                  </g:if>
-              </g:each>
+			<li class="controller">
+				<h2 id="h2Header"><g:message code="default.welcome.title" args="[meta(name:'app.name')]"/></h2>
+			</li>
          </ul>
 
 
          <ul  class="nav navbar-nav navbar-right" >
-         	<li  class="dropdown">
+         	<li  class="dropdown controller">
 				<a class="dropdown-toggle" role="button" data-toggle="dropdown">
 					<span id="userMessage">
 						<span class="glyphicon glyphicon-user"></span>
@@ -852,14 +858,14 @@ input.ng-valid { border: 1px solid green;}
 					 	<b class="caret"></b>
 				</a>
 				<ul class="dropdown-menu" role="menu">
-					<li ><i class="fa fa-gear icon-color"></i>
-						<a onclick='window.location.href="#/updateinfo"' title="\${message(code: 'default.userdetails.update', default: 'Update info')}">
+					<li>
+						<a class="fa fa-gear icon-color" onclick='window.location.href="#/updateinfo"' title="\${message(code: 'default.userdetails.update', default: 'Update info')}">
 							<g:message code="default.userdetails.update"  default="Update info"/>	
                         </a>
 					</li>
 				</ul>
 			</li>
-			<li>
+			<li class="controller">
 				<a data-ng-controller='UserCtrl' data-ng-click='logout()' title="\${message(code: 'security.signoff.label', default: 'Log out')}">
 					<span class="glyphicon glyphicon-log-out"></span> <g:message code="security.signoff.label" default="Sign Off"/>
 				</a>
@@ -870,9 +876,35 @@ input.ng-valid { border: 1px solid green;}
 	</div>
 </nav>
 """
+		
 }
+	
+	
+	
+configFile = new File("${basedir}/grails-app/views/layouts/_controllers.gsp")
+	if (configFile.exists()) {
+		configFile.delete()
+	}
+	configFile.createNewFile()
+	configFile.withWriterAppend { BufferedWriter writer ->
+		writer.writeLine """
+<div data-ng-show="appConfig.token!=''">
+	<g:each var="c" in="\${grailsApplication.controllerClasses.sort { it.fullName } }">
+            	<g:if test="\${!(c.fullName.contains('DbdocController')||c.fullName.contains('ArrestedUser')||c.fullName.contains('ArrestedController')||c.fullName.contains('AuthController'))}">
+                	<div class="btn btn-default">
+                    	<a onclick='window.location.href="#/\${c.logicalPropertyName}/list"' title="\${message(code: 'default.'+c.name+'.update', default: ''+c.name+'')}">
+							<g:message code="default.\${c.name}.label"  default="\${c.name}"/>
+                        </a>
+                     </div>
+                  </g:if>
+              </g:each>	
+</div>
+		"""		
+	
+	}
+	
     depends(compile)
-    println("main.gsp, index.gsp, arrested.css, _navbar.gsp updated")
+   println("main.gsp, index.gsp, arrested.css, _navbar.gsp _controllers.gsp updated")
 }
 
 private parsePrefix() {
