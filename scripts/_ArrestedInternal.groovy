@@ -255,7 +255,6 @@ target(updateResources: "Update the application resources") {
         writer.writeLine "        resource url:'http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js'"
 		writer.writeLine "        resource url:'http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css'"
 		writer.writeLine "        resource url:'http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css'"
-	//	writer.writeLine "        resource url:'http://cdn.jsdelivr.net/foundation/5.1.1/css/foundation.min.css'"
         writer.writeLine "    }"
         writer.writeLine ""
         writer.writeLine "    angularControllers {"
@@ -335,7 +334,7 @@ target(createAngularIndex: "Create the angular file configuration") {
         writer.writeLine "            when('/login', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/showLogin', controller: 'UserCtrl'})."
 		writer.writeLine "            when('/signup', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/showSignup', controller: 'UserCtrl'})."
 		writer.writeLine "            when('/updateinfo', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/showUpdateInfo', controller: 'UserCtrl'})."
-        names.each {
+		names.each {
 			if (new File("${basedir}/web-app/js/${it.className}Ctrl.js").exists()) {
 				writer.writeLine "            when('/" + it.propertyName + "/create', {templateUrl: '/" + Metadata.current.'app.name' + "/" + it.propertyName + "/edit', controller: '" + it.className + "Ctrl'})."
 				writer.writeLine "            when('/" + it.propertyName + "/edit', {templateUrl: '/" + Metadata.current.'app.name' + "/" + it.propertyName + "/edit', controller: '" + it.className + "Ctrl'})."
@@ -346,54 +345,48 @@ target(createAngularIndex: "Create the angular file configuration") {
         writer.writeLine "            otherwise({redirectTo: '/login'});"
         writer.writeLine "    }"
         writer.writeLine "]);"
-		
-		// Password Matching directive added 0.10
-		writer.writeLine shortname + ".directive('passwordMatch', [function () {"
-		writer.writeLine "\treturn {"
-		writer.writeLine "\trestrict: 'A',"
-		writer.writeLine "\tscope:true,"
-		writer.writeLine "\trequire: 'ngModel',"
-		writer.writeLine "\tlink: function (scope, elem , attrs,control) {"
-		writer.writeLine "\t\tvar checker = function () {"
-		writer.writeLine "\t\t//get the value of the first password"
-		writer.writeLine "\t\tvar e1 = scope.\$eval(attrs.ngModel);"
-		writer.writeLine "\t\t//get the value of the other password"
-		writer.writeLine "\t\tvar e2 = scope.\$eval(attrs.passwordMatch);"
-		writer.writeLine "\t\treturn e1 == e2;"
-		writer.writeLine "\t};"
-		writer.writeLine "\tscope.\$watch(checker, function (n) {"
-		writer.writeLine "\t\t//set the form control to valid if both"
-		writer.writeLine "\t\t//passwords are the same, else invalid"
-		writer.writeLine "\t\tcontrol.\$setValidity('unique', n);"
-		writer.writeLine "\t});"
-		writer.writeLine "\t}"
-		writer.writeLine "\t};"
-		writer.writeLine "}]);"
-	
-		// Unique username directive - needs work
-		/*
-		writer.writeLine shortname + ".directive('uniqueEmail', [\"ArrestedUser\", function (ArrestedUser) {"
-		writer.writeLine """	return {
-			  require:'ngModel',
-			  restrict:'A',
-			  link:function (scope, el, attrs, ctrl) {
-				ctrl.\$parsers.push(function (viewValue) {
-		  
-				  if (viewValue) {
-					ArrestedUser.query({username:viewValue}, function (users) {
-					  if (users.length === 0) {
-						ctrl.\$setValidity('uniqueEmail', true);
-					  } else {
-						ctrl.\$setValidity('uniqueEmail', false);
-					  }
-					});
-					return viewValue;
-				  }
+		writer.writeLine """
+// Password matching directive
+${shortname}.directive('passwordMatch', [function () {
+	return {
+	restrict: 'A',
+	scope:true,
+	require: 'ngModel',
+	link: function (scope, elem , attrs,control) {
+		var checker = function () {
+		//get the value of the first password
+		var e1 = scope.\$eval(attrs.ngModel);
+		//get the value of the other password
+		var e2 = scope.\$eval(attrs.passwordMatch);
+		return e1 == e2;
+	};
+	scope.\$watch(checker, function (n) {
+		//set the form control to valid if both
+		//passwords are the same, else invalid
+		control.\$setValidity('unique', n);
+	});
+	}
+	};
+}]);
+//uniqueUsername directive
+${shortname}.directive('uniqueUsername', ["\$http", function(\$http){
+    return{
+        require: 'ngModel',
+        link: function(scope, el, attrs, ctrl){
+            ctrl.\$parsers.unshift(function(viewValue){
+                \$http.put('auth/lookup', {username: viewValue}).success(function (data, status, headers, config) {
+					ctrl.\$setValidity('uniquser', true);
+					//return data;
+				}).error(function (data, status, headers, config) {
+					ctrl.\$setValidity('uniquser', false);
+					return status;
 				});
-			  }
-			};
-		  }])
-		"""*/
+            });
+        }
+    };
+}]);
+
+"""
     }
     depends(compile)
     println("index.js created")
