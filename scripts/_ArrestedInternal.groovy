@@ -4,11 +4,11 @@ import groovy.text.SimpleTemplateEngine
 import groovy.text.Template
 
 import org.codehaus.groovy.grails.plugins.GrailsPluginManager
-import org.codehaus.groovy.grails.plugins.PluginManagerHolder
 import org.springframework.core.io.ResourceLoader
 includeTargets << grailsScript("_GrailsBootstrap")
 includeTargets << grailsScript("_GrailsCreateArtifacts")
 includeTargets << grailsScript("_GrailsCompile")
+
 overwriteAll = false
 installTemplate = { String artefactName, String artefactPath, String templatePath ->
     installTemplateEx(artefactName, artefactPath, templatePath, artefactName, null)
@@ -75,9 +75,9 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
     }
 
     renderEditorTemplate = engine.createTemplate(new File(templateFile))
-
-    def pluginM = PluginManagerHolder.pluginManager
-    def plugin = pluginM.getGrailsPlugin("hibernate")
+    //def pluginM = PluginManagerHolder.pluginManager
+    //def plugin = pluginM.getGrailsPlugin("hibernate")
+	String plugin = Holders.pluginManager.getGrailsPlugin("hibernate")
     if (plugin) {
         cp = domainClass.constrainedProperties
     }
