@@ -112,7 +112,7 @@
     			sb << '/>'
     		}
    			sb << '\n\t\t<div class="error" ng-show="'+domainTitle+'Form.'+property.name+'.$dirty && '+domainTitle+'Form.'+property.name+'.$invalid">'
-    		sb << '\n\t\t<small class="error" ng-show="!'+domainTitle+'Form.'+property.name+'.$pristine && '+domainTitle+'Form.'+property.name+'.$invalid"><g:message code="default.invalid.label" args="[\''+property.name+'\']" default="Invalid '+property.name+' "/> '
+    		sb << '\n\t\t<small class="error" ng-show="!'+domainTitle+'Form.'+property.name+'.$pristine && '+domainTitle+'Form.'+property.name+'.$invalid"><g:message code="default.invalid.label" args="[\''+property.name+'\']" default=" Invalid '+property.name+' : "/> '
    			if (cp."${property.name}".minSize)  {
     			sb << '<g:message code="default.minSize.label" args="[\''+cp."${property.name}".minSize+'\']" default=" minSize: '+cp."${property.name}".minSize+' "/>\n'
     		}
@@ -122,13 +122,13 @@
     		sb << '</small>'
     
     		if (cp."${property.name}".matches) {
-    			sb << '\n\t\t<small class="error" ng-show="'+domainTitle+'Form.'+property.name+'.$error.pattern"><g:message code="default.pattern.label" args="[\''+property.name+'\']" default=" Invalid '+property.name+'"/></small>\n'
+    			sb << '\n\t\t<small class="error" ng-show="'+domainTitle+'Form.'+property.name+'.$error.pattern"><g:message code="default.pattern.label" args="[\''+property.name+'\']" default=" Invalid '+property.name+' "/></small>\n'
     		}
     		if (cp."${property.name}".minSize) {
-        		sb << '\n\t\t<small class="error" ng-show="'+domainTitle+'Form.'+property.name+'.$error.minlength"><g:message code="default.short.label" args="[\''+property.name+'\']" default=" '+property.name+' too short"/></small>\n'
+        		sb << '\n\t\t<small class="error" ng-show="'+domainTitle+'Form.'+property.name+'.$error.minlength"><g:message code="default.short.label" args="[\''+property.name+'\']" default=" '+property.name+' too short "/></small>\n'
     		}         
     		if (cp."${property.name}".maxSize) {
-        		sb << '\n\t\t<small class="error" ng-show="'+domainTitle+'Form.'+property.name+'.$error.maxlength"><g:message code="default.long.label" args="[\''+property.name+'\']" default=" '+property.name+' too long"/></small>\n'
+        		sb << '\n\t\t<small class="error" ng-show="'+domainTitle+'Form.'+property.name+'.$error.maxlength"><g:message code="default.long.label" args="[\''+property.name+'\']" default=" '+property.name+' too long "/></small>\n'
     		}       
     	}
     	sb << '</div></div>'
@@ -205,7 +205,7 @@
     		}
     		sb << '\n\t\t<div class="error" ng-show="'+domainTitle+'Form.'+property.name+'.$dirty && '+domainTitle+'Form.'+property.name+'.$invalid">'
     	
-    		sb << '\n\t\t<small class="error" ng-show="!'+domainTitle+'Form.'+property.name+'.$pristine && '+domainTitle+'Form.'+property.name+'.$invalid"><g:message code="default.invalid.label" args="[\''+property.name+'\']" default="Invalid '+property.name+' "/> '
+    		sb << '\n\t\t<small class="error" ng-show="!'+domainTitle+'Form.'+property.name+'.$pristine && '+domainTitle+'Form.'+property.name+'.$invalid"><g:message code="default.invalid.label" args="[\''+property.name+'\']" default=" Invalid '+property.name+' : "/> '
     		if (cp."${property.name}".min != null) {
     			sb << '<g:message code="default.min.label" args="[\''+cp."${property.name}".min+'\']" default=" min: '+cp."${property.name}".min+' "/>'
     		}

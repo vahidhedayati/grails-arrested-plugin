@@ -55,9 +55,9 @@ class ArrestedUserController extends ArrestedController {
 		String passwordConfirm
 		
 		def data=request.JSON
-		if (!data) {
+		/*if (!data) {
 			data=JSON.parse(params)
-		}
+		}*/
 		
 		if (data) {
 			username=data.username as String
