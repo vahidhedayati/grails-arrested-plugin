@@ -16,12 +16,8 @@ function UserCtrl($rootScope, DAO){
     $rootScope.errorValidation = function(){
         $rootScope.errors = {loading: true, forgotPassword:false, showErrors:false, errorMessages:[],showMessage:false, showFunctionError:false, showServerError:false, showPasswordError:false};
     };
-    
-    /*
-    ng-click="setSelectedController(\${c})"
-    ng-class="{selected: isSelected(\${c})}"
+
     $rootScope.setSelectedController = function(name) {
-    	alert(name);
     	$rootScope.selectedController=name;
     };
     	 
@@ -30,7 +26,7 @@ function UserCtrl($rootScope, DAO){
        return $rootScope.selectedController===name;
       }
     };
-    */	 
+    	 
  
     $rootScope.signup = function(){
     	$rootScope.errors.errorMessages=[];

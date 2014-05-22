@@ -764,7 +764,7 @@ fieldset,
 	padding: 0.35em;
 }
 .selected, .selected a {
-  background: #AAA;
+  background: #EEE;
 }
 .homeLogo {
 	display: inline-block;
@@ -904,8 +904,8 @@ target(createControllerGsp: "Create the angular controller.gsp template") {
 		names.each {
 			if (new File("${basedir}/web-app/js/${it.className}Ctrl.js").exists()) {
 				writer.writeLine """
-				<div class="btn btn-default">
-				<a onclick='window.location.href="#/${it.propertyName}/list"' title="\${message(code: 'default.${it.propertyName}.label', default: '${it.className}')}">
+				<div class="btn btn-default" ng-click="setSelectedController('${it.propertyName}')">
+				<a onclick='window.location.href="#/${it.propertyName}/list"'      ng-class="{selected: isSelected('${it.propertyName}')}" title="\${message(code: 'default.${it.propertyName}.label', default: '${it.className}')}">
 					<g:message code="default.${it.propertyName}.label"  default="${it.className}"/>
 				</a>
 				</div>
