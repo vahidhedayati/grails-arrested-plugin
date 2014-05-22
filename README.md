@@ -16,6 +16,7 @@ Add plugin Dependency in BuildConfig.groovy :
 
 You can watch this video to help understand what you are about to do : [arrested website video](https://www.youtube.com/watch?v=popG4gucZ0Y)
 
+For screen shots check out [arrested website screenshots](https://github.com/vahidhedayati/testingarrested/wiki)
 
 We need to set up a couple things before we get started generating your REST controllers and Angular views.  Namely we need our User and Token Entities, a Security Filter that validates a token header field, and some base Angular js files that act as a DAO to your rest services.
 
@@ -51,8 +52,6 @@ To generate views for your newly created REST controller run:
 > grails create-arrested-view DomainClassName
 
 
-
-# Security
 
 
 # How to Integrate
@@ -108,9 +107,6 @@ Authors have many books. To log in
 Refer to Bootstrap configuration on this demo project to see how that works, once in, you can create authors then add books to those authors.
   
 
-
-#### Limitations:
-Nothing noticed / reported at the moment - 
 
 
 ### Version info:
