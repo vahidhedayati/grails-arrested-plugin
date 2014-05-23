@@ -247,8 +247,10 @@ target(updateResources: "Update the application resources") {
         writer.writeLine "    application {"
         writer.writeLine "        dependsOn 'bootstrap'"
         writer.writeLine "        resource url:'js/application.js'"
+        writer.writeLine "        resource url:'js/ng-table.js'"
+        writer.writeLine " 		  resource url:'css/ng-table.css'"
         writer.writeLine "    }"
-        writer.writeLine ""
+		writer.writeLine ""
         writer.writeLine "    bootstrap {"
         writer.writeLine "        dependsOn 'angularControllers'"
         writer.writeLine "        resource url:'http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css'"
@@ -326,7 +328,8 @@ target(createAngularIndex: "Create the angular file configuration") {
 	def shortname= Metadata.current.'app.name'.toString().replaceAll(/(\_|\-|\.)/, '')
     configFile.withWriterAppend { BufferedWriter writer ->
         writer.writeLine "'use strict';"
-        writer.writeLine "var " + shortname + " = angular.module('" + Metadata.current.'app.name' + "', ['services','ngRoute']);"
+        writer.writeLine "var " + shortname + " = angular.module('" + Metadata.current.'app.name' + "', ['services','ngRoute','ngTable']);"
+		//writer.writeLine "var " + shortname + " = angular.module('" + Metadata.current.'app.name' + "', ['services','ngRoute']);"
         writer.writeLine shortname + ".config([\n" +
                 "    '\$routeProvider',\n" +
                 "    function(\$routeProvider) {\n" +
@@ -507,6 +510,11 @@ target(updateLayout: "Update the layout view") {
                 "</html>"
     }
 
+	copy(file:"$arrestedPluginDir/src/templates/views/js/ng-table.js",
+		tofile: "$basedir/web-app/js/ng-table.js", overwrite: false)
+	copy(file:"$arrestedPluginDir/src/templates/views/css/ng-table.css",
+		tofile: "$basedir/web-app/css/ng-table.css", overwrite: false)
+	
     configFile = new File("${basedir}/grails-app/views/index.gsp")
     if (configFile.exists()) {
         configFile.delete()

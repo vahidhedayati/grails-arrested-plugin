@@ -1,5 +1,5 @@
 'use strict';
-function @controller.name@(DAO, $rootScope)
+function @controller.name@(DAO, $rootScope, ngTableParams)
 {
 	if ($rootScope.appConfig) {
 		if (!$rootScope.appConfig.token!='') {
@@ -21,6 +21,10 @@ function @controller.name@(DAO, $rootScope)
 		$rootScope.@class.instance@ = {};
 	}
 
+	
+	
+	 
+	 
 	$rootScope.getAll@class.name@ = function () {
 		//get all
 		$rootScope.errors.errorMessages=[];
@@ -28,7 +32,17 @@ function @controller.name@(DAO, $rootScope)
 		$rootScope.loading=true,
 		function (result) {
 			$rootScope.@class.instance@s = result;
+			$rootScope.tableParams = new ngTableParams({
+		         page: 1,            // show first page
+		         count: 10           // count per page
+		     }, {
+		    	 total: result.length, // length of data
+		         getData: function($defer, params) {
+		             $defer.resolve(result.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+		         }
+		     });
 			$rootScope.loading=false;   
+			
 		},
 		function (error) {
 			$rootScope.errors.showErrors = true;
