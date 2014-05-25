@@ -9,7 +9,7 @@ AngularJs + RESTful = Arrested
 # Installation:
 
 Add plugin Dependency in BuildConfig.groovy :
->compile ":arrested:1.18"
+>compile ":arrested:1.19"
 
 
 # Getting Started
@@ -112,7 +112,10 @@ Refer to Bootstrap configuration on this demo project to see how that works, onc
 ### Version info:
 
 ```
-1,18 ; 	Issues with JSON parsing fixed, hopefully for good now. directive to check existing username added - and verification added to update/signup features.
+1.19 : ngTable added, pagination support. (issues with filtering). UI table changes due to module addition.
+arrestedInternal Script updated:  moved html content to files and tidied up installation script.
+
+1,18 : 	Issues with JSON parsing fixed, hopefully for good now. directive to check existing username added - and verification added to update/signup features.
 
 1.17 :	Controller.gsp generated based upon existing Ctrl.js files. UI tidyup - update returned to row click.
 

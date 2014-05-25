@@ -1,5 +1,5 @@
 'use strict';
-function @controller.name@(DAO, $rootScope, $filter, ngTableParams)
+function @controller.name@(DAO, $rootScope, $scope, $filter, ngTableParams)
 {
 	if ($rootScope.appConfig) {
 		if (!$rootScope.appConfig.token!='') {
@@ -19,26 +19,55 @@ function @controller.name@(DAO, $rootScope, $filter, ngTableParams)
 		$rootScope.@class.instance@ = {};
 	}
 
-	
+	$rootScope.tableParams = new ngTableParams({
+        page: 1,            // show first page
+        count: 10,           // count per page
+        sorting: {
+            id : 'desc' // initial sorting
+        }
+	}, {
+		getData: function($defer, params) {
+			DAO.query({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller: '@class.instance@', action: 'list'},	
+				$rootScope.loadingSite=true,
+					function (result) {
+						$rootScope.@class.instance@s=result;
+						var putIt  = params.sorting() ? $filter('orderBy')($rootScope.@class.instance@s, params.orderBy()): id;
+						params.total(putIt.length);
+						$defer.resolve(putIt.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+						$rootScope.@class.instance@s=(putIt.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+						$rootScope.loadingSite=false;   
+					},
+					function (error) {
+						$rootScope.errors.showErrors = true;
+						$rootScope.errors.showServerError = true;
+						$rootScope.errors.errorMessages.push(''+error.status+' '+error.data);
+						$rootScope.loadingSite=false;
+					});
+      	}
+    });
+	// @deprecated
 	$rootScope.getAll@class.name@ = function () {
 		//get all
 		$rootScope.errors.errorMessages=[];
-		$rootScope.tableParams = new ngTableParams({
-	            page: 1,            // show first page
-	            count: 10,           // count per page
-	            sorting: {
-	                id : 'desc' // initial sorting
-	            }
-	     }, {
-	     getData: function($defer, params) {
 		 DAO.query({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller: '@class.instance@', action: 'list'},	
 		 	$rootScope.loadingSite=true,
 		 	function (result) {
-			 	var putIt  = params.sorting() ? $filter('orderBy')(result, params.orderBy()): id;
-			 	params.total(putIt.length);
-                $defer.resolve(putIt.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-		        $rootScope.@class.instance@s = putIt;
-                $rootScope.loadingSite=false;   
+			 	$rootScope.tableParams = new ngTableParams({
+			 		page: 1,            // show first page
+			 		count: 10,           // count per page
+			 		sorting: {
+			 			id : 'desc' // initial sorting
+			 		}
+			 	}, {
+			 		total: result.length,
+			 		getData: function($defer, params) {
+			 			$rootScope.@class.instance@s  = params.sorting() ? $filter('orderBy')(result, params.orderBy()): id;
+			 			//params.total(putIt.length);
+			 			$defer.resolve($rootScope.@class.instance@s.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+			 			$rootScope.@class.instance@s=($rootScope.@class.instance@s.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+			 		}
+			 	});
+		        $rootScope.loadingSite=false;   
 		    },
 		    function (error) {
 		        $rootScope.errors.showErrors = true;
@@ -46,28 +75,17 @@ function @controller.name@(DAO, $rootScope, $filter, ngTableParams)
 		        $rootScope.errors.errorMessages.push(''+error.status+' '+error.data);
 		        $rootScope.loadingSite=false;
 		     });
-		        }
-		    });
-	
+		       
 	};
 	 
-	 
-	$rootScope.getAll1@class.name@ = function () {
+	/*
+	$rootScope.getAllOld@class.name@ = function () {
 		//get all
 		$rootScope.errors.errorMessages=[];
 		DAO.query({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller: '@class.instance@', action: 'list'},
 		$rootScope.loadingSite=true,
 		function (result) {
 			$rootScope.@class.instance@s = result;
-			$rootScope.tableParams = new ngTableParams({
-		         page: 1,            // show first page
-		         count: 10           // count per page
-		     }, {
-		    	 total: result.length, // length of data
-		         getData: function($defer, params) {
-		             $defer.resolve(result.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-		         }
-		     });
 			$rootScope.loadingSite=false;   
 			
 		},
@@ -78,7 +96,7 @@ function @controller.name@(DAO, $rootScope, $filter, ngTableParams)
 			$rootScope.loadingSite=false;
 		});
 	};
-
+	 */
 	$rootScope.new@class.name@ = function () {
 		$rootScope.loadingSite=true;
 		$rootScope.@class.instance@ = {};

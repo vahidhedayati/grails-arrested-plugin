@@ -258,7 +258,7 @@ target(createAngularIndex: "Create the angular file configuration") {
 	def shortname= Metadata.current.'app.name'.toString().replaceAll(/(\_|\-|\.)/, '')
     configFile.withWriterAppend { BufferedWriter writer ->
         writer.writeLine "'use strict';"
-        writer.writeLine "var " + shortname + " = angular.module('" + Metadata.current.'app.name' + "', ['services','ngRoute','ngTable']);"
+        writer.writeLine "var " + shortname + " = angular.module('" + Metadata.current.'app.name' + "', ['services','ngRoute']);"
 		//writer.writeLine "var " + shortname + " = angular.module('" + Metadata.current.'app.name' + "', ['services','ngRoute']);"
         writer.writeLine shortname + ".config([\n" +
                 "    '\$routeProvider',\n" +
