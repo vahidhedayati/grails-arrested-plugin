@@ -59,9 +59,13 @@ installTemplateView = { domainClass, String artefactName, String artefactPath, S
     //def pluginM = PluginManagerHolder.pluginManager
     //def plugin = pluginM.getGrailsPlugin("hibernate")
 	String plugin = Holders.pluginManager.getGrailsPlugin("hibernate")
+	if (!plugin) {
+		plugin = Holders.pluginManager.getGrailsPlugin("hibernate4")
+	}
+	
     if (plugin) {
-        cp = domainClass.constrainedProperties
-    }
+	    cp = domainClass.constrainedProperties
+	}
     def binding = [
             className: domainClass.getShortName(),
             domainTitle: domainClass.getPropertyName(),
@@ -374,7 +378,11 @@ target(updateLayout: "Update the layout view") {
 	def addConf = [app: shortname]
 	def maingsp = createTemplate(engine, 'views/layouts/main.gsp', addConf)
 	writeToFile("grails-app/views/layouts/main.gsp",maingsp.toString())
-
+	
+	// Added to support 2.4 apps with resources plugin
+	copy(file:"$arrestedPluginDir/src/templates/views/js/application.js",
+		tofile: "$basedir/web-app/js/application.js", overwrite: false)
+	
 	copy(file:"$arrestedPluginDir/src/templates/views/js/ng-table.js",
 		tofile: "$basedir/web-app/js/ng-table.js", overwrite: false)
 	copy(file:"$arrestedPluginDir/src/templates/views/css/ng-table.css",

@@ -9,7 +9,7 @@ AngularJs + RESTful = Arrested
 # Installation:
 
 Add plugin Dependency in BuildConfig.groovy :
->compile ":arrested:1.19"
+>compile ":arrested:1.20"
 
 
 # Getting Started
@@ -112,6 +112,8 @@ Refer to Bootstrap configuration on this demo project to see how that works, onc
 ### Version info:
 
 ```
+1.20 : various updates to support grails 2.4.0+, at the moment still relying on resources plugin. Updates to edit.html to bring in line with 2.4 verification, further updates to internal script to support hibernate4 when calling cp.
+
 1.19 : ngTable added, pagination support. (issues with filtering). UI table changes due to module addition.
 arrestedInternal Script updated:  moved html content to files and tidied up installation script.
 
