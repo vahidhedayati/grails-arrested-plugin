@@ -1,6 +1,9 @@
 'use strict';
-function UserCtrl($rootScope, DAO){
-
+function UserCtrl($rootScope,$scope, DAO){
+	
+	
+	$scope.clock = { now: new Date() };
+	
     if(!$rootScope.appConfig){
         $rootScope.appConfig = {appName:'@app.name@', token:''};
         $rootScope.user = {username:'', passwordHash:''};
@@ -10,7 +13,7 @@ function UserCtrl($rootScope, DAO){
     function initializeVariables(){
         $rootScope.appConfig = {appName:'@app.name@', token:''};
         $rootScope.user = {username:'', passwordHash:''};
-        $rootScope.errors = {selectedController:'', loadingSite: false, forgotPassword:false, showErrors:false, errorMessages:[],showMessage:false, showFunctionError:false, showServerError:false, showPasswordError:false};
+        $rootScope.errors = {selectedController:'', loadingSite: false,  forgotPassword:false, showErrors:false, errorMessages:[],showMessage:false, showFunctionError:false, showServerError:false, showPasswordError:false};
     }
 
     $rootScope.errorValidation = function(){
@@ -27,6 +30,47 @@ function UserCtrl($rootScope, DAO){
       }
     };
     	 
+    
+    
+    var updateClock = function() {
+    	var s = "";
+    	var cu = new Date();
+    	var x = new Array("Sunday", "Monday", "Tuesday","Wednesday","Thursday", "Friday","Saturday");
+    	var day = cu.getDay();
+    	var today= x[day];
+    	s +=today +" [ ";
+    	s += cu.getDate() +"/";
+    	s += cu.getMonth() +"/";
+    	s += cu.getFullYear() +"  ";
+    	s += cu.getHours() +":";
+    	s += cu.getMinutes() +":";
+    	s += cu.getSeconds() +" ";
+    	//s += cu.getMilliseconds()+"] ";
+    	s +=cu.toString().match(/\(([A-Za-z\s].*)\)/)[1];
+    	s += "] "
+    	$scope.clock.now=s;  
+    };
+    setInterval(function() {
+    	$scope.$apply(updateClock);
+    }, 1000);
+    updateClock();
+    
+    $rootScope.setLang= function(){
+    	$rootScope.errors.errorMessages=[];
+        DAO.update({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'authUser', action:'setLang', instance:$rootScope.lang},
+    	$rootScope.loadingSite=true,
+    	function(result){
+            	$rootScope.user = result;
+            	$rootScope.loadingSite=false;
+            	window.location.href="#/"
+        },
+        function(error){
+            $rootScope.errors.showErrors = true;
+            $rootScope.errors.showServerError = true;
+            $rootScope.errors.errorMessages.push(''+error.status+' '+error.data);
+            $rootScope.loadingSite=false;
+        });
+    };
  
     $rootScope.signup = function(){
     	$rootScope.errors.errorMessages=[];
@@ -101,6 +145,7 @@ function UserCtrl($rootScope, DAO){
                 $rootScope.loadingSite=false;
             });
     };
+    
     $rootScope.updateUsername= function(){
     	$rootScope.errors.errorMessages=[];
         DAO.update({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'arrestedUser', action:'updateUsername', instance:$rootScope.user},
@@ -117,6 +162,7 @@ function UserCtrl($rootScope, DAO){
             $rootScope.loadingSite=false;
         });
     };
+    
     $rootScope.updateProfile= function(){
     	$rootScope.errors.errorMessages=[];
         DAO.update({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'arrestedUser', action:'update', instance:$rootScope.user},

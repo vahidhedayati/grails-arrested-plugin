@@ -16,10 +16,16 @@
 		<div class="collapse navbar-collapse navbar-ex1-collapse" role="navigation">
     	<ul class="nav navbar-nav">
 			<li class="controller">
-				<div id="h2Header"><g:message code="default.welcome.title" args="[meta(name:'app.name')]"/></div>
+				<div id="h2Header"><g:message code="default.welcome.title" args="[meta(name:'app.name')]"/> </div>
 			</li>
+			
          </ul>
          <ul  class="nav navbar-nav navbar-right" >
+         	<li class="controller">
+         		<a class="fa  fa-clock-o icon-color">
+         		{{clock.now}}
+         		</a>
+         	</li>
          	<li  class="dropdown controller">
 				<a class="dropdown-toggle" role="button" data-toggle="dropdown">
 					<span id="userMessage">
@@ -42,11 +48,14 @@
 					</li>
 				</ul>
 			</li>
+			
 			<li class="controller">
 				<a data-ng-controller='UserCtrl' data-ng-click='logout()' title="\${message(code: 'security.signoff.label', default: 'Log out')}">
 					<span class="glyphicon glyphicon-log-out"></span> <g:message code="security.signoff.label" default="Sign Off"/>
 				</a>
 			</li>
+			
+		
 			
 		</ul>
 		</div>
