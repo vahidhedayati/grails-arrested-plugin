@@ -13,7 +13,7 @@ function UserCtrl($rootScope,$scope, DAO){
     function initializeVariables(){
         $rootScope.appConfig = {appName:'@app.name@', token:''};
         $rootScope.user = {username:'', passwordHash:''};
-        $rootScope.errors = {selectedController:'', loadingSite: false,  forgotPassword:false, showErrors:false, errorMessages:[],showMessage:false, showFunctionError:false, showServerError:false, showPasswordError:false};
+        $rootScope.errors = {selectedController:'', loadingSite: false, forgotPassword:false, showErrors:false, errorMessages:[],showMessage:false, showFunctionError:false, showServerError:false, showPasswordError:false};
     }
 
     $rootScope.errorValidation = function(){
@@ -31,7 +31,7 @@ function UserCtrl($rootScope,$scope, DAO){
     };
     	 
     
-    
+
     var updateClock = function() {
     	var s = "";
     	var cu = new Date();
@@ -55,14 +55,14 @@ function UserCtrl($rootScope,$scope, DAO){
     }, 1000);
     updateClock();
     
-    $rootScope.setLang= function(){
+    $rootScope.setLang= function(lang){
     	$rootScope.errors.errorMessages=[];
-        DAO.update({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'authUser', action:'setLang', instance:$rootScope.lang},
+        DAO.update({appName: $rootScope.appConfig.appName, token: $rootScope.appConfig.token, controller:'auth', action:'setLang', instance:lang},
     	$rootScope.loadingSite=true,
     	function(result){
             	$rootScope.user = result;
             	$rootScope.loadingSite=false;
-            	window.location.href="#/"
+            	window.location.href="/@app.name@/"
         },
         function(error){
             $rootScope.errors.showErrors = true;
