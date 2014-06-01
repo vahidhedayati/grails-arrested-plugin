@@ -9,7 +9,7 @@ AngularJs + RESTful = Arrested
 # Installation:
 
 Add plugin Dependency in BuildConfig.groovy :
->compile ":arrested:1.27"
+>compile ":arrested:1.28"
 
 ## Installation information warning
 
@@ -140,7 +140,7 @@ Please refer to [supported i18n files](https://github.com/vahidhedayati/testinga
 1.28 :	Further tidy up of arrestedInstaller, removed duplicate css/js files and used one set, 
 		css parsed for resources. proper details on how to use i18n now provided, the files copied to 
 		user's project folder. override function provided to add additional i18n support from users
-		Config.groovy.
+		Config.groovy. Moved clock over to clockCtrl.js
 		
 1.27 : 	Minor bug css issues with pre 2.4 now fixed. (images still not appearing on grails pre 2.4)
  
