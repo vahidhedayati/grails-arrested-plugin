@@ -17,7 +17,7 @@ class AuthController extends ArrestedController {
 	}
 	
 	def listLocale() {
-		def countries = [] as SortedSet
+		def countries = []
 		def supported=grailsApplication.config.arrested.supported.i18n ?: ['en','de'] 
 		def locale = Locale.getAvailableLocales().collect { availableLocale ->
 			def countryMap = [:]
@@ -29,7 +29,7 @@ class AuthController extends ArrestedController {
 			countries?.add(countryMap)
 			}
 		}
-		//countries = countries.sort { it }
+		countries = countries.sort { it }
 		withFormat{
 			xml {
 				render countries as XML
