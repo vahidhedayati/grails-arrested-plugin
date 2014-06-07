@@ -51,14 +51,13 @@ class AuthController extends ArrestedController {
 	
 	def getLocale() { 
 		def clocale=['lang': session.'org.springframework.web.servlet.i18n.SessionLocaleResolver.LOCALE' ?: org.springframework.web.servlet.support.RequestContextUtils.getLocale(request).toString().substring(0,2)]
-		println "we are getting locale ${clocale}"
 		render clocale as JSON
-		
-		
 	}
+	
 	def dashboard() { 
 		render ""		
 	}
+	
 	def showUpdated() {
 		renderSuccess("","${message(code: 'default.details.updated.label', default: 'Information has been updated')}")
 	}
