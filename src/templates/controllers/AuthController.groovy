@@ -18,7 +18,7 @@ class AuthController extends ArrestedController {
 	}
 	
 	def listLocale() {
-		def countries = [] 
+		def countries = []
 		def supported=grailsApplication.config.arrested.supported.i18n ?: ['en','de'] 
 		def locale = Locale.getAvailableLocales().collect { availableLocale ->
 			def countryMap = [:]
