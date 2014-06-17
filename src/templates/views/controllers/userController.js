@@ -1,5 +1,5 @@
 'use strict';
-function UserCtrl(\$rootScope,\$scope, DAO){
+function UserCtrl(\$rootScope,\$scope,LangService,\$cacheFactory,\$templateCache, DAO){
 	
     if(!\$rootScope.appConfig){
         \$rootScope.appConfig = {appName:'$appName', token:''};
@@ -27,6 +27,12 @@ function UserCtrl(\$rootScope,\$scope, DAO){
       }
     };
     
+    \$rootScope.dashboard=function() { 
+    	\$templateCache.removeAll();
+    	\$cacheFactory.get('\$http').removeAll();
+    	\$scope.myLang=LangService.getLang();
+    };
+    
     \$rootScope.setLang= function(lang){
     	\$rootScope.errors.errorMessages=[];
         DAO.update({appName: \$rootScope.appConfig.appName, token: \$rootScope.appConfig.token, controller:'auth', action:'setLang', instance:lang},
@@ -34,7 +40,11 @@ function UserCtrl(\$rootScope,\$scope, DAO){
     	function(result){
             	\$rootScope.user = result;
             	\$rootScope.loadingSite=false;
-            	window.location.href="/$appName/"
+            	if (!\$rootScope.appConfig.token) {
+            		window.location.href="/$appName/"
+            	}else{
+            		window.location.href="#/dashboard"
+            	}	
         },
         function(error){
             \$rootScope.errors.showErrors = true;

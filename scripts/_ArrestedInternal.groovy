@@ -297,7 +297,8 @@ target(createAngularIndex: "Create the angular file configuration") {
                 "    '\$routeProvider',\n" +
                 "    function(\$routeProvider) {\n" +
                 "        \$routeProvider."
-		//writer.writeLine "            when('/dashboard', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/dashboard', controller: 'UserCtrl', resolve: { lang: function(SessionService) {return SessionService.getLang()}}})."
+		//writer.writeLine "            when('/dashboard', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/dashboard', controller: 'UserCtrl', resolve: { myLang: function(LangService) {return LangService.getLang()}}})."
+		writer.writeLine "            when('/dashboard', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/dashboard', controller: 'UserCtrl'})."
         writer.writeLine "            when('/login', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/showLogin', controller: 'UserCtrl'})."
 		writer.writeLine "            when('/signup', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/showSignup', controller: 'UserCtrl'})."
 		writer.writeLine "            when('/updatepassword', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/showUpdatePassword', controller: 'UserCtrl'})."
@@ -409,6 +410,7 @@ target(createAngularUser: "Create the angular user controller") {
 	
 	installTemplateEx("clockCtrl.js", cpathUser, "views/controllers", "clockController.js") {}
     installTemplateEx("login.gsp", "grails-app/views/${packageToPath(pkg)}auth", "views/view", "login.html") {}
+	installTemplateEx("dashboard.gsp", "grails-app/views/${packageToPath(pkg)}auth", "views/view", "dashboard.html") {}
 	installTemplateEx("signup.gsp", "grails-app/views/${packageToPath(pkg)}auth", "views/view", "signup.html") {}
 	installTemplateEx("update.gsp", "grails-app/views/${packageToPath(pkg)}auth", "views/view", "update.html") {}
 	installTemplateEx("update-username.gsp", "grails-app/views/${packageToPath(pkg)}auth", "views/view", "update-username.html") {}

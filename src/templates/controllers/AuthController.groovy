@@ -55,7 +55,11 @@ class AuthController extends ArrestedController {
 	}
 	
 	def dashboard() { 
-		render ""		
+		withFormat {
+			html {
+				render(view: "dashboard")
+			}
+		}
 	}
 	
 	def showUpdated() {

@@ -9,7 +9,7 @@ AngularJs + RESTful = Arrested
 # Installation:
 
 Add plugin Dependency in BuildConfig.groovy :
->compile ":arrested:1.29"
+>compile ":arrested:1.30"
 
 ## Installation information warning
 
@@ -137,6 +137,11 @@ Please refer to [supported i18n files](https://github.com/vahidhedayati/testinga
 ### Version info:
 
 ```
+1.30 : 	Service added to arrestedDirectives.js to get userLocale from within grails. 
+ 		Also clears all angular template/cacheFactory caches and set angular to load up new locale. 
+ 		Plain dashboard added. Locale settings outside login do a clean redirect back to app. 
+ 		Within application relies on above technique to work within angular.
+ 	
 1.29 :	Bug found with getAll$domainClass, required for select boxes produced when there is dependencies.
 		renamed all $rootScope calls within created Ctrl files for domainClasses to $scope. 
 		

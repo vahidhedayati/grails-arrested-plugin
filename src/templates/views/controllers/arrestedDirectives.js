@@ -23,32 +23,51 @@ ${shortname}.directive('passwordMatch', [function () {
 
 //uniqueUsername directive
 ${shortname}.directive('uniqueUsername', ["\$http", function(\$http){
-    return{
-        require: 'ngModel',
-			link: function (scope, element, attrs, ctrl) {
-            	element.bind('blur', function (e) {
-               	 if (!ctrl || !element.val()) return;
-                	var currentValue = element.val();
-					\$http.put('auth/lookup', {username: currentValue}).success(function (res) {
+	return{
+    require: 'ngModel',
+		link: function (scope, element, attrs, ctrl) {
+        	element.bind('blur', function (e) {
+           	 if (!ctrl || !element.val()) return;
+            	var currentValue = element.val();
+				\$http.put('auth/lookup', {username: currentValue}).success(function (res) {
 					ctrl.\$setValidity('uniquser', true);
 				}).error(function (res) {
 					ctrl.\$setValidity('uniquser', false);
 				});
-				});
-			}	
-    };
+			});
+		}	
+	};
 }]);
- ${shortname}.directive('loadingContainer', function () {
-	 return {
-		 restrict: 'A',
-		 scope: false,
-		 link: function(scope, element, attrs) {
-			 var loadingLayer = angular.element('<div class="loading"></div>');
-			 element.append(loadingLayer);
-			 element.addClass('loading-container');
-			 scope.\$watch(attrs.loadingContainer, function(value) {
-				 loadingLayer.toggleClass('ng-hide', !value);
-			 });
-		 }
-	 };
- });
+
+${shortname}.directive('loadingContainer', function () {
+ return {
+	 restrict: 'A',
+	 scope: false,
+	 link: function(scope, element, attrs) {
+		 var loadingLayer = angular.element('<div class="loading"></div>');
+		 element.append(loadingLayer);
+		 element.addClass('loading-container');
+		 scope.\$watch(attrs.loadingContainer, function(value) {
+			 loadingLayer.toggleClass('ng-hide', !value);
+		 });
+	 }
+ };
+});
+
+angular.module('${shortname}').factory('LangService',["\$http","\$rootScope", function(\$http,\$rootScope) {
+   return {
+	getLang: function() {
+	  return \$http.get('auth/getLocale').then(function(r) {\$rootScope.userLocale=r.data.lang;});
+	}
+  }
+}]);
+
+/*
+angular.module('${shortname}').config(function(\$httpProvider) {
+	\$httpProvider.defaults.headers.post['X-ARRESTED-AUTH-TOKEN'] = 'arrested';
+});
+
+angular.module('${shortname}').config(function(\$httpProvider) {
+	\$httpProvider.defaults.headers.put['X-ARRESTED-AUTH-TOKEN'] = 'arrested';
+});
+*/
