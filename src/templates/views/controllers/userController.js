@@ -30,7 +30,7 @@ function UserCtrl(\$rootScope,\$scope,LangService,\$cacheFactory,\$templateCache
     \$rootScope.dashboard=function() { 
     	\$templateCache.removeAll();
     	\$cacheFactory.get('\$http').removeAll();
-    	\$scope.myLang=LangService.getLang();
+    	\$scope.myLang=LangService;
     };
     
     \$rootScope.setLang= function(lang){

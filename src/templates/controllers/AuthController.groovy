@@ -51,7 +51,11 @@ class AuthController extends ArrestedController {
 	
 	def getLocale() { 
 		def clocale=['lang': session.'org.springframework.web.servlet.i18n.SessionLocaleResolver.LOCALE' ?: org.springframework.web.servlet.support.RequestContextUtils.getLocale(request).toString().substring(0,2)]
-		render clocale as JSON
+		withFormat{
+			json {
+				render clocale
+			}
+		}
 	}
 	
 	def dashboard() { 

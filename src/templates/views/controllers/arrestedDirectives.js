@@ -53,21 +53,3 @@ ${shortname}.directive('loadingContainer', function () {
 	 }
  };
 });
-
-angular.module('${shortname}').factory('LangService',["\$http","\$rootScope", function(\$http,\$rootScope) {
-   return {
-	getLang: function() {
-	  return \$http.get('auth/getLocale').then(function(r) {\$rootScope.userLocale=r.data.lang;});
-	}
-  }
-}]);
-
-/*
-angular.module('${shortname}').config(function(\$httpProvider) {
-	\$httpProvider.defaults.headers.post['X-ARRESTED-AUTH-TOKEN'] = 'arrested';
-});
-
-angular.module('${shortname}').config(function(\$httpProvider) {
-	\$httpProvider.defaults.headers.put['X-ARRESTED-AUTH-TOKEN'] = 'arrested';
-});
-*/

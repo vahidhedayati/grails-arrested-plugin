@@ -32,10 +32,13 @@ $customAngularControllers
     }
 
     angularService {
-        dependsOn 'angularResource', 'angularNgTable'
+        dependsOn 'angularResource', 'angularNgTable','arrestedServices'
         resource url: 'js/services.js'
+		
     }
-
+	arrestedServices {
+		resource url: 'js/arrestedServices.js'
+	}
     angularResource {
         dependsOn 'angular'
         resource url:'js/angular-resource/angular-resource.min.js'

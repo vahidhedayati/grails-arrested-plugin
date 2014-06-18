@@ -5,6 +5,7 @@
 //= require angular-resource/angular-resource.min
 //= require angular-table/ng-table
 //= require $app/index
+//= require $app/arrestedServices
 //= require $app/services
 //= require $app/arrestedDirectives
 //= require_tree custom-$app
