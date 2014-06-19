@@ -335,11 +335,8 @@ target(createAngularIndex: "Create the angular file configuration") {
 	 def direc = createTemplate(engine, 'views/controllers/arrestedDirectives.js', addConf)
 	 writeToFile(cpathDirective+'/arrestedDirectives.js',direc.toString())
 	 
-	 def arrestedServ = createTemplate(engine, 'views/controllers/arrestedServices.js', addConf)
-	 writeToFile(cpathDirective+'/arrestedServices.js',arrestedServ.toString())
-	 
     depends(compile)
-    println("index.js arrestedServices.js arrestedDirectives.js created")
+    println("index.js arrestedDirectives.js created")
 }
 
 target(createController: "Creates a standard controller") {

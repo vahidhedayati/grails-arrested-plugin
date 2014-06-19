@@ -53,3 +53,10 @@ ${shortname}.directive('loadingContainer', function () {
 	 }
  };
 });
+${shortname}.factory('LangService',["\$http","\$rootScope", function(\$http,\$rootScope) {
+	   return {
+		getLang: function() {
+		  return \$http.get('auth/getLocale').then(function(r) {\$rootScope.userLocale= r.data;});
+		}
+	  }
+	}]);

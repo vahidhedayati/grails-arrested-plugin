@@ -27,10 +27,18 @@ function UserCtrl(\$rootScope,\$scope,LangService,\$cacheFactory,\$templateCache
       }
     };
     
-    \$rootScope.dashboard=function() { 
+    \$rootScope.dashboard4=function() { 
     	\$templateCache.removeAll();
     	\$cacheFactory.get('\$http').removeAll();
-    	\$scope.myLang=LangService;
+    	\$scope.userLocale=LangService.getLang();
+    	window.location.href="#/"
+    };
+    
+    \$rootScope.dashboard=function() { 
+    	\$templateCache.removeAll();
+    	\$cacheFactory.get('$http').removeAll();
+    	\$scope.myLang=LangService.getLang();
+	window.location.href="#/"
     };
     
     \$rootScope.setLang= function(lang){
