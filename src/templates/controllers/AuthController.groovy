@@ -49,10 +49,17 @@ class AuthController extends ArrestedController {
 		renderSuccess(lang,"${message(code: 'default.lang.changed.label', default: 'Language changed')}")
 	}
 	
+	// Although this is returned to service for some reason it causes app to appear blank on pre 2.4 grails..
+	// if as JSON removed text is printed on site and ofcourse not returned as object
 	def getLocale() { 
-		def clocale=session.'org.springframework.web.servlet.i18n.SessionLocaleResolver.LOCALE' ?: org.springframework.web.servlet.support.RequestContextUtils.getLocale(request).toString().substring(0,2)
-		render clocale 
+	  def clocale=['lang':session.'org.springframework.web.servlet.i18n.SessionLocaleResolver.LOCALE' ?: org.springframework.web.servlet.support.RequestContextUtils.getLocale(request).toString().substring(0,2)]
+	  withFormat{
+	    json  {
+	      render clocale as JSON
+        }
+	  }
 	}
+	
 	
 	def dashboard() { 
 		withFormat {

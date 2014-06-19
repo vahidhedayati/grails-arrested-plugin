@@ -27,19 +27,24 @@ function UserCtrl(\$rootScope,\$scope,LangService,\$cacheFactory,\$templateCache
       }
     };
     
-    \$rootScope.dashboard4=function() { 
-    	\$templateCache.removeAll();
-    	\$cacheFactory.get('\$http').removeAll();
-    	\$scope.userLocale=LangService.getLang();
-    	window.location.href="#/"
-    };
-    
     \$rootScope.dashboard=function() { 
     	\$templateCache.removeAll();
-    	\$cacheFactory.get('$http').removeAll();
-    	\$scope.myLang=LangService.getLang();
-	window.location.href="#/"
-    };
+    	\$cacheFactory.get('\$http').removeAll();
+    	//$scope.myLang=LangService.getLang();
+	
+	LangService.getLang()
+	  .then(function(data) {
+	    alert(data);
+	    \$scope.myLang = data;
+	});
+	\$scope.userLocale2 = function() {
+	  LangService.getLang2()
+	    .then(function(data) {
+	      \$scope.userLocale = data;
+	  });
+	  //window.location.href="#/"
+	};	
+    }
     
     \$rootScope.setLang= function(lang){
     	\$rootScope.errors.errorMessages=[];

@@ -53,10 +53,29 @@ ${shortname}.directive('loadingContainer', function () {
 	 }
  };
 });
-${shortname}.factory('LangService',["\$http","\$rootScope", function(\$http,\$rootScope) {
-	   return {
-		getLang: function() {
-		  return \$http.get('auth/getLocale').then(function(r) {\$rootScope.userLocale= r.data;});
-		}
-	  }
-	}]);
+${shortname}.factory('LangService', function(\$q, \$http) {
+	var service = {
+	 getLang: function() {
+		var d = \$q.defer();
+		\$http.get('auth/getLocale')
+		.success(function(data, status) {
+			alert(data.lang);
+			d.resolve(data);
+		}).error(function(data, status) {
+			d.reject(data);
+		});
+		return d.promise;
+      },
+      getLang2: function() {
+    	  var d = \$q.defer();
+    	  \$http.post('auth/getLocale', {})
+    	  .success(function(data, status) {
+    		  d.resolve(data);
+    	  }).error(function(data, status) {
+    		  d.reject(data);
+    	  });
+    	  return d.promise;
+      }
+   }
+   return service;
+ });
