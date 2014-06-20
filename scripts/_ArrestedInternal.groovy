@@ -408,6 +408,11 @@ target(createAngularUser: "Create the angular user controller") {
 	localmkdir("$basedir/${cpathUser}")
 	def usrctl = createTemplate(engine, 'views/controllers/userController.js', addConf)
 	writeToFile("${cpathUser}/userCtrl.js",usrctl.toString())
+
+	def dashctl = createTemplate(engine, 'views/controllers/dashboardController.js', addConf)
+        writeToFile("${cpathUser}/dashboardCtrl.js",dashctl.toString())
+
+
 	
 	installTemplateEx("clockCtrl.js", cpathUser, "views/controllers", "clockController.js") {}
     installTemplateEx("login.gsp", "grails-app/views/${packageToPath(pkg)}auth", "views/view", "login.html") {}

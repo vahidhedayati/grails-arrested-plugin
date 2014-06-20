@@ -25,7 +25,7 @@
 			
 			<g:set var="lang" value="\${session.'org.springframework.web.servlet.i18n.SessionLocaleResolver.LOCALE' ?: org.springframework.web.servlet.support.RequestContextUtils.getLocale(request).toString().substring(0,2)}"/>			
 				<li class="dropdown controller">
-   					<a class="dropdown-toggle" role="button" data-toggle="dropdown" data-target="#" data-ng-init="dashboard()">
+   					<a class="dropdown-toggle" role="button" data-ng-controller="DashboardCtrl" data-toggle="dropdown" data-target="#" data-ng-init="dashboard()">
 					{{userLocale}}	
     				</a>
   	 				<ul class="dropdown-menu dropdown-menu-dark" role="menu" data-ng-controller="UserCtrl" data-ng-init="getAllLocales()" >
