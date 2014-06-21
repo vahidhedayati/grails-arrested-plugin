@@ -134,6 +134,8 @@ Please refer to [supported i18n files](https://github.com/vahidhedayati/testinga
  
 [manually creating locales entries](https://github.com/vahidhedayati/testingarrested/wiki/Manually-defining-locales)
 
+[bash automated app creation](https://github.com/vahidhedayati/testingarrested/wiki/automated---app-creator---bash-script)
+
 ### Version info:
 
 ```
