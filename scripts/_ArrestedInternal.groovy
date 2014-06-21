@@ -334,9 +334,12 @@ target(createAngularIndex: "Create the angular file configuration") {
 	 def cpathDirective=verifyGrailsVersion(appVersion, 'js', appName)
 	 def direc = createTemplate(engine, 'views/controllers/arrestedDirectives.js', addConf)
 	 writeToFile(cpathDirective+'/arrestedDirectives.js',direc.toString())
+	
+	 def arrestedServices = createTemplate(engine, 'views/controllers/arrestedServices.js', addConf)
+	 writeToFile(cpathDirective+'/arrestedServices.js',arrestedServices.toString())
 	 
     depends(compile)
-    println("index.js arrestedDirectives.js created")
+    println("index.js arrestedDirectives.js arrestedServices.js created")
 }
 
 target(createController: "Creates a standard controller") {
@@ -446,7 +449,29 @@ target(updateLayout: "Update the layout view") {
 		}
 	}
 	
+	String ngtblLoc='src/templates/views/web-app/ng-table'
+	def ngTblView="web-app/ng-table"
+	dir = new File(arrestedPluginDir, ngtblLoc)
+	copy(todir: new File(basedir, ngTblView)) {
+		fileset dir: dir
+	}
+	dir.eachFileRecurse{
+		f -> if (f.isDirectory()) {
+			if (!okToWrite("${basedir}/${ngTblView}/$f.name")) {
+				return
+			}
+			println "Creating ${appStyle} ng-table folder: $f.name"
+			dir = new File(arrestedPluginDir, "${ngtblLoc}/$f.name")
+			copy(todir: new File(basedir, ngTblView+'/'+f.name)) {
+				fileset dir: dir
+			}
+		}
+		
+	}
 	
+
+
+			
 	def navbar = createTemplate(engine, 'views/layouts/_navbar.gsp', addConf)
 	writeToFile("grails-app/views/layouts/_navbar.gsp",navbar.toString())
 	

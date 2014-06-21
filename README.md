@@ -9,7 +9,7 @@ AngularJs + RESTful = Arrested
 # Installation:
 
 Add plugin Dependency in BuildConfig.groovy :
->compile ":arrested:1.30"
+>compile ":arrested:1.31"
 
 ## Installation information warning
 
@@ -137,6 +137,12 @@ Please refer to [supported i18n files](https://github.com/vahidhedayati/testinga
 ### Version info:
 
 ```
+
+1.31 : 	Issue with definition name starting with get caused application not to appear in grails pre 2.4 from :
+		1.29 - 1.30. Issue now fixed getLocale renamed to userLocation. assetServices created and pulled into
+		services. DashboardController created and separated from userController. ng-table pages missing added 
+		to web-app folder of grails apps. Tested on pre 2.4 and 2.4 grails to ensure it works on both types.	
+
 1.30 : 	Service added to arrestedDirectives.js to get userLocale from within grails. 
  		Also clears all angular template/cacheFactory caches and set angular to load up new locale. 
  		Plain dashboard added. Locale settings outside login do a clean redirect back to app. 

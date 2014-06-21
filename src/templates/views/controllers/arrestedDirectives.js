@@ -53,13 +53,15 @@ ${shortname}.directive('loadingContainer', function () {
 	 }
  };
 });
-${shortname}.factory('LangService', function(\$q, \$http) {
+
+/*
+ * Creating a service alternative method 
+ *${shortname}.factory('LangService', function(\$q, \$http) {
 	var service = {
 	 getLang: function() {
 		var d = \$q.defer();
-		\$http.get('auth/getLocale')
+		\$http.get('auth/userLocation')
 		.success(function(data, status) {
-			alert(data.lang);
 			d.resolve(data);
 		}).error(function(data, status) {
 			d.reject(data);
@@ -68,7 +70,7 @@ ${shortname}.factory('LangService', function(\$q, \$http) {
       },
       getLang2: function() {
     	  var d = \$q.defer();
-    	  \$http.post('auth/getLocale', {})
+    	  \$http.post('auth/userLocation', {})
     	  .success(function(data, status) {
     		  d.resolve(data);
     	  }).error(function(data, status) {
@@ -79,3 +81,4 @@ ${shortname}.factory('LangService', function(\$q, \$http) {
    }
    return service;
  });
+ */
