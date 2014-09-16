@@ -139,6 +139,8 @@ Please refer to [supported i18n files](https://github.com/vahidhedayati/testinga
 ### Version info:
 
 ```
+1.32 :	Issue with edit https://github.com/PureSrc/grails-arrested-plugin/issues/34, related to $scope vs $rootScope 
+	in Controller.js
 
 1.31 : 	Issue with definition name starting with get caused application not to appear in grails pre 2.4 from :
 		1.29 - 1.30. Issue now fixed getLocale renamed to userLocation. assetServices created and pulled into
