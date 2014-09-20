@@ -302,8 +302,8 @@
 	    		cp.attributes.each { k, v ->
 	    			sb << "${k}=\"${v}\" "
 	    		}
-	    		if (!cp.attributes.precision) {
-	    			sb << "precision=\"${precision}\" "
+	    		if (!cp."${property.name}".attributes.precision) {
+	    			sb << "precision=\"${cp."${property.name}".attributes.precision}\" "
 	    		}
 	    		sb << "data-ng-model='${domainTitle}.${property.name}' />"
 	    		return sb.toString()

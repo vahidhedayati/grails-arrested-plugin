@@ -9,7 +9,7 @@ AngularJs + RESTful = Arrested
 # Installation:
 
 Add plugin Dependency in BuildConfig.groovy :
->compile ":arrested:1.31"
+>compile ":arrested:1.33"
 
 ## Installation information warning
 
@@ -139,6 +139,10 @@ Please refer to [supported i18n files](https://github.com/vahidhedayati/testinga
 ### Version info:
 
 ```
+1.33 : 	Issue with date Fields fixed, additional work to edit.html and a new private setDate function set in Controller.groovy
+	User can define their own date format in their application's Config.groovy, by default:
+	arrested.dateFormat='dd/MM/yyyy'
+
 1.32 :	Issue with edit https://github.com/PureSrc/grails-arrested-plugin/issues/34, related to $scope vs $rootScope 
 	in Controller.js
 

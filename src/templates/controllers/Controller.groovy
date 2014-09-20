@@ -1,9 +1,11 @@
 @package.line@<% import grails.persistence.Event %>import grails.converters.JSON
 import grails.converters.XML
 import arrested.ArrestedController
-
+import java.text.SimpleDateFormat
 class @controller.name@ extends ArrestedController {
 
+    def grailsApplication
+    
     static allowedMethods = [show: "GET", list: "GET", save: "POST", update: "PUT", delete: "DELETE"]
 	def listing() { 
 		withFormat {
@@ -63,7 +65,11 @@ class @controller.name@ extends ArrestedController {
 							instance.${p.name}.add(${p.type.name}.get(it.id as Long))
 						}
 						<%}else{%>
-						if(data.${p.name}) instance.${p.name} = data.${p.name}
+						<%if (p.type.name=='java.util.Date') {%> 
+						  if(data.${p.name}) instance.${p.name} = setDate(data.${p.name})
+						<%}else{%>
+						  if(data.${p.name}) instance.${p.name} = data.${p.name} 
+						<%}%>
 						<%}}}%>
 
             if(instance.save(flush: true)){
@@ -144,5 +150,9 @@ class @controller.name@ extends ArrestedController {
         else{
 			renderMissingParam("\${message(code: 'default.id.missing.label', default: 'id missing')}")
         }
+    }
+    private setDate (String d) {
+      String dFormat=grailsApplication?.config.arrested.dateFormat ?: 'dd/MM/yyyy'
+      return (new SimpleDateFormat(dFormat)).parse(d)
     }
 }
