@@ -110,7 +110,11 @@ class @controller.name@ extends ArrestedController {
                                 instance.${p.name}.add(${p.type.name}.get(it.id as Long))
                             }
                             <%}else{%>
-                            if(data.${p.name}) instance.${p.name} = data.${p.name}
+                            <%if (p.type.name=='java.util.Date') {%> 
+							  if(data.${p.name}) instance.${p.name} = setDate(data.${p.name})
+							<%}else{%>
+							  if(data.${p.name}) instance.${p.name} = data.${p.name} 
+							<%}%>
                             <%}}}%>if(instance.save(flush: true)){
                     withFormat {
                         xml {
