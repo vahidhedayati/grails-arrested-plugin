@@ -139,6 +139,7 @@ Please refer to [supported i18n files](https://github.com/vahidhedayati/testinga
 ### Version info:
 
 ```
+1.34 : https://github.com/PureSrc/grails-arrested-plugin/issues/38
 1.33 : 	Issue with date Fields fixed, additional work to edit.html and a new private setDate function set in Controller.groovy
 	User can define their own date format in their application's Config.groovy, by default:
 	arrested.dateFormat='dd/MM/yyyy'
