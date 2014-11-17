@@ -390,11 +390,22 @@ target(createJSController: "Creates a standard angular controller") {
     def className = prefix + "Ctrl"
 	def cpathController=verifyGrailsVersion(appVersion, 'js', 'custom-'+appName)
     def domainClasses = grailsApp.domainClasses
+	def constraintsList = "";
     domainClasses.each {
         domainClass ->
-            if (domainClass.getShortName() == prefix) {
+            if (domainClass.getShortName() == prefix) {	
+				def sb = new StringBuilder("")
+				domainClass.constrainedProperties?.each {key, value ->
+					if(domainClass.constrainedProperties[$key].inList) {
+						sb.append(domainClass.getPropertyName()).append(
+							 "= [\"" + domainClass.constrainedProperties[$key].inList.join("\",\" ") "\"]\n")
+					}
+				}
+				constraintsList = sb;
 				def addConf=[contName:className,className:prefix,
-					instance:domainClass.getPropertyName(),appName:appName]
+					instance:domainClass.getPropertyName(),appName:appName,
+					constraintList:constraintsList]
+				
 				def clsjs = createTemplate(engine, 'views/controllers/Controller.js', addConf)
 				writeToFile("${cpathController}/${className}.js",clsjs.toString())
             }

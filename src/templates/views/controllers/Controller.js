@@ -17,6 +17,7 @@ function $contName(DAO, \$rootScope, \$scope, \$filter, ngTableParams)
 		\$rootScope.filter = ""
 		\$rootScope.${instance}s = [];
 		\$rootScope.${instance} = {};
+		${constraintList}
 	}
 	
 	\$scope.tableParams = new ngTableParams({
