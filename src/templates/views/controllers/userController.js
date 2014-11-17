@@ -92,7 +92,8 @@ function UserCtrl(\$rootScope,\$scope, DAO){
         	\$rootScope.appConfig.token = result.token;
             delete \$rootScope.user.token;
             \$rootScope.loadingSite=false;
-            window.location.href="#/"
+            //window.location.href="#/"
+            window.location.reload();	
         },
         function(error){
         	\$rootScope.errors.showErrors = true;
