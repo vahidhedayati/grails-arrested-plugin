@@ -6,9 +6,9 @@ class ArrestedRole {
 	static final GUEST = "Guest"
 	
     String name
-	static hasMany= [ permissions: String]
+	static hasMany = [ users: ArrestedUser, permissions: String ]
     static constraints = {
-        name blank: false, unique: true
+        name blank: false, unique: true, nullable:false
     }
 	
 	String toString() {
