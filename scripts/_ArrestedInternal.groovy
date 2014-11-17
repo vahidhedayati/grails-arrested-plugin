@@ -587,12 +587,15 @@ target(createControllerGsp: "Create the angular controller.gsp template") {
 	def cpathUser=verifyGrailsVersion(appVersion, 'js', 'custom-'+appName)
 	names.each {
 		if (new File("${basedir}/${cpathUser}/${it.className}Ctrl.js").exists()) {
+			rul.append('<shiro:hasPermission permission="').append(it.propertyName).append(':*">\n')
 			rul.append('\t <a  ng-class="isSelected(\'').append(it.propertyName).append('\')')
 			rul.append('? \'btn btn-primary\' :\'btn btn-default\'"  ng-click="setSelectedController(\'').append(it.propertyName).append('\')" ')
 			rul.append('onclick=\'window.location.href="#/').append(it.propertyName).append('/list"\' ')
 			rul.append('title="\${message(code: \'default.').append(it.propertyName).append('.label\', default: \'').append(it.className).append('\')}">\n')
 			rul.append('\t\t<g:message code="default.').append(it.propertyName).append('}.label"  default="').append(it.className).append('"/>\n')
 			rul.append('\t</a>\n')
+			rul.append('</shiro:hasPermission>\n')
+			
 		}
 	}
 	def rulConf = [arrestedControllers: rul]
