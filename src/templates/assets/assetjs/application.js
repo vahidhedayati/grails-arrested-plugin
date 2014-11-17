@@ -4,6 +4,7 @@
 //= require angular-route/angular-route
 //= require angular-resource/angular-resource.min
 //= require angular-table/ng-table
+//= require angular-strap/angular-strap
 //= require $app/index
 //= require $app/arrestedServices
 //= require $app/services
