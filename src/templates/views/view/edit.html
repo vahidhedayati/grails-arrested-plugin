@@ -224,9 +224,10 @@
     	sb as String
     }
 
-`	private renderConstraintsAsList(domainClass,property) {
-	    if (!cp) { // Nothing to do if the property has no constraints
-	    	return ""; //
+	private renderConstraintsAsList(domainClass,property) {
+	    if (!cp) { 
+		// Nothing to do if the property has no constraints
+	    	return ""; 
 	    }
 	    
 	    if(property.association) {
