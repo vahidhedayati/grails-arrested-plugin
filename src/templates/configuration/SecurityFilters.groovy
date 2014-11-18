@@ -23,7 +23,7 @@ class SecurityFilters {
                     return true
                 }
 
-	       accessControl{true}	
+	       accessControl()	
 				
 			}
 		}

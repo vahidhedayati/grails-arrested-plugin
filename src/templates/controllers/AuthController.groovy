@@ -129,7 +129,8 @@ class AuthController extends ArrestedController {
 					def user = ArrestedUser.findByUsername(username) 
 					ArrestedToken token = ArrestedToken.get(user.token) 
 					if(!token){ 
-						user.setToken(new ArrestedToken( token: UUID.randomUUID().toString(), valid: true, owner: user.id).save(flush: true).id) user.save(flush: true) 
+						user.setToken(new ArrestedToken( token: UUID.randomUUID().toString(), valid: true, owner: user.id).save(flush: true).id) 
+						user.save(flush: true) 
 					}else if(token.lastUpdated.time > valid.time || !token.valid){ 
 						token.token = UUID.randomUUID() 
 						token.valid = true token.save(flush: true) 

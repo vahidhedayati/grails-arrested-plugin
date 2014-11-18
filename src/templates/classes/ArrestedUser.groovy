@@ -3,7 +3,7 @@
 class ArrestedUser {
     String username
     String passwordHash
-	byte[] passwordSalt1
+	byte[] passwordSalt
     Date dateCreated
     Date lastUpdated
     Long token
