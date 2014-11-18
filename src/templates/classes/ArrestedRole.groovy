@@ -16,7 +16,7 @@ class ArrestedRole {
 	}
 
 	boolean equals(Object o) {
-		if(o instanceof Role) {
+		if(o instanceof ArrestedRole) {
 			return this.name == o.name
 		}
 		return false
