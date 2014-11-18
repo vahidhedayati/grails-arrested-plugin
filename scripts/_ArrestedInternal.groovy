@@ -123,8 +123,7 @@ target(createToken: "Create a token class") {
 
 target(createUser: "Create a user class") {
     depends(compile)
-    def (pkg, prefix) = parsePrefix1()
-	println("Yes let us create the User now")
+    def (pkg, prefix) = parsePrefix1()	
     installTemplateEx("ArrestedUser.groovy", "grails-app/domain${packageToPath(pkg)}", "classes", "ArrestedUser.groovy") {
         ant.replace(file: artefactFile) {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
@@ -134,9 +133,9 @@ target(createUser: "Create a user class") {
 }
 
 target(createRole: "Create a role class") {
+	
 	depends(compile)
-	def (pkg, prefix) = parsePrefix1()
-	println("Yes let us create the role now")
+	def (pkg, prefix) = parsePrefix1()	
 	installTemplateEx("ArrestedRole.groovy", "grails-app/domain${packageToPath(pkg)}", "classes", "ArrestedRole.groovy") {
 		ant.replace(file: artefactFile) {
 			ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
