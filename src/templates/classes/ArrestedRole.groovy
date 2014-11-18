@@ -7,6 +7,7 @@ class ArrestedRole {
 	
     String name
 	static hasMany = [ users: ArrestedUser, permissions: String ]
+	static belongsTo = ArrestedUser
     static constraints = {
         name blank: false, unique: true, nullable:false
     }
