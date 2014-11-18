@@ -9,6 +9,7 @@ target(createArrestedApp: "Token, User, SecurityFilter, and the base JS files an
     depends(parseArguments, createToken)
     depends(parseArguments, createUser)
 	depends(parseArguments, createRole)
+	depends(parseArguments, createRealm)
     depends(parseArguments, createArrestedController)
     depends(parseArguments, createUserController)
     depends(parseArguments, createAngularUser)

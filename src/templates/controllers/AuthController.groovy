@@ -6,10 +6,14 @@ import arrested.ArrestedController
 import org.apache.shiro.crypto.hash.Sha256Hash
 import org.apache.shiro.authc.AuthenticationException
 import org.apache.shiro.authc.UsernamePasswordToken
+import org.apache.shiro.web.util.SavedRequest
+import org.apache.shiro.web.util.WebUtils
+import org.apache.shiro.SecurityUtils
 
 class AuthController extends ArrestedController {
 	
     static allowedMethods = [login: "POST", logout: "GET"]
+	def shiroSecurityManager
 	
 	def showUpdatePassword() {
 		withFormat {
@@ -120,7 +124,8 @@ class AuthController extends ArrestedController {
 				def authToken = new UsernamePasswordToken(username, passwordHash as String) 
 				try { 
 					SecurityUtils.subject.login(authToken) 
-					Date valid = new Date() valid + 1 
+					Date valid = new Date() 
+					valid + 1 
 					def user = ArrestedUser.findByUsername(username) 
 					ArrestedToken token = ArrestedToken.get(user.token) 
 					if(!token){ 

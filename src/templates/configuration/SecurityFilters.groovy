@@ -11,7 +11,7 @@ class SecurityFilters {
 			
 	]
     def filters = {
-        arrested(uri: "/**") {
+        arrested(uri: "/**/#/**") {
             before = {
 
 		def needsAuth = !nonAuthenticatedActions.find {

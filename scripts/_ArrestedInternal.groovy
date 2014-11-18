@@ -144,6 +144,18 @@ target(createRole: "Create a role class") {
 	depends(compile)
 }
 
+target(createRealm: "Create a DB Realm class") {
+	
+	depends(compile)
+	def (pkg, prefix) = parsePrefix1()
+	installTemplateEx("DbRealm.groovy", "grails-app/realms${packageToPath(pkg)}", "realms/arrested", "DbRealm.groovy") {
+		ant.replace(file: artefactFile) {
+			ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
+		}
+	}
+	depends(compile)
+}
+
 target(createUserController: "Create a user class") {
     depends(compile)
     def (pkg, prefix) = parsePrefix1()
@@ -408,9 +420,9 @@ target(createJSController: "Creates a standard angular controller") {
             if (domainClass.getShortName() == prefix) {	
 				def sb = new StringBuilder("")
 				domainClass.constrainedProperties?.each {key, value ->
-					if(domainClass.constrainedProperties[$key].inList) {
+					if(domainClass.constrainedProperties[key].inList) {
 						sb.append(domainClass.getPropertyName()).append(
-							 "= [\"" + domainClass.constrainedProperties[$key].inList.join("\",\" ") + "\"]\n")
+							 " = [\"" + domainClass.constrainedProperties[key].inList.join("\",\"") + "\"];\n")
 					}
 				}
 				constraintsList = sb;
