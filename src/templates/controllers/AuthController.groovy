@@ -4,6 +4,8 @@ import grails.converters.JSON
 import grails.converters.XML
 import arrested.ArrestedController
 import org.apache.shiro.crypto.hash.Sha256Hash
+import org.apache.shiro.authc.AuthenticationException
+import org.apache.shiro.authc.UsernamePasswordToken
 
 class AuthController extends ArrestedController {
 	
@@ -117,13 +119,15 @@ class AuthController extends ArrestedController {
 			if(passwordHash){ 
 				def authToken = new UsernamePasswordToken(username, passwordHash as String) 
 				try { 
-					SecurityUtils.subject.login(authToken) Date valid = new Date() valid + 1 
+					SecurityUtils.subject.login(authToken) 
+					Date valid = new Date() valid + 1 
 					def user = ArrestedUser.findByUsername(username) 
 					ArrestedToken token = ArrestedToken.get(user.token) 
 					if(!token){ 
 						user.setToken(new ArrestedToken( token: UUID.randomUUID().toString(), valid: true, owner: user.id).save(flush: true).id) user.save(flush: true) 
 					}else if(token.lastUpdated.time > valid.time || !token.valid){ 
-						token.token = UUID.randomUUID() token.valid = true token.save(flush: true) 
+						token.token = UUID.randomUUID() 
+						token.valid = true token.save(flush: true) 
 					} 
 					withFormat{ 
 						xml { 
