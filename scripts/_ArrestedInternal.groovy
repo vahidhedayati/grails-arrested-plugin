@@ -124,6 +124,7 @@ target(createToken: "Create a token class") {
 target(createUser: "Create a user class") {
     depends(compile)
     def (pkg, prefix) = parsePrefix1()
+	println("Yes let us create the User now")
     installTemplateEx("ArrestedUser.groovy", "grails-app/domain${packageToPath(pkg)}", "classes", "ArrestedUser.groovy") {
         ant.replace(file: artefactFile) {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
@@ -135,6 +136,7 @@ target(createUser: "Create a user class") {
 target(createRole: "Create a role class") {
 	depends(compile)
 	def (pkg, prefix) = parsePrefix1()
+	println("Yes let us create the role now")
 	installTemplateEx("ArrestedRole.groovy", "grails-app/domain${packageToPath(pkg)}", "classes", "ArrestedRole.groovy") {
 		ant.replace(file: artefactFile) {
 			ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
@@ -409,7 +411,7 @@ target(createJSController: "Creates a standard angular controller") {
 				domainClass.constrainedProperties?.each {key, value ->
 					if(domainClass.constrainedProperties[$key].inList) {
 						sb.append(domainClass.getPropertyName()).append(
-							 "= [\"" + domainClass.constrainedProperties[$key].inList.join("\",\" ") "\"]\n")
+							 "= [\"" + domainClass.constrainedProperties[$key].inList.join("\",\" ") + "\"]\n")
 					}
 				}
 				constraintsList = sb;
