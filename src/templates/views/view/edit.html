@@ -6,7 +6,7 @@
 		</div>
 	</div>
     
-
+   <% smallClassName = className?.toLowerCase() %>
     <div class="container" data-ng-controller="${className}Ctrl" >
         <div class="small-12 columns" >
             <div class="panel panel-default">
@@ -37,7 +37,9 @@
 	    	renderBooleanEditor(domainClass, property)
 	    } else if (property.type && Number.isAssignableFrom(property.type) || (property.type?.isPrimitive() && property.type != boolean)) {
 	    	renderNumberEditor(domainClass, property)
-	    } else if (property.type == String) {
+	    } else if (property.type == String && cp."${property.name}".inList) {
+	    	renderConstraintsAsList(domainClass,property)
+	    } else if (property.type == String ) {
 	    	renderStringEditor(domainClass, property)
 	    } else if (property.type == Date || property.type == java.sql.Date || property.type == java.sql.Time || property.type == Calendar) {
 	    	renderDateEditor(domainClass, property)
@@ -92,8 +94,6 @@
     				sb << '<input type="url"'
     			} else if (cp."${property.name}".email) {
     				sb << '<input type="email"'
-    			} else if (cp.inList){
-    			 sb = renderConstraintsAsList(domainClass, property)
     			} else{
     				sb << '<input type="text"'
     			}
@@ -225,24 +225,17 @@
     }
 
 	private renderConstraintsAsList(domainClass,property) {
-	    if (!cp) { 
-		// Nothing to do if the property has no constraints
+	    if (!cp) { 		
 	    	return ""; 
-	    }
-	    
-	    if(property.association) {
-		    if (property.type.name.indexOf('.')>-1) {
-		    	property.type.name=property.type.name.substring(property.type.name.lastIndexOf('.')+1,property.type.name.length())
-		    }
+	    }	    
 		    def sb = new StringBuilder()
 		    sb << '<select bs-select'
 		    // id is "x" and name is "x.id" as the label will have for="x" and "." in an id will confuse CSS
 		    sb << ' id="' << property.name << '"'
-		    sb << ' name="' << property.name << '.id"'
+		    sb << ' name="' << property.name << '"'
 		    sb << " data-ng-model='${domainTitle}.${property.name}'"
-		    sb << ' data-ng-controller="'<< property.type.name <<'Ctrl"'
-		    sb << ' data-ng-init="getAll'<< property.type.name <<'()"'
-		    sb << ' ng-options="c.id as c.name for c in ' << property.type.name.toLowerCase() << 's track by c.id"'
+		    sb << ' data-ng-controller="'<< className <<'Ctrl"'
+		    sb << ' ng-options="c for c in ' << property.name.toLowerCase() << 's"'
 		    if (isRequired()) {
 		    	sb << ' required=""'
 		    }	
@@ -250,7 +243,6 @@
 		    sb << renderNoSelection(property)
 		    sb << '/>'
 		    sb as String
-	    }
     }
 
     private renderManyToOne(domainClass,property) {
@@ -318,7 +310,7 @@
     private renderDateEditor(domainClass, property) {
 	    def precision = (property.type == Date || property.type == java.sql.Date || property.type == Calendar) ? "day" : "minute";
 	    if (!cp) {
-	    	return "<input type=\"date\" name=\"${property.name}\" bs-datepicker data-date-format=\"dd/MM/yyyy\" precision=\"${precision}\" data-ng-model='${domainTitle}.${property.name}' />"
+	    	return "<input type=\"date\" name=\"${property.name}\" bs-datepicker data-date-format=\"dd/MM/yyyy\" data-ng-model='${domainTitle}.${property.name}' />"
 	    } else {
 	    	if (!cp."${property.name}".editable) {
 	    		return "\${${domainInstance}?.${property.name}?.toString()}"

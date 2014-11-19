@@ -410,7 +410,7 @@ target(createController: "Creates a standard controller") {
 target(createJSController: "Creates a standard angular controller") {
     depends(compile,loadApp)
 	def engine = new SimpleTemplateEngine()
-    def (pkg, prefix) = parsePrefix()
+    def (pkg, prefix) = parsePrefix1()
     def className = prefix + "Ctrl"
 	def cpathController=verifyGrailsVersion(appVersion, 'js', 'custom-'+appName)
     def domainClasses = grailsApp.domainClasses
@@ -421,7 +421,7 @@ target(createJSController: "Creates a standard angular controller") {
 				def sb = new StringBuilder("")
 				domainClass.constrainedProperties?.each {key, value ->
 					if(domainClass.constrainedProperties[key].inList) {
-						sb.append(domainClass.getPropertyName()).append(
+						sb.append("\$rootScope." + key + "s").append(
 							 " = [\"" + domainClass.constrainedProperties[key].inList.join("\",\"") + "\"];\n")
 					}
 				}
