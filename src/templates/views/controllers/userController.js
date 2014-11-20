@@ -1,5 +1,5 @@
 'use strict';
-function UserCtrl(\$rootScope,\$scope, DAO){
+function UserCtrl(\$cookieStore,\$rootScope,\$scope, DAO){
 	
     if(!\$rootScope.appConfig){
         \$rootScope.appConfig = {appName:'$appName', token:''};
@@ -90,6 +90,12 @@ function UserCtrl(\$rootScope,\$scope, DAO){
         function(result){
         	\$rootScope.user = result;
         	\$rootScope.appConfig.token = result.token;
+            \$cookieStore.remove('token');
+            \$cookieStore.remove('id');
+            \$cookieStore.remove('username');
+            \$cookieStore.put('token',\$rootScope.appConfig.token);
+            \$cookieStore.put('id',result.id);
+            \$cookieStore.put('username',result.username);
             delete \$rootScope.user.token;
             \$rootScope.loadingSite=false;
             //window.location.href="#/"

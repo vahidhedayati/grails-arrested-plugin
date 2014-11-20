@@ -123,13 +123,37 @@ target(createToken: "Create a token class") {
 
 target(createUser: "Create a user class") {
     depends(compile)
-    def (pkg, prefix) = parsePrefix1()
+    def (pkg, prefix) = parsePrefix1()	
     installTemplateEx("ArrestedUser.groovy", "grails-app/domain${packageToPath(pkg)}", "classes", "ArrestedUser.groovy") {
         ant.replace(file: artefactFile) {
             ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
         }
     }
     depends(compile)
+}
+
+target(createRole: "Create a role class") {
+	
+	depends(compile)
+	def (pkg, prefix) = parsePrefix1()	
+	installTemplateEx("ArrestedRole.groovy", "grails-app/domain${packageToPath(pkg)}", "classes", "ArrestedRole.groovy") {
+		ant.replace(file: artefactFile) {
+			ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
+		}
+	}
+	depends(compile)
+}
+
+target(createRealm: "Create a DB Realm class") {
+	
+	depends(compile)
+	def (pkg, prefix) = parsePrefix1()
+	installTemplateEx("DbRealm.groovy", "grails-app/realms${packageToPath(pkg)}", "realms/arrested", "DbRealm.groovy") {
+		ant.replace(file: artefactFile) {
+			ant.replacefilter(token: "@package.line@", value: (pkg ? "package ${pkg}\n\n" : ""))
+		}
+	}
+	depends(compile)
 }
 
 target(createUserController: "Create a user class") {
@@ -386,15 +410,26 @@ target(createController: "Creates a standard controller") {
 target(createJSController: "Creates a standard angular controller") {
     depends(compile,loadApp)
 	def engine = new SimpleTemplateEngine()
-    def (pkg, prefix) = parsePrefix()
+    def (pkg, prefix) = parsePrefix1()
     def className = prefix + "Ctrl"
 	def cpathController=verifyGrailsVersion(appVersion, 'js', 'custom-'+appName)
     def domainClasses = grailsApp.domainClasses
+	def constraintsList = "";
     domainClasses.each {
         domainClass ->
-            if (domainClass.getShortName() == prefix) {
+            if (domainClass.getShortName() == prefix) {	
+				def sb = new StringBuilder("")
+				domainClass.constrainedProperties?.each {key, value ->
+					if(domainClass.constrainedProperties[key].inList) {
+						sb.append("\$rootScope." + key + "s").append(
+							 " = [\"" + domainClass.constrainedProperties[key].inList.join("\",\"") + "\"];\n")
+					}
+				}
+				constraintsList = sb;
 				def addConf=[contName:className,className:prefix,
-					instance:domainClass.getPropertyName(),appName:appName]
+					instance:domainClass.getPropertyName(),appName:appName,
+					constraintList:constraintsList]
+				
 				def clsjs = createTemplate(engine, 'views/controllers/Controller.js', addConf)
 				writeToFile("${cpathController}/${className}.js",clsjs.toString())
             }
@@ -587,12 +622,15 @@ target(createControllerGsp: "Create the angular controller.gsp template") {
 	def cpathUser=verifyGrailsVersion(appVersion, 'js', 'custom-'+appName)
 	names.each {
 		if (new File("${basedir}/${cpathUser}/${it.className}Ctrl.js").exists()) {
+			rul.append('<shiro:hasPermission permission="').append(it.propertyName).append(':*">\n')
 			rul.append('\t <a  ng-class="isSelected(\'').append(it.propertyName).append('\')')
 			rul.append('? \'btn btn-primary\' :\'btn btn-default\'"  ng-click="setSelectedController(\'').append(it.propertyName).append('\')" ')
 			rul.append('onclick=\'window.location.href="#/').append(it.propertyName).append('/list"\' ')
 			rul.append('title="\${message(code: \'default.').append(it.propertyName).append('.label\', default: \'').append(it.className).append('\')}">\n')
 			rul.append('\t\t<g:message code="default.').append(it.propertyName).append('}.label"  default="').append(it.className).append('"/>\n')
 			rul.append('\t</a>\n')
+			rul.append('</shiro:hasPermission>\n')
+			
 		}
 	}
 	def rulConf = [arrestedControllers: rul]
