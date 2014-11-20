@@ -316,6 +316,13 @@ target(createAngularIndex: "Create the angular file configuration") {
     configFile.withWriterAppend { BufferedWriter writer ->
         writer.writeLine "'use strict';"
         writer.writeLine "var " + shortname + " = angular.module('" + Metadata.current.'app.name' + "', ['services','ngRoute']);"
+		
+		writer.writeLine(shortname + ".config(function (\$datepickerProvider) {")
+		writer.writeLine("    angular.extend(\$datepickerProvider.defaults, {")
+		writer.writeLine("        dateFormat: 'dd-MM-yyyy',")
+		writer.writeLine("        modelDateFormat: \"yyyy-MM-ddTHH:mm:ss\"")
+		writer.writeLine("    })});")
+		
 		//writer.writeLine "var " + shortname + " = angular.module('" + Metadata.current.'app.name' + "', ['services','ngRoute']);"
         writer.writeLine shortname + ".config([\n" +
                 "    '\$routeProvider',\n" +
