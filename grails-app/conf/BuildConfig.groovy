@@ -12,7 +12,7 @@ grails.project.dependency.resolution = {
     }
 
     dependencies {
-         compile ('org.apache.shiro:shiro-core:1.2.1',
+       /*  compile ('org.apache.shiro:shiro-core:1.2.1',
 			'org.apache.shiro:shiro-web:1.2.1',
 			'org.apache.shiro:shiro-spring:1.2.1',
 			'org.apache.shiro:shiro-ehcache:1.2.1',
@@ -20,6 +20,7 @@ grails.project.dependency.resolution = {
 			excludes 'ejb', 'jsf-api', 'servlet-api', 'jsp-api', 'jstl', 'jms',
 			'connector-api', 'ehcache-core', 'slf4j-api', 'commons-logging'
 			}
+	*/		
     }
 
     plugins {
@@ -28,5 +29,9 @@ grails.project.dependency.resolution = {
         build ':release:2.2.1', ':rest-client-builder:1.0.3', {
             export = false
         }
+        runtime ':shiro:1.2.1', {
+		excludes 'quartz'
+		excludes 'hibernate'
+	}
     }
 }
