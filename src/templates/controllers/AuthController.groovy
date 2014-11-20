@@ -133,8 +133,7 @@ class AuthController extends ArrestedController {
 						user.save(flush: true) 
 					}else if(token.lastUpdated.time > valid.time || !token.valid){ 
 						token.token = UUID.randomUUID() 
-						token.valid = true 
-						token.save(flush: true) 
+						token.valid = true token.save(flush: true) 
 					} 
 					withFormat{ 
 						xml { 

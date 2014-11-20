@@ -33,7 +33,7 @@ $customAngularControllers
     }
 
     angularService {
-        dependsOn 'angularResource', 'angularNgTable', 'arrestedServices'
+        dependsOn 'angularResource', 'angularNgTable', 'angularStrap', 'angularCookies','arrestedServices'
         resource url: 'js/services.js'	
     }
 	
@@ -51,6 +51,14 @@ $customAngularControllers
 		resource url:'css/ng-table.css'
 	}
 	
+	angularStrap { 
+		resource url:'js/angular-strap/angular-strap.js'
+	}
+	
+	angularCookies {
+		resource url:'js/angular-cookies/angular-cookies.js'
+	}
+
     angular {
         dependsOn 'jQuery'
         resource url:'js/angular/angular.js'

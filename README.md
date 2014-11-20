@@ -9,7 +9,7 @@ AngularJs + RESTful = Arrested
 # Installation:
 
 Add plugin Dependency in BuildConfig.groovy :
->compile ":arrested:1.34"
+>compile ":arrested:1.35"
 
 ## Installation information warning
 
@@ -113,6 +113,8 @@ class BootStrap {
 
 
 
+
+
 Configuration completed
 
 For a sample site please visit [testingarrested](https://github.com/vahidhedayati/testingarrested), this project consists of a basic Books,Authors data modelling where 
@@ -148,10 +150,44 @@ Please refer to [supported i18n files](https://github.com/vahidhedayati/testinga
 
 [bash automated app creation](https://github.com/vahidhedayati/testingarrested/wiki/automated---app-creator---bash-script)
 
+
+###### User signup role
+This is the default  role you wish to be used as part of the sign up
+  
+Config.groovy :
+  
+```
+arrested.signup.role='Administrator' //if not defined Administrator will be default value
+```
+
+
+
 ### Version info:
 
 ```
+1.35 : https://github.com/PureSrc/grails-arrested-plugin/issues/37
+
+	Sasikumar Ganesan 	Support the Shiro access control 	1e4c3d3
+	Sasikumar Ganesan 	Support Role & Permission based access control 	f4e922e
+	Sasikumar Ganesan 	Support the basic role based menu display 	ddc74b1
+	Sasikumar Ganesan 	Support date selection with angular-strap 	2924950
+	Sasikumar Ganesan 	Changes to support inList items 	7266aaf
+	Sasikumar Ganesan 	Alter the script to include roles 	af81cbf
+	Sasikumar Ganesan 	Add support for roles 	7f9b521
+	Sasikumar Ganesan 	Add the missing imports 	ca83754
+	Sasikumar Ganesan 	Fix the script errors 	9238535
+	Sasikumar Ganesan 	Remove the unecessary printlns 	a76164a
+	Sasikumar Ganesan 	Correct relationship to be mapped for roles 	5c297a0
+	Sasikumar Ganesan 	Support for inlist and cookies 	398be44
+	Sasikumar Ganesan 	Support for Shiro security 	e58c7a1
+	Sasikumar Ganesan 	Fix the shiro security service initialization and other errors in the… … 	683ed29
+	Sasikumar Ganesan 	Support the angular-strap and the templates for the same 	03f25e1
+	Sasikumar Ganesan 	Change the Readme to support the bootstrap with Shiro 	9914f4c
+	Sasikumar Ganesan 	Controller failed on creating token fixed 	d183ff0 
+
+
 1.34 : https://github.com/PureSrc/grails-arrested-plugin/issues/38
+
 1.33 : 	Issue with date Fields fixed, additional work to edit.html and a new private setDate function set in Controller.groovy
 	User can define their own date format in their application's Config.groovy, by default:
 	arrested.dateFormat='dd/MM/yyyy'
