@@ -59,44 +59,56 @@ To generate views for your newly created REST controller run:
 
 
 # How to Integrate
+### Creating a resource file to support Sha512 credential matcher
 
+Resources:
+```groovy
+import org.apache.shiro.authc.credential.Sha512CredentialsMatcher
+
+beans = {
+	credentialMatcher(Sha512CredentialsMatcher) {
+		storedCredentialsHexEncoded = false
+		hashSalted=true
+		hashIterations=1024
+	}
+	
+}
+
+```
 ### Creating a user at startup:
 
 
 
 BootStrap:
 ```groovy
-import org.apache.shiro.crypto.hash.Sha256Hash
-
-import arrested.ArrestedToken
+import arrested.ArrestedRole
 import arrested.ArrestedUser
+import org.apache.shiro.crypto.SecureRandomNumberGenerator
+import org.apache.shiro.crypto.hash.Sha512Hash
 
 class BootStrap {
 
-   def init = { servletContext ->
-	ArrestedUser user
-		ArrestedToken token
+    def shiroSecurityService
+    def init = { servletContext ->
+		def adminRole = new ArrestedRole(name: "Administrator")
+		adminRole.addToPermissions("*:*")
+		adminRole.save()
+		adminRole = ArrestedRole.findByName("Administrator")
 		
-		user = new ArrestedUser(
-			username: "admin",
-			passwordHash: new Sha256Hash("admin").toHex(),
-			dateCreated: new Date()
-		).save()
+		def passwordSalt = new SecureRandomNumberGenerator().nextBytes().getBytes()
+		def admin = new ArrestedUser(
+			username:"admin",
+			passwordHash: new Sha512Hash("password",passwordSalt,1024).toBase64(),
+			passwordSalt:passwordSalt,
+			dateCreated:new Date())
+		admin.addToRoles(adminRole)
+		admin.save(flush:true, failOnError:true)
 		
-		 //Create tokens for users
-		token = new ArrestedToken(
-			token: 'token',
-			valid: true,
-			owner: user.id
-		).save(flush: true)
-		user.setToken(token.id)
-		user.save()
-		
-    
     }
     def destroy = {
     }
 }
+
 ```
 
 
