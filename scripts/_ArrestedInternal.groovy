@@ -226,6 +226,25 @@ target(createFilter: "Create a security filter") {
     }
     depends(compile)
 }
+
+target(createBean: "Create spring/resources.groovy") {
+	depends(compile)
+	def (pkg, prefix) = parsePrefix1()
+	def file="spring/resources.groovy"
+	def resourcesFile = "${basedir}/grails-app/conf/${file}"
+	if (!okToWrite(resourcesFile)) {
+		return
+	}
+	templateFile = "${arrestedPluginDir}/src/templates/configuration/${file}"
+	if (!new File(templateFile).exists()) {
+		ant.echo("[Arrested plugin] Error: src/templates/configuration/${file} does not exist!")
+		return
+	}
+	ant.copy(file: templateFile, tofile: resourcesFile, overwrite: true)
+	depends(compile)
+}
+
+
 target(updateUrl: "Updating the Url Mappings") {
     depends(compile)
     def (pkg, prefix) = parsePrefix()

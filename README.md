@@ -9,11 +9,11 @@ AngularJs + RESTful = Arrested
 # Installation:
 
 Add plugin Dependency in BuildConfig.groovy :
->compile ":arrested:1.36"
+>compile ":arrested:1.37"
 
 ## Installation information warning
 
-We recommend you create a new project to install this plugin into, if you have an existing project be warning files such as index.gsp main.gsp i18n messages.properties messages_de.properties are overwritten. Lots of new files are added to this project.Please ensure you have backed up the project if it is an existing one.
+We recommend you create a new project to install this plugin into, if you have an existing project be warning files such as index.gsp main.gsp i18n messages.properties messages_de.properties, grails-app/conf/spring/resources.groovy are overwritten. Lots of new files are added to this project.Please ensure you have backed up the project if it is an existing one.
 
 
 # Getting Started
@@ -59,22 +59,9 @@ To generate views for your newly created REST controller run:
 
 
 # How to Integrate
-### Creating a resource file to support Sha512 credential matcher
 
-Resources:
-```groovy
-import org.apache.shiro.authc.credential.Sha512CredentialsMatcher
+#### It is important and a must that you create the ArrestedRole required by signup.role config  
 
-beans = {
-	credentialMatcher(Sha512CredentialsMatcher) {
-		storedCredentialsHexEncoded = false
-		hashSalted=true
-		hashIterations=1024
-	}
-	
-}
-
-```
 ### Creating a user at startup:
 
 
@@ -175,7 +162,11 @@ arrested.signup.role='Administrator' //if not defined Administrator will be defa
 ### Version info:
 
 ```
-
+1.37 :	Moved spring/resources.groovy withing plugin src/configuration, 
+		appended _ArrestedInternal and create-arrested-app scripts to now call createBean
+		Removed howto update bean from documentation and appended it to warning line at the top.
+		Upgraded plugin to work in grails-2.4.2 had to enable maven repo for Shiro to work.
+		
 1.36 :  Sasikumar Ganesan 	Support the correct date format
 
 1.35 :  https://github.com/PureSrc/grails-arrested-plugin/issues/37

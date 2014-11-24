@@ -15,6 +15,7 @@ target(createArrestedApp: "Token, User, SecurityFilter, and the base JS files an
     depends(parseArguments, createAngularUser)
     depends(parseArguments, createAuth)
     depends(parseArguments, createFilter)
+	depends(parseArguments, createBean)
     depends(parseArguments, updateUrl)
     depends(parseArguments, updateResources)
     depends(parseArguments, createAngularService)

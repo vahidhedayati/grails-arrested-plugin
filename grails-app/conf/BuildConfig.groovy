@@ -1,7 +1,9 @@
 grails.project.work.dir = 'target'
 
-grails.project.dependency.resolution = {
+// added to make shiro work under 2.4.2
+grails.project.dependency.resolver = "maven" 
 
+grails.project.dependency.resolution = {
     inherits 'global'
     log 'warn'
 
@@ -26,14 +28,12 @@ grails.project.dependency.resolution = {
 
     plugins {
        // runtime ':cors:1.1.6'
-        //runtime ':resources:1.2.8' 
-        build ':release:2.2.1', ':rest-client-builder:1.0.3', {
+       	build ':release:3.0.1', ':rest-client-builder:2.0.3', {
             export = false
         }
 
 		runtime ':shiro:1.2.1', {
-				excludes 'quartz'
-				excludes 'hibernate'
+				excludes 'quartz','hibernate'
 		}
     }
 }
