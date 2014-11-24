@@ -9,7 +9,7 @@ AngularJs + RESTful = Arrested
 # Installation:
 
 Add plugin Dependency in BuildConfig.groovy :
->compile ":arrested:1.35"
+>compile ":arrested:1.36"
 
 ## Installation information warning
 
@@ -112,7 +112,16 @@ class BootStrap {
 ```
 
 
+##Config.groovy requirements for key 'arrested':
+```
+arrested.dateFormat ?: 'yyyy-MM-dd\'T\'HH:mm:ss'
 
+arrested.signup.role='Administrator' //if not defined Administrator will be default value
+
+arrested.supported.i18n=['en','de','es_PE','es']
+// For all locales simply enable this:
+arrested.supported.i18n=['*']
+```
 
 
 Configuration completed
@@ -165,7 +174,10 @@ arrested.signup.role='Administrator' //if not defined Administrator will be defa
 ### Version info:
 
 ```
-1.35 : https://github.com/PureSrc/grails-arrested-plugin/issues/37
+
+1.36 :  Sasikumar Ganesan 	Support the correct date format
+
+1.35 :  https://github.com/PureSrc/grails-arrested-plugin/issues/37
 
 	Sasikumar Ganesan 	Support the Shiro access control 	1e4c3d3
 	Sasikumar Ganesan 	Support Role & Permission based access control 	f4e922e
