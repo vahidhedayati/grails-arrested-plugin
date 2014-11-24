@@ -156,7 +156,7 @@ class @controller.name@ extends ArrestedController {
         }
     }
     private setDate (String d) {
-      String dFormat=grailsApplication?.config.arrested.dateFormat ?: 'dd/MM/yyyy'
+      String dFormat=grailsApplication?.config.arrested.dateFormat ?: 'yyyy-MM-dd\'T\'HH:mm:ss'
       return (new SimpleDateFormat(dFormat)).parse(d)
     }
 }
