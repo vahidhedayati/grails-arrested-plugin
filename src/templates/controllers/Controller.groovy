@@ -66,7 +66,7 @@ class @controller.name@ extends ArrestedController {
 						}
 						<%}else{%>
 						<%if (p.type.name=='java.util.Date') {%> 
-						  if(data.${p.name}) instance.${p.name} = setDate(data.${p.name})
+						  if(data.${p.name}) instance.${p.name} = configDate(data.${p.name})
 						<%}else{%>
 						  if(data.${p.name}) instance.${p.name} = data.${p.name} 
 						<%}%>
@@ -111,7 +111,7 @@ class @controller.name@ extends ArrestedController {
                             }
                             <%}else{%>
                             <%if (p.type.name=='java.util.Date') {%> 
-							  if(data.${p.name}) instance.${p.name} = setDate(data.${p.name})
+							  if(data.${p.name}) instance.${p.name} = configDate(data.${p.name})
 							<%}else{%>
 							  if(data.${p.name}) instance.${p.name} = data.${p.name} 
 							<%}%>
@@ -155,8 +155,8 @@ class @controller.name@ extends ArrestedController {
 			renderMissingParam("\${message(code: 'default.id.missing.label', default: 'id missing')}")
         }
     }
-    private setDate (String d) {
-      String dFormat=grailsApplication?.config.arrested.dateFormat ?: 'yyyy-MM-dd\'T\'HH:mm:ss'
+    private configDate (String d) {
+      String dFormat=grailsApplication?.config.arrested.dateFormat ?: "yyyy-MM-dd'T'HH:mm:ss"
       return (new SimpleDateFormat(dFormat)).parse(d)
     }
 }

@@ -114,7 +114,8 @@ class BootStrap {
 
 ##Config.groovy requirements for key 'arrested':
 ```
-arrested.dateFormat ?: 'yyyy-MM-dd\'T\'HH:mm:ss'
+arrested.dateFormat="yyyy-MM-dd'T'HH:mm:ss"
+
 
 arrested.signup.role='Administrator' //if not defined Administrator will be default value
 
