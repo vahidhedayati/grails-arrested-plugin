@@ -9,7 +9,7 @@ AngularJs + RESTful = Arrested
 # Installation:
 
 Add plugin Dependency in BuildConfig.groovy :
->compile ":arrested:1.38"
+>compile ":arrested:1.39"
 
 ## Installation information warning
 
@@ -159,6 +159,8 @@ arrested.signup.role='Administrator' //if not defined Administrator will be defa
 ### Version info:
 
 ```
+1.39 : 	https://github.com/PureSrc/grails-arrested-plugin/issues/40 Fixed by BartRobeyns
+
 1.38 :	Removed extra documentation + obselete config file call.
 		Modified logout process so on error it resets token. This was causing issue during test mode 
 		whilst app restarts taking place.
