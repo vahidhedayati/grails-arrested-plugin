@@ -350,19 +350,19 @@ target(createAngularIndex: "Create the angular file configuration") {
                 "    function(\$routeProvider) {\n" +
                 "        \$routeProvider."
 		//writer.writeLine "            when('/dashboard', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/dashboard', controller: 'UserCtrl', resolve: { myLang: function(LangService) {return LangService.getLang()}}})."
-		writer.writeLine "            when('/dashboard', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/dashboard', controller: 'UserCtrl'})."
-        writer.writeLine "            when('/login', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/showLogin', controller: 'UserCtrl'})."
-		writer.writeLine "            when('/signup', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/showSignup', controller: 'UserCtrl'})."
-		writer.writeLine "            when('/updatepassword', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/showUpdatePassword', controller: 'UserCtrl'})."
-		writer.writeLine "            when('/updateusername', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/showUpdateUsername', controller: 'UserCtrl'})."
-		writer.writeLine "            when('/confirmupdate', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/showUpdated', controller: 'UserCtrl'})."
+		writer.writeLine "            when('/dashboard', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/dashboard'})."
+        writer.writeLine "            when('/login', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/showLogin'})."
+		writer.writeLine "            when('/signup', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/showSignup'})."
+		writer.writeLine "            when('/updatepassword', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/showUpdatePassword'})."
+		writer.writeLine "            when('/updateusername', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/showUpdateUsername'})."
+		writer.writeLine "            when('/confirmupdate', {templateUrl: '/" + Metadata.current.'app.name' + "/auth/showUpdated'})."
 		def cpathUser=verifyGrailsVersion(appVersion, 'js', 'custom-'+appName)
 		names.each {
 			if (new File("${basedir}/${cpathUser}/${it.className}Ctrl.js").exists()) {
-				writer.writeLine "            when('/" + it.propertyName + "/create', {templateUrl: '/" + Metadata.current.'app.name' + "/" + it.propertyName + "/edit', controller: '" + it.className + "Ctrl'})."
-				writer.writeLine "            when('/" + it.propertyName + "/edit', {templateUrl: '/" + Metadata.current.'app.name' + "/" + it.propertyName + "/edit', controller: '" + it.className + "Ctrl'})."
-				writer.writeLine "            when('/" + it.propertyName + "/list', {templateUrl: '/" + Metadata.current.'app.name' + "/"  + it.propertyName + "/listing', controller: '" + it.className + "Ctrl'})."
-				writer.writeLine "            when('/" + it.propertyName + "', {templateUrl: '/" + Metadata.current.'app.name' + "/" + it.propertyName + "/listing', controller: '" + it.className + "Ctrl'})."
+				writer.writeLine "            when('/" + it.propertyName + "/create', {templateUrl: '/" + Metadata.current.'app.name' + "/" + it.propertyName + "/edit'})."
+				writer.writeLine "            when('/" + it.propertyName + "/edit', {templateUrl: '/" + Metadata.current.'app.name' + "/" + it.propertyName + "/edit'})."
+				writer.writeLine "            when('/" + it.propertyName + "/list', {templateUrl: '/" + Metadata.current.'app.name' + "/"  + it.propertyName + "/listing'})."
+				writer.writeLine "            when('/" + it.propertyName + "', {templateUrl: '/" + Metadata.current.'app.name' + "/" + it.propertyName + "/listing'})."
 			}	
         }
         writer.writeLine "            otherwise({redirectTo: '/login'});"
